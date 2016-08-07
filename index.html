@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+
+<html>
+<head>
+    <title>Waud - Web Audio Library</title>
+    <meta charset="utf-8"/>
+    <meta name="description" content="Web Audio Library with HTML5 audio fallback">
+    <meta name="keywords" content="web,audio,waud,javaScript,library,html5,base64,audio sprite,sprite,ios,android,mp3,ogg,m4a,aac,waudsprite,waudbase64,waud.js,haxe,sound,sounds">
+    <meta name="author" content="Adi Reddy Mora">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!--[if lte IE 8]>
+    <script src="js/ie/html5shiv.js"></script><![endif]-->
+    <link rel="stylesheet" href="css/main.css"/>
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" href="css/ie8.css"/><![endif]-->
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" href="css/ie9.css"/><![endif]-->
+
+    <link rel="shortcut icon" href="images/logo/32.png">
+
+    <script src="js/waud.min.js"></script>
+
+    <script>
+        Waud.init();
+        Waud.autoMute();
+        var logoSounds;
+        window.onload = init;
+
+        function init() {
+            setNPMBadges();
+            var soundPack = new WaudBase64Pack("logosounds.json", onLoad);
+        }
+
+        function onLoad(snds) {
+            logoSounds = snds;
+            logoSounds.get("sounds/0.mp3").setVolume(0.2);
+            logoSounds.get("sounds/0.mp3").play();
+        }
+
+        function playLogoSound() {
+            Waud.stop();
+            if (logoSounds) logoSounds.get("sounds/" + (Math.floor(Math.random() * 5) + 1) + ".mp3").play();
+        }
+
+        window.onresize = function() {
+            setNPMBadges();
+        };
+
+        function setNPMBadges() {
+            document.getElementById("npm").src = "https://nodei.co/npm/waud.js.png?downloads=true&downloadRank=true&mini=" + !(window.innerWidth > 408);
+            document.getElementById("caption").style.visibility = (window.innerHeight < 480) ? "hidden" : "visible";
+            document.getElementById("github").style.top = WaudUtils.isiOS() ? "25px" : "0px";
+        }
+    </script>
+
+</head>
+<body>
+
+<!-- Header -->
+<section id="header">
+    <header class="major">
+        <img onclick="playLogoSound();" class="logo" width="128" height="128" src="images/logo/256.png" alt="waud.js"/>
+        <h1><span style="color: #E70000">WAUD</span><span style="color: #F3B607">.</span><span style="color: #32BEA6">JS</span></h1>
+        <p id="caption">Web Audio Library with HTML5 audio fallback.</p>
+    </header>
+    <div class="container">
+        <ul class="actions">
+            <li><a href="#one" class="button special scrolly">More Info</a></li>
+        </ul>
+    </div>
+</section>
+
+<!-- One -->
+<section id="one" class="main special">
+    <div class="container">
+        <span class="image fit primary"><img src="images/pic01.jpg" alt=""/></span>
+        <div class="content">
+            <header class="major">
+                <h2>About</h2>
+            </header>
+            <p align="left"><strong>Waud</strong> is a simple and powerful web audio library that allows you to go beyond HTML5's &lt;audio&gt; tag and easily take advantage of Web Audio API.<br/><br/>
+
+                The Web Audio API provides a powerful and versatile system for controlling audio capabilities of your web application. Waud abstracts Web Audio API making it consistent and reliable across multiple platforms and browsers.<br/><br/>
+
+                It also falls back to HTML5 Audio on non-modern browsers where Web Audio API is not supported.<br/><br/>
+
+                Tested on multiple platforms (iOS, Android & Desktop) and browser versions (Chrome, IE, Edge, Firefox, Safari, Opera & Yandex) with the support of <a href="https://www.browserstack.com/">BrowserStack</a>.<br/>
+
+                <p align="center"><img id="npm"></p>
+            </p>
+        </div>
+        <a href="#two" class="goto-next scrolly">Next</a>
+    </div>
+</section>
+
+<!-- Two -->
+<section id="two" class="main special">
+    <div class="container">
+        <span class="image fit primary"><img src="images/pic02.jpg" alt=""/></span>
+        <div class="content">
+            <header class="major">
+                <h2>Features</h2>
+            </header>
+            <ul class="icons-grid">
+                <li>
+                    <span class="icon major fa-archive"></span>
+                    <h3>Base64 Pack</h3>
+                </li>
+                <li>
+                    <span class="icon major fa-scissors"></span>
+                    <h3>Audio Sprites</h3>
+                </li>
+                <li>
+                    <span class="icon major fa-code"></span>
+                    <h3>Simple API</h3>
+                </li>
+                <li>
+                    <span class="icon major fa-chain-broken"></span>
+                    <h3>No Dependencies</h3>
+                </li>
+                <li>
+                    <span class="icon major fa-unlock"></span>
+                    <h3>iOS Audio Unlock</h3>
+                </li>
+                <li>
+                    <span class="icon major fa-volume-off"></span>
+                    <h3>Auto Mute</h3>
+                </li>
+                <!--<li>
+                    <span class="icon major fa-globe"></span>
+                    <h3>Multi-Browser Support</h3>
+                </li>
+                <li>
+                    <span class="icon major fa-file-audio-o"></span>
+                    <h3>Multi-Format Support</h3>
+                </li>-->
+            </ul>
+        </div>
+        <a href="#three" class="goto-next scrolly">Next</a>
+    </div>
+</section>
+
+<!-- Three -->
+<section id="three" class="main special">
+    <div class="container">
+        <span class="image fit primary"><img src="images/pic03.jpg" alt=""/></span>
+        <div class="content">
+            <header class="major">
+                <h2>Tools</h2>
+            </header>
+
+            <p>
+                Waud supports base64 decoding across all browsers including IE 9. Use <a href="https://www.npmjs.com/package/waudbase64"
+                                                                                         target="_blank">waudbase64</a> to generate base64 encoded JSON file.
+                You can pack multiple sounds into a single JSON file very similar to audio sprites. Click <a href="https://github.com/adireddy/waudbase64#more-info" target="_blank">here</a> for more information.
+            </p>
+            <pre><code>npm install -g waudbase64</code></pre>
+            <ul class="actions">
+                <li><a href="https://github.com/adireddy/waudbase64" target="_blank" class="button special icon fa-download">waudbase64</a></li>
+            </ul>
+
+            <p>
+                Waud also supports audio sprites. Use <a href="https://www.npmjs.com/package/waudsprite"
+                                                                                         target="_blank">waudsprite</a> to generate audio sprites.
+                It will combine multiple audio files into a single file and genetates a config JSON with the details of each sound.
+            </p>
+            <pre><code>npm install -g waudsprite</code></pre>
+            <ul class="actions">
+                <li><a href="https://github.com/adireddy/waudsprite" target="_blank" class="button special icon fa-download">waudsprite</a></li>
+            </ul>
+            <blockquote><i class="fa fa-info-circle" aria-hidden="true"></i> Waudbase64 is recommended over Waudsprite in terms of stability and reliability across all browsers.</blockquote>
+        </div>
+        <a href="#footer" class="goto-next scrolly">Next</a>
+    </div>
+</section>
+
+
+<!-- Footer -->
+<section id="footer">
+    <div class="container">
+        <header class="major">
+            <h2>Usage & Documentation</h2>
+        </header>
+        <section><pre><code>
+//Initialise waud.js
+Waud.init();
+
+//Touch unlock with callback for iOS devices
+Waud.enableTouchUnlock(touchUnlockCallback);
+
+//To auto mute sounds when the window is not in focus
+Waud.autoMute();
+        </code></pre>
+        </section>
+        <ul class="actions">
+            <li><a href="http://adireddy.github.io/docs/waud/" target="_blank" class="button icon fa-book">API Docs</a></li>
+        </ul>
+        <blockquote><i class="fa fa-info-circle" aria-hidden="true"></i> All the sounds used in this page are base64 encoded using <strong>waudbase64</strong> and loaded from a single JSON file. Click on the top logo to hear more sounds.</blockquote>
+    </div>
+    <footer>
+        <ul class="icons">
+            <li><a href="https://twitter.com/intent/tweet?related=adireddy&amp;text=waud.js%20-%20Web%20Audio%20Library&amp;url=https%3A%2F%2Fgithub.com%2Fadireddy%2Fwaud&amp;via=adireddy" target="_blank" class="icon alt fa-twitter"><span class="label">Twitter</span></a></a></li>
+            <li><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A//adireddy.github.io/waud/" target="_blank" class="icon alt fa-facebook-official"><span class="label">Facebook</span></a></a></li>
+            <li><a href="https://github.com/adireddy/waud" target="_blank" class="icon alt fa-github"><span class="label">Github</span></a></li>
+            <li><a href="https://www.npmjs.com/package/waud.js" target="_blank" class="icon alt fa-terminal"><span class="label">NPM</span></a></li>
+            <li><a href="mailto:adiinteractive@gmail.com" target="_blank" class="icon alt fa-envelope"><span class="label">Email</span></a></li>
+        </ul>
+
+        <a href="" target="_blank" class="social-icon facebook"></a>
+        <ul class="copyright">
+            <li>Created by <a href="https://github.com/adireddy" target="_blank">Adi Reddy Mora</a></li>
+            <li>License: <a href="http://opensource.org/licenses/MIT" target="_blank">MIT</a></li>
+            <li>Testing Support: <a href="https://www.browserstack.com/">BrowserStack</a></li>
+        </ul>
+    </footer>
+</section>
+
+<!-- Scripts -->
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery.scrollex.min.js"></script>
+<script src="js/jquery.scrolly.min.js"></script>
+<script src="js/skel.min.js"></script>
+<script src="js/util.js"></script>
+<!--[if lte IE 8]>
+<script src="js/ie/respond.min.js"></script><![endif]-->
+<script src="js/main.js"></script>
+
+<a href="https://github.com/adireddy/waud" class="github-corner"><svg id="github" width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0;"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+</body>
+</html>
