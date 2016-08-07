@@ -1,0 +1,205 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="static/style.css" rel="stylesheet" type="text/css"/>
+    <link href="//cdn.muicss.com/mui-0.2.9/css/mui.min.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-0.2.9/js/mui.min.js"></script>
+    <script src="waud.min.js"></script>
+</head>
+<body onload="init()">
+<i class="fa fa-globe"></i> Hello, world!
+<header class="mui-appbar mui--z2">
+    <div class="mui-container">
+        <table width="100%">
+            <tr class="mui--appbar-height">
+                <td class="mui--text-title"><img src="assets/logo.png" width="180" height="48"/></td>
+                <td align="right">
+                    <a href="https://github.com/adireddy/waud" target="_blank">
+                        <button class="mui-btn mui-btn--small mui-btn--raised">GitHub</button>
+                    </a>
+                    <a href="https://www.npmjs.com/package/waud.js" target="_blank">
+                        <button class="mui-btn mui-btn--small mui-btn--raised">NPM</button>
+                    </a>
+                    <a href="http://lib.haxe.org/p/waud/" target="_blank">
+                        <button class="mui-btn mui-btn--small mui-btn--raised">Haxelib</button>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+<div id="content-wrapper" class="mui--text-center">
+    <div class="mui--appbar-height"></div>
+    <br />
+    <br />
+    <div id="ua" class="mui--text-caption"></div>
+    <br />
+    <br />
+    <div id="ua" class="mui--text-title">MP3</div>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--primary" onmousedown="playGlassSound('mp3');">Glass</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--danger" onmousedown="playBellSound('mp3');">Bell</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--accent" onmousedown="playCanSound('mp3');">Can</button>
+    <br />
+    <div id="ua" class="mui--text-title">AAC</div>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--primary" onmousedown="playGlassSound('aac');">Glass</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--danger" onmousedown="playBellSound('aac');">Bell</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--accent" onmousedown="playCanSound('aac');">Can</button>
+    <br />
+    <div id="ua" class="mui--text-title">OGG</div>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--primary" onmousedown="playGlassSound('ogg');">Glass</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--danger" onmousedown="playBellSound('ogg');">Bell</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--accent" onmousedown="playCanSound('ogg');">Can</button>
+    <br />
+    <div id="ua" class="mui--text-title">SPRITE</div>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--primary" onclick="playGlassSound('sprite');">Glass</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--danger" onclick="playBellSound('sprite');">Bell</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--accent" onclick="playCanSound('sprite');">Can</button>
+    <br />
+    <div id="ua" class="mui--text-title">BASE 64</div>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--primary" onclick="playBase64Sound('test/beep.mp3');">Beep</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--danger" onclick="playBase64Sound('test/countdown.mp3');">Countdown</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised mui-btn--accent" onclick="playBase64Sound('test/funk100.mp3');">Funk</button>
+    <br />
+    <br />
+    <div id="ua" class="mui--text-title">CONTROLS</div>
+    <button class="mui-btn mui-btn--small mui-btn--raised" onclick="Waud.mute(true);">Mute</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised" onclick="Waud.mute(false);">Unmute</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised" onclick="_bgSnd.setVolume(0);">BG Vol 0</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised" onclick="_bgSnd.setVolume(1);">BG Vol 1</button>
+    <button class="mui-btn mui-btn--small mui-btn--raised" onclick="Waud.stop();">Stop</button>
+</div>
+<footer>
+    <div class="mui-container mui--text-center">
+        This content is released under the <a href="http://opensource.org/licenses/MIT">MIT</a> License.
+    </div>
+</footer>
+
+<script>
+    var _bgSnd;
+    var _glassAAC;
+    var _bellAAC;
+    var _canAAC;
+    var _glassMP3;
+    var _bellMP3;
+    var _canMP3;
+    var _glassOGG;
+    var _bellOGG;
+    var _canOGG;
+
+    var _audSprite;
+
+    var _base64snds;
+    var _base64pack;
+
+    function init() {
+        Waud.init();
+        Waud.autoMute();
+
+        document.getElementById("ua").innerHTML = navigator.userAgent;
+        document.getElementById("ua").innerHTML += "<br/>" + Waud.getFormatSupportString();
+        document.getElementById("ua").innerHTML += "<br/>Web Audio API: " + Waud.isWebAudioSupported;
+        document.getElementById("ua").innerHTML += "<br/>HTML5 Audio: " + Waud.isHTML5AudioSupported;
+
+        Waud.enableTouchUnlock(touchUnlock);
+
+        _bgSnd = new WaudSound("assets/loop.mp3", {
+            "autoplay": false, "loop": true, "volume": 1, "onload": playBgSound
+        });
+
+        _glassMP3 = new WaudSound("assets/glass.mp3");
+        _bellMP3 = new WaudSound("assets/bell.mp3");
+        _canMP3 = new WaudSound("assets/canopening.mp3");
+
+        _glassAAC = new WaudSound("assets/glass.aac");
+        _bellAAC = new WaudSound("assets/bell.aac");
+        _canAAC = new WaudSound("assets/canopening.aac");
+
+        _glassOGG = new WaudSound("assets/glass.ogg");
+        _bellOGG = new WaudSound("assets/bell.ogg");
+        _canOGG = new WaudSound("assets/canopening.ogg");
+
+        _audSprite = new WaudSound("assets/sprite.json");
+
+        _base64pack = new WaudBase64Pack("assets/sounds.json", _onLoad);
+    }
+
+    function _onLoad(snds) {
+        _base64snds = snds;
+    }
+
+    function playBase64Sound(id) {
+        _base64snds.get(id).play();
+    }
+
+    function playGlassSound(type) {
+        switch (type) {
+            case "mp3":
+                _glassMP3.play();
+                break;
+            case "aac":
+                _glassAAC.play();
+                break;
+            case "ogg":
+                _glassOGG.play();
+                break;
+            case "sprite":
+                _audSprite.play("glass");
+                break;
+        }
+    }
+
+    function playBellSound(type) {
+        switch (type) {
+            case "mp3":
+                _bellMP3.play();
+                break;
+            case "aac":
+                _bellAAC.play();
+                break;
+            case "ogg":
+                _bellOGG.play();
+                break;
+            case "sprite":
+                _audSprite.play("bell");
+                break;
+        }
+    }
+
+    function playCanSound(type) {
+        switch (type) {
+            case "mp3":
+                _canMP3.play();
+                break;
+            case "aac":
+                _canAAC.play();
+                break;
+            case "ogg":
+                _canOGG.play();
+                break;
+            case "sprite":
+                _audSprite.play("canopening");
+                break;
+        }
+    }
+
+    function mute(val) {
+        Waud.mute(val)
+    }
+
+    //Touch unlock event for iOS devices
+    function touchUnlock() {
+        if (!_bgSnd.isPlaying()) _bgSnd.play();
+    }
+
+    function playBgSound(snd) {
+        if (!snd.isPlaying()) snd.play();
+    }
+
+</script>
+
+
+</body>
+</html>
