@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.6.7
+            API Docs for v0.6.9
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -175,7 +175,8 @@ import js.html.XMLHttpRequest;
 				for (n in Reflect.fields(res)) {
 					if (n == &quot;meta&quot;) continue;
 					_soundCount++;
-					_createSound(n, Reflect.field(res, n));
+					if (Std.is(res, Array)) _createSound(Reflect.field(res, n).name, &quot;data:&quot; + Reflect.field(res, n).mime + &quot;;base64,&quot; + Reflect.field(res, n).data);
+					else _createSound(n, Reflect.field(res, n));
 				}
 			}
 		};
