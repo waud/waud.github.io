@@ -87,7 +87,7 @@ import js.html.audio.AnalyserNode;
 			height = HEIGHT * percent;
 			offset = HEIGHT - height - 1;
 			barWidth = WIDTH / analyser.frequencyBinCount;
-			drawContext.globalAlpha = 0.5;
+			drawContext.globalAlpha = 0.8;
 			drawContext.fillStyle = "#35B398";
 			drawContext.fillRect(i * barWidth, offset, 1, 2);
 		}

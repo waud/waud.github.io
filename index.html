@@ -215,7 +215,9 @@ Waud.autoMute();
 <script>
     Waud.init();
     Waud.autoMute();
+    Waud.enableTouchUnlock(onUnlock);
     var logoSounds;
+    var unlocked = false;
     window.onload = init;
 
     var introSnd;
@@ -231,6 +233,13 @@ Waud.autoMute();
         var soundPack = new WaudBase64Pack("logosounds.json", onLoad);
     }
 
+    function onUnlock() {
+        if (introSnd) {
+            visualizer.start(introSnd);
+        }
+        unlocked = true;
+    }
+
     function onLoad(snds) {
         logoSounds = snds;
         introSnd = logoSounds.get("sounds/0.mp3");
@@ -239,10 +248,9 @@ Waud.autoMute();
             introSnd.onEnd(function() {
                 visualizer.stop();
             });
-            visualizer.start(introSnd);
+            if (!WaudUtils.isiOS() || unlocked) visualizer.start(introSnd);
         }
         else introSnd.play();
-
     }
 
     function playLogoSound() {
@@ -264,7 +272,7 @@ Waud.autoMute();
     };
 
     function setNPMBadges() {
-        document.getElementById("npm").src = "https://nodei.co/npm/waud.js.png?downloads=true&downloadRank=true&mini=" + !(window.innerWidth > 408);
+        document.getElementById("npm").src = "https://nodei.co/npm/waud.js.png?downloads=true&downloadRank=true&mini=" + !(window.innerWidth > 420);
         document.getElementById("caption").style.visibility = (window.innerHeight < 480) ? "hidden" : "visible";
         document.getElementById("github").style.top = WaudUtils.isiOS() ? "25px" : "0px";
     }

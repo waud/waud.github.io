@@ -55,7 +55,7 @@ Visualizer.prototype = {
 			height = this.HEIGHT * percent;
 			offset = this.HEIGHT - height - 1;
 			barWidth = this.WIDTH / this.analyser.frequencyBinCount;
-			this.drawContext.globalAlpha = 0.5;
+			this.drawContext.globalAlpha = 0.75;
 			this.drawContext.fillStyle = "#35B398";
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}
