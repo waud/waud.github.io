@@ -1,9 +1,7 @@
 (function (console, $hx_exports) { "use strict";
 var Visualizer = $hx_exports.Visualizer = function(c,context) {
 	this.FFT_SIZE = 2048;
-	this.SMOOTHING = 0.8;
-	this.WIDTH = window.innerWidth;
-	this.HEIGHT = window.innerHeight;
+	this.SMOOTHING = 1;
 	this.canvas = c;
 	this.drawContext = this.canvas.getContext("2d",null);
 	this.audioContext = context;
@@ -57,6 +55,7 @@ Visualizer.prototype = {
 			height = this.HEIGHT * percent;
 			offset = this.HEIGHT - height - 1;
 			barWidth = this.WIDTH / this.analyser.frequencyBinCount;
+			this.drawContext.globalAlpha = 0.5;
 			this.drawContext.fillStyle = "#35B398";
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}

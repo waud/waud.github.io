@@ -10,7 +10,7 @@ import js.html.audio.AnalyserNode;
 	var WIDTH:Int;
 	var HEIGHT:Int;
 
-	var SMOOTHING = 0.8;
+	var SMOOTHING = 1;
 	var FFT_SIZE = 2048;
 
 	var analyser:AnalyserNode;
@@ -28,10 +28,7 @@ import js.html.audio.AnalyserNode;
 	var snd:Dynamic;
 
 	public function new(c:CanvasElement, context:AudioContext) {
-		WIDTH = Browser.window.innerWidth;
-		HEIGHT = Browser.window.innerHeight;
-
-		canvas = c; //cast Browser.document.getElementById("visualizer");
+		canvas = c;
 		drawContext = canvas.getContext2d();
 		audioContext = context;
 
@@ -90,6 +87,7 @@ import js.html.audio.AnalyserNode;
 			height = HEIGHT * percent;
 			offset = HEIGHT - height - 1;
 			barWidth = WIDTH / analyser.frequencyBinCount;
+			drawContext.globalAlpha = 0.5;
 			drawContext.fillStyle = "#35B398";
 			drawContext.fillRect(i * barWidth, offset, 1, 2);
 		}
