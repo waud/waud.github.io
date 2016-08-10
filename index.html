@@ -215,7 +215,7 @@ Waud.autoMute();
 <script>
     Waud.init();
     Waud.autoMute();
-    Waud.enableTouchUnlock(onUnlock);
+    if (WaudUtils.isiOS()) Waud.enableTouchUnlock(onUnlock);
     var logoSounds;
     var unlocked = false;
     window.onload = init;
