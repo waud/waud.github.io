@@ -55,8 +55,8 @@ Visualizer.prototype = {
 			height = this.HEIGHT * percent;
 			offset = this.HEIGHT - height - 1;
 			barWidth = this.WIDTH / this.analyser.frequencyBinCount;
-			this.drawContext.globalAlpha = 0.75;
-			this.drawContext.fillStyle = "#35B398";
+			this.drawContext.globalAlpha = 1;
+			this.drawContext.fillStyle = "white";
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}
 		if(this.isPlaying) window.requestAnimationFrame($bind(this,this.draw));
