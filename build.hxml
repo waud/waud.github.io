@@ -5,3 +5,9 @@
 -cp src
 Visualizer
 -js js/visualizer.js
+
+--next
+-cp ../waud/src
+-cp player/src
+-main AudioPlayer
+-js js/audio-player.js
