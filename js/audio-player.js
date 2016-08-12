@@ -86,6 +86,14 @@ var AudioPlayer = function() {
 	this.SMOOTHING = 0.8;
 	this.currentSong = 0;
 	Waud.init();
+	this.title = window.document.getElementById("title");
+	this.play = window.document.getElementById("play");
+	this.previous = window.document.getElementById("previous");
+	this.next = window.document.getElementById("next");
+	if(!Waud.isWebAudioSupported) {
+		this.title.innerText = "No Web Audio";
+		return;
+	}
 	var sounds = new WaudBase64Pack("sounds/sounds.json",$bind(this,this.onLoad),$bind(this,this.onProgress));
 	var _this = window.document;
 	this.canvas = _this.createElement("canvas");
@@ -96,10 +104,6 @@ var AudioPlayer = function() {
 	this.drawContext = this.canvas.getContext("2d",null);
 	this.audioContext = Waud.audioContext;
 	window.document.body.appendChild(this.canvas);
-	this.title = window.document.getElementById("title");
-	this.play = window.document.getElementById("play");
-	this.previous = window.document.getElementById("previous");
-	this.next = window.document.getElementById("next");
 	this.analyser = this.audioContext.createAnalyser();
 	this.analyser.connect(this.audioContext.destination);
 	this.analyser.minDecibels = -140;
@@ -190,6 +194,7 @@ AudioPlayer.prototype = {
 			var barWidth = this.WIDTH / this.analyser.frequencyBinCount;
 			var hue = i / this.analyser.frequencyBinCount * 360;
 			this.drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
+			this.drawContext.clearRect(i * barWidth,offset,barWidth,height);
 			this.drawContext.fillRect(i * barWidth,offset,barWidth,height);
 			value = this.times[i];
 			percent = value / 256;
@@ -197,6 +202,7 @@ AudioPlayer.prototype = {
 			offset = this.HEIGHT - height - 1;
 			barWidth = this.WIDTH / this.analyser.frequencyBinCount;
 			this.drawContext.fillStyle = "white";
+			this.drawContext.clearRect(i * barWidth,offset,1,2);
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}
 		if(this.isPlaying) window.requestAnimationFrame($bind(this,this.draw));

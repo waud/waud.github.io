@@ -51,6 +51,17 @@ class AudioPlayer {
 	public function new() {
 		currentSong = 0;
 		Waud.init();
+
+		title = cast Browser.document.getElementById("title");
+		play = cast Browser.document.getElementById("play");
+		previous = cast Browser.document.getElementById("previous");
+		next = cast Browser.document.getElementById("next");
+		//volume = cast Browser.document.getElementById("volume");
+
+		if (!Waud.isWebAudioSupported) {
+			title.innerText = "No Web Audio";
+			return;
+		}
 		var sounds = new WaudBase64Pack("sounds/sounds.json", onLoad, onProgress);
 
 		canvas = Browser.document.createCanvasElement();
@@ -62,12 +73,6 @@ class AudioPlayer {
 		audioContext = Waud.audioContext;
 
 		Browser.document.body.appendChild(canvas);
-
-		title = cast Browser.document.getElementById("title");
-		play = cast Browser.document.getElementById("play");
-		previous = cast Browser.document.getElementById("previous");
-		next = cast Browser.document.getElementById("next");
-		//volume = cast Browser.document.getElementById("volume");
 
 		analyser = audioContext.createAnalyser();
 		analyser.connect(audioContext.destination);
@@ -164,6 +169,7 @@ class AudioPlayer {
 			var barWidth = WIDTH / analyser.frequencyBinCount;
 			var hue = i / analyser.frequencyBinCount * 360;
 			drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
+			drawContext.clearRect(i * barWidth, offset, barWidth, height);
 			drawContext.fillRect(i * barWidth, offset, barWidth, height);
 
 			value = times[i];
@@ -173,6 +179,7 @@ class AudioPlayer {
 			barWidth = WIDTH / analyser.frequencyBinCount;
 			//drawContext.globalAlpha = 1;
 			drawContext.fillStyle = "white"; //"#35B398";
+			drawContext.clearRect(i * barWidth, offset, 1, 2);
 			drawContext.fillRect(i * barWidth, offset, 1, 2);
 		}
 
