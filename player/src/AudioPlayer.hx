@@ -62,7 +62,7 @@ class AudioPlayer {
 			title.innerText = "No Web Audio";
 			return;
 		}
-		var sounds = new WaudBase64Pack("sounds/sounds.json", onLoad, onProgress);
+		var sounds = new WaudBase64Pack("sounds/sounds.json", onLoad);
 
 		canvas = Browser.document.createCanvasElement();
 		canvas.style.position = "absolute";
@@ -91,14 +91,7 @@ class AudioPlayer {
 		play.onclick = playSong;
 		next.onclick = nextSong;
 		previous.onclick = prevSong;
-
-		Timer.delay(function() {
-			title.innerText = "Play Now";
-		}, 1000);
-	}
-
-	function onProgress(progress:Float) {
-		title.innerText = "Loading... " + progress + "%";
+		title.innerText = "Play Now";
 	}
 
 	function playSong() {
@@ -168,9 +161,12 @@ class AudioPlayer {
 			var offset = HEIGHT - height - 1;
 			var barWidth = WIDTH / analyser.frequencyBinCount;
 			var hue = i / analyser.frequencyBinCount * 360;
-			drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
-			drawContext.clearRect(i * barWidth, offset, barWidth, height);
-			drawContext.fillRect(i * barWidth, offset, barWidth, height);
+
+			if (!WaudUtils.isMobile()) {
+				drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
+				drawContext.clearRect(i * barWidth, offset, barWidth, height);
+				drawContext.fillRect(i * barWidth, offset, barWidth, height);
+			}
 
 			value = times[i];
 			percent = value / 256;
@@ -178,7 +174,7 @@ class AudioPlayer {
 			offset = HEIGHT - height - 1;
 			barWidth = WIDTH / analyser.frequencyBinCount;
 			//drawContext.globalAlpha = 1;
-			drawContext.fillStyle = "white"; //"#35B398";
+			drawContext.fillStyle = "#35B398";
 			drawContext.clearRect(i * barWidth, offset, 1, 2);
 			drawContext.fillRect(i * barWidth, offset, 1, 2);
 		}

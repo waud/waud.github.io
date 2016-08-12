@@ -94,7 +94,7 @@ var AudioPlayer = function() {
 		this.title.innerText = "No Web Audio";
 		return;
 	}
-	var sounds = new WaudBase64Pack("sounds/sounds.json",$bind(this,this.onLoad),$bind(this,this.onProgress));
+	var sounds = new WaudBase64Pack("sounds/sounds.json",$bind(this,this.onLoad));
 	var _this = window.document;
 	this.canvas = _this.createElement("canvas");
 	this.canvas.style.position = "absolute";
@@ -120,17 +120,11 @@ AudioPlayer.main = function() {
 };
 AudioPlayer.prototype = {
 	onLoad: function(snds) {
-		var _g = this;
 		this.soundPack = snds;
 		this.play.onclick = $bind(this,this.playSong);
 		this.next.onclick = $bind(this,this.nextSong);
 		this.previous.onclick = $bind(this,this.prevSong);
-		haxe_Timer.delay(function() {
-			_g.title.innerText = "Play Now";
-		},1000);
-	}
-	,onProgress: function(progress) {
-		this.title.innerText = "Loading... " + progress + "%";
+		this.title.innerText = "Play Now";
 	}
 	,playSong: function() {
 		if(!this.isPlaying) {
@@ -193,15 +187,17 @@ AudioPlayer.prototype = {
 			var offset = this.HEIGHT - height - 1;
 			var barWidth = this.WIDTH / this.analyser.frequencyBinCount;
 			var hue = i / this.analyser.frequencyBinCount * 360;
-			this.drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
-			this.drawContext.clearRect(i * barWidth,offset,barWidth,height);
-			this.drawContext.fillRect(i * barWidth,offset,barWidth,height);
+			if(!WaudUtils.isMobile()) {
+				this.drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
+				this.drawContext.clearRect(i * barWidth,offset,barWidth,height);
+				this.drawContext.fillRect(i * barWidth,offset,barWidth,height);
+			}
 			value = this.times[i];
 			percent = value / 256;
 			height = this.HEIGHT * percent;
 			offset = this.HEIGHT - height - 1;
 			barWidth = this.WIDTH / this.analyser.frequencyBinCount;
-			this.drawContext.fillStyle = "white";
+			this.drawContext.fillStyle = "#35B398";
 			this.drawContext.clearRect(i * barWidth,offset,1,2);
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}
