@@ -16,7 +16,7 @@ class AudioPlayer {
 	var HEIGHT:Int;
 
 	var SMOOTHING = 0.8;
-	var FFT_SIZE = 2048;
+	var FFT_SIZE = 256;
 
 	var analyser:AnalyserNode;
 	var freqs:Uint8Array;
@@ -68,7 +68,7 @@ class AudioPlayer {
 		canvas.style.position = "absolute";
 		canvas.style.left = "0px";
 		canvas.style.top = "0px";
-		canvas.style.zIndex = "0";
+		canvas.style.zIndex = "10";
 		drawContext = canvas.getContext2d();
 		audioContext = Waud.audioContext;
 
@@ -144,6 +144,9 @@ class AudioPlayer {
 	}
 
 	function draw(t:Float) {
+		if (Browser.window.innerWidth >= 1024) FFT_SIZE = 1024;
+		else if (Browser.window.innerWidth >= 512) FFT_SIZE = 512;
+
 		analyser.smoothingTimeConstant = SMOOTHING;
 		analyser.fftSize = FFT_SIZE;
 		analyser.getByteFrequencyData(freqs);
@@ -155,25 +158,11 @@ class AudioPlayer {
 		canvas.height = HEIGHT;
 
 		for (i in 0 ... analyser.frequencyBinCount) {
-			var value = freqs[i];
+			var value = times[i];
 			var percent = value / 256;
 			var height = HEIGHT * percent;
 			var offset = HEIGHT - height - 1;
 			var barWidth = WIDTH / analyser.frequencyBinCount;
-			var hue = i / analyser.frequencyBinCount * 360;
-
-			if (!WaudUtils.isMobile()) {
-				drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
-				drawContext.clearRect(i * barWidth, offset, barWidth, height);
-				drawContext.fillRect(i * barWidth, offset, barWidth, height);
-			}
-
-			value = times[i];
-			percent = value / 256;
-			height = HEIGHT * percent;
-			offset = HEIGHT - height - 1;
-			barWidth = WIDTH / analyser.frequencyBinCount;
-			//drawContext.globalAlpha = 1;
 			drawContext.fillStyle = "#35B398";
 			drawContext.clearRect(i * barWidth, offset, 1, 2);
 			drawContext.fillRect(i * barWidth, offset, 1, 2);

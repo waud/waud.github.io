@@ -82,7 +82,7 @@ AudioManager.prototype = {
 };
 var AudioPlayer = function() {
 	this.songs = ["80s-Music","Incidental","Nature-Ambient","Windswept"];
-	this.FFT_SIZE = 2048;
+	this.FFT_SIZE = 256;
 	this.SMOOTHING = 0.8;
 	this.currentSong = 0;
 	Waud.init();
@@ -100,7 +100,7 @@ var AudioPlayer = function() {
 	this.canvas.style.position = "absolute";
 	this.canvas.style.left = "0px";
 	this.canvas.style.top = "0px";
-	this.canvas.style.zIndex = "0";
+	this.canvas.style.zIndex = "10";
 	this.drawContext = this.canvas.getContext("2d",null);
 	this.audioContext = Waud.audioContext;
 	window.document.body.appendChild(this.canvas);
@@ -169,6 +169,7 @@ AudioPlayer.prototype = {
 		this.canvas.style.visibility = "hidden";
 	}
 	,draw: function(t) {
+		if(window.innerWidth >= 1024) this.FFT_SIZE = 1024; else if(window.innerWidth >= 512) this.FFT_SIZE = 512;
 		this.analyser.smoothingTimeConstant = this.SMOOTHING;
 		this.analyser.fftSize = this.FFT_SIZE;
 		this.analyser.getByteFrequencyData(this.freqs);
@@ -187,11 +188,6 @@ AudioPlayer.prototype = {
 			var offset = this.HEIGHT - height - 1;
 			var barWidth = this.WIDTH / this.analyser.frequencyBinCount;
 			var hue = i / this.analyser.frequencyBinCount * 360;
-			if(!WaudUtils.isMobile()) {
-				this.drawContext.fillStyle = "hsl(" + hue + ", 50%, 50%)";
-				this.drawContext.clearRect(i * barWidth,offset,barWidth,height);
-				this.drawContext.fillRect(i * barWidth,offset,barWidth,height);
-			}
 			value = this.times[i];
 			percent = value / 256;
 			height = this.HEIGHT * percent;
