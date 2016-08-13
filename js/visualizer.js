@@ -1,6 +1,6 @@
 (function (console, $hx_exports) { "use strict";
 var Visualizer = $hx_exports.Visualizer = function(c,context) {
-	this.FFT_SIZE = 2048;
+	this.FFT_SIZE = 256;
 	this.SMOOTHING = 1;
 	this.canvas = c;
 	this.drawContext = this.canvas.getContext("2d",null);
@@ -32,6 +32,7 @@ Visualizer.prototype = {
 		this.canvas.style.visibility = "hidden";
 	}
 	,draw: function(t) {
+		if(window.innerWidth >= 1024) this.FFT_SIZE = 1024; else if(window.innerWidth >= 512) this.FFT_SIZE = 512;
 		this.analyser.smoothingTimeConstant = this.SMOOTHING;
 		this.analyser.fftSize = this.FFT_SIZE;
 		this.analyser.getByteFrequencyData(this.freqs);
@@ -55,8 +56,7 @@ Visualizer.prototype = {
 			height = this.HEIGHT * percent;
 			offset = this.HEIGHT - height - 1;
 			barWidth = this.WIDTH / this.analyser.frequencyBinCount;
-			this.drawContext.globalAlpha = 1;
-			this.drawContext.fillStyle = "white";
+			this.drawContext.fillStyle = "#35B398";
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}
 		if(this.isPlaying) window.requestAnimationFrame($bind(this,this.draw));

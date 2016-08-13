@@ -11,7 +11,7 @@ import js.html.audio.AnalyserNode;
 	var HEIGHT:Int;
 
 	var SMOOTHING = 1;
-	var FFT_SIZE = 2048;
+	var FFT_SIZE = 256;
 
 	var analyser:AnalyserNode;
 	var freqs:Uint8Array;
@@ -62,6 +62,9 @@ import js.html.audio.AnalyserNode;
 	}
 
 	function draw(t:Float) {
+		if (Browser.window.innerWidth >= 1024) FFT_SIZE = 1024;
+		else if (Browser.window.innerWidth >= 512) FFT_SIZE = 512;
+
 		analyser.smoothingTimeConstant = SMOOTHING;
 		analyser.fftSize = FFT_SIZE;
 		analyser.getByteFrequencyData(freqs);
@@ -87,8 +90,7 @@ import js.html.audio.AnalyserNode;
 			height = HEIGHT * percent;
 			offset = HEIGHT - height - 1;
 			barWidth = WIDTH / analyser.frequencyBinCount;
-			drawContext.globalAlpha = 1;
-			drawContext.fillStyle = "white"; //"#35B398";
+			drawContext.fillStyle = "#35B398";
 			drawContext.fillRect(i * barWidth, offset, 1, 2);
 		}
 
