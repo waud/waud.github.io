@@ -68,7 +68,7 @@
 
                 Tested on multiple platforms (iOS, Android & Desktop) and browser versions (Chrome, IE, Edge, Firefox, Safari, Opera & Yandex) with the support of <a href="https://www.browserstack.com/">BrowserStack</a>.<br/>
 
-                <p align="center"><img id="npm"></p>
+                <p align="center"><img crossorigin="anonymous" id="npm"></p>
             </p>
         </div>
         <a href="#two" class="goto-next scrolly">Next</a>
@@ -221,12 +221,15 @@ Waud.autoMute();
     window.onload = init;
 
     var introSnd;
-    var visualizer = new Visualizer(document.getElementById("visualizer"), Waud.audioContext);
+    var visualizer;
 
-    var fm = new WaudFocusManager();
-    fm.blur = function() {
-        visualizer.stop();
-    };
+    if (Waud.isWebAudioSupported) {
+        visualizer = new Visualizer(document.getElementById("visualizer"), Waud.audioContext);
+        var fm = new WaudFocusManager();
+        fm.blur = function() {
+            visualizer.stop();
+        };
+    }
 
     function init() {
         setNPMBadges();
@@ -244,7 +247,7 @@ Waud.autoMute();
         logoSounds = snds;
         introSnd = logoSounds.get("sounds/0.mp3");
         introSnd.setVolume(0.2);
-        if (Waud.isWebAudioSupported) {
+        if (visualizer) {
             introSnd.onEnd(function() {
                 visualizer.stop();
             });
@@ -257,7 +260,7 @@ Waud.autoMute();
         Waud.stop();
         if (logoSounds) {
             var snd = logoSounds.get("sounds/" + (Math.floor(Math.random() * 5) + 1) + ".mp3");
-            if (Waud.isWebAudioSupported) {
+            if (visualizer) {
                 snd.onEnd(function () {
                     visualizer.stop();
                 });
