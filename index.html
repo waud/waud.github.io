@@ -177,7 +177,7 @@ Waud.autoMute();
         <ul class="actions">
             <li><a href="http://waud.github.io/docs/" target="_blank" class="button icon fa-book">API Docs</a></li>
         </ul>
-        <blockquote><i class="fa fa-info-circle" aria-hidden="true"></i> All the sounds used in this page are base64 encoded using <strong>waudbase64</strong> and loaded from a single JSON file. Click on the top logo to hear more sounds.</blockquote>
+        <blockquote><i class="fa fa-info-circle" aria-hidden="true"></i> Click on the top logo to hear sample sounds. All the sounds used in this page are base64 encoded using <strong>waudbase64</strong> and loaded from a single JSON file.</blockquote>
     </div>
     <footer>
         <ul class="icons">
@@ -215,7 +215,7 @@ Waud.autoMute();
 <script>
     Waud.init();
     Waud.autoMute();
-    if (WaudUtils.isiOS()) Waud.enableTouchUnlock(onUnlock);
+    //if (WaudUtils.isiOS()) Waud.enableTouchUnlock(onUnlock);
     var logoSounds;
     var unlocked = false;
     window.onload = init;
@@ -236,16 +236,16 @@ Waud.autoMute();
         var soundPack = new WaudBase64Pack("logosounds.json", onLoad);
     }
 
-    function onUnlock() {
+    /*function onUnlock() {
         if (introSnd) {
             visualizer.start(introSnd);
         }
         unlocked = true;
-    }
+    }*/
 
     function onLoad(snds) {
         logoSounds = snds;
-        introSnd = logoSounds.get("sounds/0.mp3");
+        /*introSnd = logoSounds.get("sounds/0.mp3");
         introSnd.setVolume(0.2);
         if (visualizer) {
             introSnd.onEnd(function() {
@@ -253,7 +253,7 @@ Waud.autoMute();
             });
             if (!WaudUtils.isiOS() || unlocked) visualizer.start(introSnd);
         }
-        else introSnd.play();
+        else introSnd.play();*/
     }
 
     function playLogoSound() {

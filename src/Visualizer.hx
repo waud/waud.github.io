@@ -55,6 +55,7 @@ import js.html.audio.AnalyserNode;
 	}
 
 	public function stop() {
+		if (snd == null) return;
 		snd.stop();
 		startOffset += snd.getTime() - startTime;
 		isPlaying = false;

@@ -26,6 +26,7 @@ Visualizer.prototype = {
 		this.canvas.style.visibility = "visible";
 	}
 	,stop: function() {
+		if(this.snd == null) return;
 		this.snd.stop();
 		this.startOffset += this.snd.getTime() - this.startTime;
 		this.isPlaying = false;
