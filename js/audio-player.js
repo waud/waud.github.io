@@ -94,7 +94,7 @@ var AudioPlayer = function() {
 		this.title.innerText = "No Web Audio";
 		return;
 	}
-	var sounds = new WaudBase64Pack("sounds/sounds.json",$bind(this,this.onLoad));
+	var sounds = new WaudBase64Pack("sounds/sounds.json",$bind(this,this.onLoad),$bind(this,this.onProgress));
 	var _this = window.document;
 	this.canvas = _this.createElement("canvas");
 	this.canvas.style.position = "absolute";
@@ -126,15 +126,24 @@ AudioPlayer.prototype = {
 		this.previous.onclick = $bind(this,this.prevSong);
 		this.title.innerText = "Play Now";
 	}
+	,onProgress: function(val) {
+		var per = Math.round(val);
+		if(per < 10) this.title.innerText = "Loading... 0" + Math.round(val) + "%"; else this.title.innerText = "Loading... " + Math.round(val) + "%";
+	}
 	,playSong: function() {
 		if(!this.isPlaying) {
 			this.play.className = "fa-pause";
-			this.start(this.soundPack.get("sounds/" + this.songs[this.currentSong] + ".mp3"));
+			var snd = this.soundPack.get("sounds/" + this.songs[this.currentSong] + ".mp3");
+			snd.onEnd($bind(this,this.autoPlayNextSong));
+			this.start(snd);
 			this.title.innerText = StringTools.replace(this.songs[this.currentSong],"-"," ");
 		} else {
 			this.play.className = "fa-play";
 			this.pause();
 		}
+	}
+	,autoPlayNextSong: function(snd) {
+		this.nextSong();
 	}
 	,nextSong: function() {
 		this.currentSong++;
@@ -659,7 +668,7 @@ WaudBase64Pack.prototype = {
 		var m = new EReg("\"meta\":.[0-9]*,[0-9]*.","i");
 		var xobj = new XMLHttpRequest();
 		xobj.open("GET",base64Url,true);
-		if(this._onProgress != null && xobj.onprogress != null) xobj.onprogress = function(e) {
+		if(this._onProgress != null) xobj.onprogress = function(e) {
 			var meta = m.match(xobj.responseText);
 			if(meta && _g._totalSize == 0) {
 				var metaInfo = JSON.parse("{" + m.matched(0) + "}");

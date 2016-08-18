@@ -62,7 +62,7 @@ class AudioPlayer {
 			title.innerText = "No Web Audio";
 			return;
 		}
-		var sounds = new WaudBase64Pack("sounds/sounds.json", onLoad);
+		var sounds = new WaudBase64Pack("sounds/sounds.json", onLoad, onProgress);
 
 		canvas = Browser.document.createCanvasElement();
 		canvas.style.position = "absolute";
@@ -94,16 +94,27 @@ class AudioPlayer {
 		title.innerText = "Play Now";
 	}
 
+	function onProgress(val:Float) {
+		var per = Math.round(val);
+		title.innerText = per < 10 ? "Loading... 0" + Math.round(val) + "%" : "Loading... " + Math.round(val) + "%";
+	}
+
 	function playSong() {
 		if (!isPlaying) {
 			play.className = "fa-pause";
-			start(soundPack.get("sounds/" + songs[currentSong] + ".mp3"));
+			var snd:IWaudSound = soundPack.get("sounds/" + songs[currentSong] + ".mp3");
+			snd.onEnd(autoPlayNextSong);
+			start(snd);
 			title.innerText = songs[currentSong].replace("-", " ");
 		}
 		else {
 			play.className = "fa-play";
 			pause();
 		}
+	}
+
+	function autoPlayNextSong(snd:IWaudSound) {
+		nextSong();
 	}
 
 	function nextSong() {
