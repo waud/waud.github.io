@@ -41,7 +41,7 @@
 <!-- Header -->
 <section id="header">
     <header class="major">
-        <img onclick="playLogoSound();" class="logo" width="128" height="128" src="images/logo/256.png" alt="waud.js"/>
+        <img id="logo" onmouseover="hover()" onmouseout="unhover()" onclick="playLogoSound();" width="128" height="128" class="logo" src="images/logo/256.png" alt="waud.js"/>
         <h1><span style="color: #E70000">WAUD</span><span style="color: #F3B607">.</span><span style="color: #32BEA6">JS</span></h1>
         <p id="caption">Web Audio Library with HTML5 audio fallback.</p>
     </header>
@@ -279,6 +279,15 @@ Waud.autoMute();
         document.getElementById("caption").style.visibility = (window.innerHeight < 480) ? "hidden" : "visible";
         document.getElementById("github").style.top = WaudUtils.isiOS() ? "25px" : "0px";
     }
+
+    function hover() {
+        document.getElementById("logo").src = "images/logo/256play.png";
+    }
+
+    function unhover() {
+        document.getElementById("logo").src = "images/logo/256.png";
+    }
+
 </script>
 
 </body>
