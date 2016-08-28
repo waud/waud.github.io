@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.1
+            API Docs for v0.7.2
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -118,7 +118,7 @@ import js.html.XMLHttpRequest;
 	* 		}
 	*
 	* 		function _onProgress(val:Float, loaded:Float) {
-	* 			trace(&quot;loaded %: &quot; + val);
+	* 			trace(&quot;loaded %: &quot; + (val * 100));
 	* 		}
 	*
 	* 		function _onError() {
@@ -163,8 +163,8 @@ import js.html.XMLHttpRequest;
 					var metaInfo = Json.parse(&quot;{&quot; + m.matched(0) + &quot;}&quot;);
 					_totalSize = metaInfo.meta[1];
 				}
-				progress = e.lengthComputable ? (e.loaded / e.total) * 100 : (e.loaded / _totalSize) * 100;
-				if (progress &gt; 100) progress = 100;
+				progress = e.lengthComputable ? e.loaded / e.total : e.loaded / _totalSize;
+				if (progress &gt; 1) progress = 1;
 				_onProgress(progress, e.loaded);
 			};
 		}
@@ -210,7 +210,7 @@ import js.html.XMLHttpRequest;
 		if (_loadCount == _soundCount) {
 			if (_onLoaded != null) _onLoaded(_sounds);
 			if (progress == 0 &amp;&amp; _onProgress != null) {
-				progress = 100;
+				progress = 1;
 				_onProgress(progress, _totalSize);
 			}
 			return true;
