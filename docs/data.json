@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.7.0",
+        "version": "0.7.1",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -145,7 +145,7 @@
                 }
             ],
             "example": [
-                "\n\t\tvar base64pack = new WaudBase64Pack(\"assets/sounds.json\", _onLoad, _onProgress, _onError);\n\n\t\tfunction _onLoad(snds:Map<String, IWaudSound>) {\n\t\t\tsnds.get(\"assets/beep.mp3\").play();\n\t\t}\n\n\t\tfunction _onProgress(val:Float) {\n\t\t\ttrace(\"loaded %: \" + val);\n\t\t}\n\n\t\tfunction _onError() {\n\t\t\ttrace(\"error loading base64 json file\");\n\t\t}"
+                "\n\t\tvar base64pack = new WaudBase64Pack(\"assets/sounds.json\", _onLoad, _onProgress, _onError);\n\n\t\tfunction _onLoad(snds:Map<String, IWaudSound>) {\n\t\t\tsnds.get(\"assets/beep.mp3\").play();\n\t\t}\n\n\t\tfunction _onProgress(val:Float, loaded:Float) {\n\t\t\ttrace(\"loaded %: \" + val);\n\t\t}\n\n\t\tfunction _onError() {\n\t\t\ttrace(\"error loading base64 json file\");\n\t\t}"
             ]
         },
         "WaudFocusManager": {
