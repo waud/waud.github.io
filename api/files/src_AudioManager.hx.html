@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.2
+            API Docs for v0.7.4
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -160,15 +160,7 @@ class AudioManager {
 	* @method checkWebAudioAPISupport
 	*/
 	public function checkWebAudioAPISupport():Bool {
-		if (Reflect.field(Browser.window, &quot;AudioContext&quot;) != null) {
-			AudioContextClass = Reflect.field(Browser.window, &quot;AudioContext&quot;);
-			return true;
-		}
-		else if (Reflect.field(Browser.window, &quot;webkitAudioContext&quot;) != null) {
-			AudioContextClass = Reflect.field(Browser.window, &quot;webkitAudioContext&quot;);
-			return true;
-		}
-		return false;
+		return (Reflect.field(Browser.window, &quot;AudioContext&quot;) != null || Reflect.field(Browser.window, &quot;webkitAudioContext&quot;) != null);
 	}
 
 	/**
@@ -216,7 +208,12 @@ class AudioManager {
 	public function createAudioContext():AudioContext {
 		if (audioContext == null) {
 			try {
-				if (AudioContextClass != null) audioContext = cast Type.createInstance(AudioContextClass, []);
+				if (Reflect.field(Browser.window, &quot;AudioContext&quot;) != null) {
+					audioContext = untyped __js__(&quot;new AudioContext()&quot;);
+				}
+				else if (Reflect.field(Browser.window, &quot;webkitAudioContext&quot;) != null) {
+					audioContext = untyped __js__(&quot;new webkitAudioContext()&quot;);
+				}
 			}
 			catch (e:Dynamic) {
 				audioContext = null;

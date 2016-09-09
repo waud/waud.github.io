@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.2
+            API Docs for v0.7.4
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -108,7 +108,7 @@ import js.Browser;
 	* @static
 	* @type {String}
 	*/
-	public static var version:String = &quot;0.7.2&quot;;
+	public static var version:String = &quot;0.7.3&quot;;
 
 	/**
 	* Tells whether to use web audio api or not.
@@ -214,6 +214,15 @@ import js.Browser;
 	* @readOnly
 	*/
 	public static var audioContext:AudioContext;
+
+	/**
+	* Audio Context sample rate.
+	*
+	* @property sampleRate
+	* @static
+	* @type {Float}
+	*/
+	public static var sampleRate(get, null):Float;
 
 	/**
 	* Document dom element used for appending sounds and touch events.
@@ -479,6 +488,17 @@ import js.Browser;
 	public static function isM4ASupported():Bool {
 		var canPlay = __audioElement.canPlayType(&#x27;audio/x-m4a;&#x27;);
 		return (isHTML5AudioSupported &amp;&amp; canPlay != null &amp;&amp; (canPlay == PROBABLY || canPlay == MAYBE));
+	}
+
+	/**
+	* Function to get current sample rate of audio context.
+	*
+	* @private
+	* @static
+	* @method get_sampleRate
+	*/
+	static function get_sampleRate():Float {
+		return audioContext != null ? audioContext.sampleRate : 0;
 	}
 
 	/**

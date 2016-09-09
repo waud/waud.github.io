@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.2
+            API Docs for v0.7.4
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -103,17 +103,6 @@ import haxe.Json;
  	*     snd.isSpriteSound;
 	*/
 	public var isSpriteSound:Bool;
-
-	/**
-	* Duration of the sound.
-	*
-	* @property duration
-	* @type {Float}
-	* @readOnly
-	* @example
- 	*     snd.duration;
-	*/
-	public var duration(get, null):Float;
 
 	/**
 	* Sound url.
@@ -245,10 +234,18 @@ import haxe.Json;
 		}
 	}
 
-	function get_duration():Float {
+	/**
+	* Function to set sound duration.
+	*
+	* @method getDuration
+	* @return {Float} sound duration
+	* @example
+ 	*     snd.getDuration();
+	*/
+	public function getDuration():Float {
 		if (isSpriteSound) return _spriteDuration;
 		if (_snd == null) return 0;
-		return _snd.duration;
+		return _snd.getDuration();
 	}
 
 	/**
@@ -451,11 +448,8 @@ import haxe.Json;
 			else {
 				for (snd in _spriteSounds) snd.stop();
 			}
-			return;
 		}
-
-		if (_snd == null) return;
-		_snd.stop();
+		else if (_snd != null) _snd.stop();
 	}
 
 	/**
@@ -471,11 +465,8 @@ import haxe.Json;
 			else {
 				for (snd in _spriteSounds) snd.pause();
 			}
-			return;
 		}
-
-		if (_snd == null) return;
-		_snd.pause();
+		else if (_snd != null) _snd.pause();
 	}
 
 	/**
@@ -518,13 +509,14 @@ import haxe.Json;
 	*/
 	public function onEnd(callback:IWaudSound -&gt; Void, ?spriteName:String):IWaudSound {
 		if (isSpriteSound) {
-			if (spriteName != null) _spriteSoundEndCallbacks[spriteName] = callback;
+			if (spriteName != null) _spriteSoundEndCallbacks.set(spriteName, callback);
 			return this;
 		}
-
-		if (_snd == null) return null;
-		_snd.onEnd(callback);
-		return this;
+		else if (_snd != null) {
+			_snd.onEnd(callback);
+			return this;
+		}
+		return null;
 	}
 
 	/**
@@ -567,12 +559,11 @@ import haxe.Json;
 	public function destroy() {
 		if (isSpriteSound) {
 			for (snd in _spriteSounds) snd.destroy();
-			return;
 		}
-
-		if (_snd == null) return;
-		_snd.destroy();
-		_snd = null;
+		else if (_snd != null) {
+			_snd.destroy();
+			_snd = null;
+		}
 	}
 
 	function _loadSpriteSound(?url:String) {
@@ -594,7 +585,6 @@ import haxe.Json;
 
 	function _decodeSuccess(buffer:AudioBuffer) {
 		if (buffer == null) {
-			trace(&quot;empty buffer: &quot; + url);
 			_onSpriteSoundError();
 			return;
 		}
