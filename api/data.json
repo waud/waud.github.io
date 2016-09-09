@@ -931,7 +931,7 @@
         {
             "file": "src/WaudSound.hx",
             "line": 149,
-            "description": "Function to set sound duration.",
+            "description": "Function to get sound duration.",
             "itemtype": "method",
             "name": "getDuration",
             "return": {
