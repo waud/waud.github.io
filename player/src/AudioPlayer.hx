@@ -16,7 +16,7 @@ class AudioPlayer {
 	var HEIGHT:Int;
 
 	var SMOOTHING = 0.8;
-	var FFT_SIZE = 512;
+	var FFT_SIZE = 256;
 
 	var analyser:AnalyserNode;
 	var freqs:Uint8Array;
@@ -168,6 +168,10 @@ class AudioPlayer {
 	}
 
 	function draw(t:Float) {
+		if (Browser.window.innerWidth <= 320) FFT_SIZE = 128;
+		else if (Browser.window.innerWidth <= 960) FFT_SIZE = 256;
+		else FFT_SIZE = 512;
+
 		analyser.smoothingTimeConstant = SMOOTHING;
 		analyser.fftSize = FFT_SIZE;
 		analyser.getByteFrequencyData(freqs);

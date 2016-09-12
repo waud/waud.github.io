@@ -75,7 +75,7 @@ AudioManager.prototype = {
 };
 var AudioPlayer = function() {
 	this.songs = ["80s-Music","Incidental","Nature-Ambient","Windswept"];
-	this.FFT_SIZE = 512;
+	this.FFT_SIZE = 256;
 	this.SMOOTHING = 0.8;
 	this.currentSong = 0;
 	Waud.init();
@@ -179,6 +179,7 @@ AudioPlayer.prototype = {
 		this.canvas.style.visibility = "hidden";
 	}
 	,draw: function(t) {
+		if(window.innerWidth <= 320) this.FFT_SIZE = 128; else if(window.innerWidth <= 960) this.FFT_SIZE = 256; else this.FFT_SIZE = 512;
 		this.analyser.smoothingTimeConstant = this.SMOOTHING;
 		this.analyser.fftSize = this.FFT_SIZE;
 		this.analyser.getByteFrequencyData(this.freqs);
