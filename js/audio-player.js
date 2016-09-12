@@ -127,7 +127,7 @@ AudioPlayer.prototype = {
 	}
 	,onProgress: function(val,loaded) {
 		var per = Math.floor(val * 100);
-		if(per < 10) this.load.innerText = "Loading Sounds 0" + per + "%"; else this.load.innerText = "Loading Sounds " + per + "%";
+		if(per == 100) this.load.innerText = "Please wait..."; else if(per < 10) this.load.innerText = "Loading Sounds 0" + per + "%"; else this.load.innerText = "Loading Sounds " + per + "%";
 	}
 	,playSong: function() {
 		if(!this.isPlaying) {
