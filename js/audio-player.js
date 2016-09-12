@@ -17,14 +17,7 @@ var AudioManager = function() {
 AudioManager.__name__ = true;
 AudioManager.prototype = {
 	checkWebAudioAPISupport: function() {
-		if(Reflect.field(window,"AudioContext") != null) {
-			AudioManager.AudioContextClass = Reflect.field(window,"AudioContext");
-			return true;
-		} else if(Reflect.field(window,"webkitAudioContext") != null) {
-			AudioManager.AudioContextClass = Reflect.field(window,"webkitAudioContext");
-			return true;
-		}
-		return false;
+		return Reflect.field(window,"AudioContext") != null || Reflect.field(window,"webkitAudioContext") != null;
 	}
 	,unlockAudio: function() {
 		if(this.audioContext != null) {
@@ -55,7 +48,7 @@ AudioManager.prototype = {
 	}
 	,createAudioContext: function() {
 		if(this.audioContext == null) try {
-			if(AudioManager.AudioContextClass != null) this.audioContext = Type.createInstance(AudioManager.AudioContextClass,[]);
+			if(Reflect.field(window,"AudioContext") != null) this.audioContext = new AudioContext(); else if(Reflect.field(window,"webkitAudioContext") != null) this.audioContext = new webkitAudioContext();
 		} catch( e ) {
 			if (e instanceof js__$Boot_HaxeError) e = e.val;
 			this.audioContext = null;
@@ -82,63 +75,71 @@ AudioManager.prototype = {
 };
 var AudioPlayer = function() {
 	this.songs = ["80s-Music","Incidental","Nature-Ambient","Windswept"];
-	this.FFT_SIZE = 256;
+	this.FFT_SIZE = 512;
 	this.SMOOTHING = 0.8;
 	this.currentSong = 0;
 	Waud.init();
+	this.load = window.document.getElementById("load");
 	this.title = window.document.getElementById("title");
 	this.play = window.document.getElementById("play");
 	this.previous = window.document.getElementById("previous");
 	this.next = window.document.getElementById("next");
+	this.canvas = window.document.getElementById("visualisation");
+	if(window.innerWidth <= 320) this.canvas.width = window.innerWidth - 60; else this.canvas.width = 320;
+	this.title.innerText = "";
 	if(!Waud.isWebAudioSupported) {
-		this.title.innerText = "No Web Audio";
+		this.load.innerText = "No Web Audio";
+		this.load.className = "button small disabled";
 		return;
 	}
-	var sounds = new WaudBase64Pack("sounds/sounds.json",$bind(this,this.onLoad),$bind(this,this.onProgress));
-	var _this = window.document;
-	this.canvas = _this.createElement("canvas");
-	this.canvas.style.position = "absolute";
-	this.canvas.style.left = "0px";
-	this.canvas.style.top = "0px";
-	this.canvas.style.zIndex = "10";
-	this.drawContext = this.canvas.getContext("2d",null);
-	this.audioContext = Waud.audioContext;
-	window.document.body.appendChild(this.canvas);
-	this.analyser = this.audioContext.createAnalyser();
-	this.analyser.connect(this.audioContext.destination);
-	this.analyser.minDecibels = -140;
-	this.analyser.maxDecibels = 0;
-	this.freqs = new Uint8Array(this.analyser.frequencyBinCount);
-	this.times = new Uint8Array(this.analyser.frequencyBinCount);
-	this.isPlaying = false;
-	this.startTime = 0;
-	this.startOffset = 0;
+	this.load.onclick = $bind(this,this.loadSounds);
 };
 AudioPlayer.__name__ = true;
 AudioPlayer.main = function() {
 	new AudioPlayer();
 };
 AudioPlayer.prototype = {
-	onLoad: function(snds) {
+	loadSounds: function() {
+		var sounds = new WaudBase64Pack("player/sounds/sounds.json",$bind(this,this.onLoad),$bind(this,this.onProgress));
+		this.drawContext = this.canvas.getContext("2d",null);
+		this.audioContext = Waud.audioContext;
+		this.analyser = this.audioContext.createAnalyser();
+		this.analyser.connect(this.audioContext.destination);
+		this.analyser.minDecibels = -140;
+		this.analyser.maxDecibels = 0;
+		this.freqs = new Uint8Array(this.analyser.frequencyBinCount);
+		this.times = new Uint8Array(this.analyser.frequencyBinCount);
+		this.isPlaying = false;
+		this.startTime = 0;
+		this.startOffset = 0;
+		this.load.onclick = null;
+	}
+	,onLoad: function(snds) {
 		this.soundPack = snds;
 		this.play.onclick = $bind(this,this.playSong);
 		this.next.onclick = $bind(this,this.nextSong);
 		this.previous.onclick = $bind(this,this.prevSong);
-		this.title.innerText = "Play Now";
+		this.load.innerText = "Ready to Play Now";
+		this.play.className = "button special icon small fa-play";
+		this.previous.className = "button special icon small fa-step-backward";
+		this.next.className = "button special icon small fa-step-forward";
+		this.load.className = "button small disabled";
 	}
-	,onProgress: function(val) {
-		var per = Math.round(val);
-		if(per < 10) this.title.innerText = "Loading... 0" + Math.round(val) + "%"; else this.title.innerText = "Loading... " + Math.round(val) + "%";
+	,onProgress: function(val,loaded) {
+		var per = Math.floor(val * 100);
+		if(per < 10) this.load.innerText = "Loading Sounds 0" + per + "%"; else this.load.innerText = "Loading Sounds " + per + "%";
 	}
 	,playSong: function() {
 		if(!this.isPlaying) {
-			this.play.className = "fa-pause";
+			this.play.className = "button special icon small fa-pause";
+			this.play.innerHTML = "Pause";
 			var snd = this.soundPack.get("sounds/" + this.songs[this.currentSong] + ".mp3");
 			snd.onEnd($bind(this,this.autoPlayNextSong));
 			this.start(snd);
 			this.title.innerText = StringTools.replace(this.songs[this.currentSong],"-"," ");
 		} else {
-			this.play.className = "fa-play";
+			this.play.className = "button special icon small fa-play";
+			this.play.innerHTML = "Play";
 			this.pause();
 		}
 	}
@@ -178,13 +179,12 @@ AudioPlayer.prototype = {
 		this.canvas.style.visibility = "hidden";
 	}
 	,draw: function(t) {
-		if(window.innerWidth >= 1024) this.FFT_SIZE = 1024; else if(window.innerWidth >= 512) this.FFT_SIZE = 512;
 		this.analyser.smoothingTimeConstant = this.SMOOTHING;
 		this.analyser.fftSize = this.FFT_SIZE;
 		this.analyser.getByteFrequencyData(this.freqs);
 		this.analyser.getByteTimeDomainData(this.times);
-		this.WIDTH = window.innerWidth;
-		this.HEIGHT = window.innerHeight;
+		this.WIDTH = this.canvas.width;
+		this.HEIGHT = this.canvas.height;
 		this.canvas.width = this.WIDTH;
 		this.canvas.height = this.HEIGHT;
 		var _g1 = 0;
@@ -196,8 +196,7 @@ AudioPlayer.prototype = {
 			var height = this.HEIGHT * percent;
 			var offset = this.HEIGHT - height - 1;
 			var barWidth = this.WIDTH / this.analyser.frequencyBinCount;
-			this.drawContext.fillStyle = "#35B398";
-			this.drawContext.clearRect(i * barWidth,offset,1,2);
+			this.drawContext.fillStyle = "#E70000";
 			this.drawContext.fillRect(i * barWidth,offset,1,2);
 		}
 		if(this.isPlaying) window.requestAnimationFrame($bind(this,this.draw));
@@ -219,12 +218,12 @@ var BaseSound = function(sndUrl,options) {
 		console.log("initialise Waud using Waud.init() before loading sounds");
 		return;
 	}
-	this.duration = 0;
 	this.isSpriteSound = false;
 	this.url = sndUrl;
 	this._isLoaded = false;
 	this._isPlaying = false;
 	this._muted = false;
+	this._duration = 0;
 	if(options == null) options = { };
 	if(options.autoplay != null) options.autoplay = options.autoplay; else options.autoplay = Waud.defaults.autoplay;
 	if(options.autostop != null) options.autostop = options.autostop; else options.autostop = Waud.defaults.autostop;
@@ -239,10 +238,7 @@ var BaseSound = function(sndUrl,options) {
 };
 BaseSound.__name__ = true;
 BaseSound.prototype = {
-	get_duration: function() {
-		return 0;
-	}
-	,isReady: function() {
+	isReady: function() {
 		return this._isLoaded;
 	}
 	,__class__: BaseSound
@@ -308,10 +304,10 @@ HTML5Sound.prototype = $extend(BaseSound.prototype,{
 		}
 		return this;
 	}
-	,get_duration: function() {
+	,getDuration: function() {
 		if(!this._isLoaded) return 0;
-		this.duration = this._snd.duration;
-		return this.duration;
+		this._duration = this._snd.duration;
+		return this._duration;
 	}
 	,_addSource: function(url) {
 		this.source = Waud.dom.createElement("source");
@@ -492,34 +488,6 @@ StringTools.__name__ = true;
 StringTools.replace = function(s,sub,by) {
 	return s.split(sub).join(by);
 };
-var Type = function() { };
-Type.__name__ = true;
-Type.createInstance = function(cl,args) {
-	var _g = args.length;
-	switch(_g) {
-	case 0:
-		return new cl();
-	case 1:
-		return new cl(args[0]);
-	case 2:
-		return new cl(args[0],args[1]);
-	case 3:
-		return new cl(args[0],args[1],args[2]);
-	case 4:
-		return new cl(args[0],args[1],args[2],args[3]);
-	case 5:
-		return new cl(args[0],args[1],args[2],args[3],args[4]);
-	case 6:
-		return new cl(args[0],args[1],args[2],args[3],args[4],args[5]);
-	case 7:
-		return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6]);
-	case 8:
-		return new cl(args[0],args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
-	default:
-		throw new js__$Boot_HaxeError("Too many arguments");
-	}
-	return null;
-};
 var Waud = $hx_exports.Waud = function() { };
 Waud.__name__ = true;
 Waud.init = function(d) {
@@ -625,6 +593,9 @@ Waud.isM4ASupported = function() {
 	var canPlay = Waud.__audioElement.canPlayType("audio/x-m4a;");
 	return Waud.isHTML5AudioSupported && canPlay != null && (canPlay == "probably" || canPlay == "maybe");
 };
+Waud.get_sampleRate = function() {
+	if(Waud.audioContext != null) return Waud.audioContext.sampleRate; else return 0;
+};
 Waud.destroy = function() {
 	if(Waud.sounds != null) {
 		var $it0 = Waud.sounds.iterator();
@@ -674,9 +645,9 @@ WaudBase64Pack.prototype = {
 				var metaInfo = JSON.parse("{" + m.matched(0) + "}");
 				_g._totalSize = metaInfo.meta[1];
 			}
-			if(e.lengthComputable) _g.progress = e.loaded / e.total * 100; else _g.progress = e.loaded / _g._totalSize * 100;
-			if(_g.progress > 100) _g.progress = 100;
-			_g._onProgress(_g.progress);
+			if(e.lengthComputable) _g.progress = e.loaded / e.total; else _g.progress = e.loaded / _g._totalSize;
+			if(_g.progress > 1) _g.progress = 1;
+			_g._onProgress(_g.progress,e.loaded);
 		};
 		xobj.onreadystatechange = function() {
 			if(xobj.readyState == 4 && xobj.status == 200) {
@@ -710,8 +681,8 @@ WaudBase64Pack.prototype = {
 		if(this._loadCount == this._soundCount) {
 			if(this._onLoaded != null) this._onLoaded(this._sounds);
 			if(this.progress == 0 && this._onProgress != null) {
-				this.progress = 100;
-				this._onProgress(this.progress);
+				this.progress = 1;
+				this._onProgress(this.progress,this._totalSize);
 			}
 			return true;
 		}
@@ -851,10 +822,10 @@ WaudSound.prototype = {
 			return;
 		}
 	}
-	,get_duration: function() {
+	,getDuration: function() {
 		if(this.isSpriteSound) return this._spriteDuration;
 		if(this._snd == null) return 0;
-		return this._snd.get_duration();
+		return this._snd.getDuration();
 	}
 	,setVolume: function(val,spriteName) {
 		if(this.isSpriteSound) {
@@ -967,10 +938,7 @@ WaudSound.prototype = {
 					snd.stop();
 				}
 			}
-			return;
-		}
-		if(this._snd == null) return;
-		this._snd.stop();
+		} else if(this._snd != null) this._snd.stop();
 	}
 	,pause: function(spriteName) {
 		if(this.isSpriteSound) {
@@ -981,10 +949,7 @@ WaudSound.prototype = {
 					snd.pause();
 				}
 			}
-			return;
-		}
-		if(this._snd == null) return;
-		this._snd.pause();
+		} else if(this._snd != null) this._snd.pause();
 	}
 	,setTime: function(time) {
 		if(this._snd == null || this.isSpriteSound) return;
@@ -996,15 +961,13 @@ WaudSound.prototype = {
 	}
 	,onEnd: function(callback,spriteName) {
 		if(this.isSpriteSound) {
-			if(spriteName != null) {
-				this._spriteSoundEndCallbacks.set(spriteName,callback);
-				callback;
-			}
+			if(spriteName != null) this._spriteSoundEndCallbacks.set(spriteName,callback);
+			return this;
+		} else if(this._snd != null) {
+			this._snd.onEnd(callback);
 			return this;
 		}
-		if(this._snd == null) return null;
-		this._snd.onEnd(callback);
-		return this;
+		return null;
 	}
 	,onLoad: function(callback) {
 		if(this._snd == null || this.isSpriteSound) return null;
@@ -1023,11 +986,10 @@ WaudSound.prototype = {
 				var snd = $it0.next();
 				snd.destroy();
 			}
-			return;
+		} else if(this._snd != null) {
+			this._snd.destroy();
+			this._snd = null;
 		}
-		if(this._snd == null) return;
-		this._snd.destroy();
-		this._snd = null;
 	}
 	,_loadSpriteSound: function(url) {
 		var request = new XMLHttpRequest();
@@ -1045,7 +1007,6 @@ WaudSound.prototype = {
 	}
 	,_decodeSuccess: function(buffer) {
 		if(buffer == null) {
-			console.log("empty buffer: " + this.url);
 			this._onSpriteSoundError();
 			return;
 		}
@@ -1129,7 +1090,7 @@ var WebAudioAPISound = function(url,options,loaded,d) {
 	this._gainNodes = [];
 	this._currentSoundProps = null;
 	this._isLoaded = loaded;
-	this.duration = d;
+	this._duration = d;
 	this._manager = Waud.audioManager;
 	if(this._b64.match(url)) {
 		this._decodeAudio(this._base64ToArrayBuffer(url));
@@ -1180,7 +1141,7 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 		}
 		this._manager.bufferList.set(this.url,buffer);
 		this._isLoaded = true;
-		this.duration = buffer.duration;
+		this._duration = buffer.duration;
 		if(this._options.onload != null) this._options.onload(this);
 		if(this._options.autoplay) this.play();
 	}
@@ -1195,9 +1156,9 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 		if(this._muted) this._gainNode.gain.value = 0; else this._gainNode.gain.value = this._options.volume;
 		return bufferSource;
 	}
-	,get_duration: function() {
+	,getDuration: function() {
 		if(!this._isLoaded) return 0;
-		return this.duration;
+		return this._duration;
 	}
 	,play: function(sprite,soundProps) {
 		var _g = this;
@@ -1273,7 +1234,7 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 		this._pauseTime += this._manager.audioContext.currentTime - this._playStartTime;
 	}
 	,setTime: function(time) {
-		if(!this._isLoaded || time > this.get_duration()) return;
+		if(!this._isLoaded || time > this._duration) return;
 		if(this._isPlaying) {
 			this.stop();
 			this._pauseTime = time;
@@ -1574,7 +1535,7 @@ var __map_reserved = {}
 AudioManager.AUDIO_CONTEXT = "this.audioContext";
 Waud.PROBABLY = "probably";
 Waud.MAYBE = "maybe";
-Waud.version = "0.6.7";
+Waud.version = "0.7.4";
 Waud.useWebAudio = true;
 Waud.defaults = { autoplay : false, autostop : true, loop : false, preload : true, webaudio : true, volume : 1};
 Waud.preferredSampleRate = 44100;

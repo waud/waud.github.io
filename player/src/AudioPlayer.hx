@@ -16,7 +16,7 @@ class AudioPlayer {
 	var HEIGHT:Int;
 
 	var SMOOTHING = 0.8;
-	var FFT_SIZE = 256;
+	var FFT_SIZE = 512;
 
 	var analyser:AnalyserNode;
 	var freqs:Uint8Array;
@@ -38,7 +38,7 @@ class AudioPlayer {
 	var play:AnchorElement;
 	var previous:AnchorElement;
 	var next:AnchorElement;
-	var volume:AnchorElement;
+	var load:AnchorElement;
 
 	var songs:Array<String> = [
 		"80s-Music",
@@ -52,27 +52,30 @@ class AudioPlayer {
 		currentSong = 0;
 		Waud.init();
 
+		load = cast Browser.document.getElementById("load");
 		title = cast Browser.document.getElementById("title");
 		play = cast Browser.document.getElementById("play");
 		previous = cast Browser.document.getElementById("previous");
 		next = cast Browser.document.getElementById("next");
-		//volume = cast Browser.document.getElementById("volume");
+		canvas = cast Browser.document.getElementById("visualisation");
 
+		canvas.width = (Browser.window.innerWidth <= 320) ? Browser.window.innerWidth - 60 : 320;
+
+		title.innerText = "";
 		if (!Waud.isWebAudioSupported) {
-			title.innerText = "No Web Audio";
+			load.innerText = "No Web Audio";
+			load.className = "button small disabled";
 			return;
 		}
-		var sounds = new WaudBase64Pack("sounds/sounds.json", onLoad, onProgress);
 
-		canvas = Browser.document.createCanvasElement();
-		canvas.style.position = "absolute";
-		canvas.style.left = "0px";
-		canvas.style.top = "0px";
-		canvas.style.zIndex = "10";
+		load.onclick = loadSounds;
+	}
+
+	function loadSounds() {
+		var sounds = new WaudBase64Pack("player/sounds/sounds.json", onLoad, onProgress);
+
 		drawContext = canvas.getContext2d();
 		audioContext = Waud.audioContext;
-
-		Browser.document.body.appendChild(canvas);
 
 		analyser = audioContext.createAnalyser();
 		analyser.connect(audioContext.destination);
@@ -84,6 +87,8 @@ class AudioPlayer {
 		isPlaying = false;
 		startTime = 0;
 		startOffset = 0;
+
+		load.onclick = null;
 	}
 
 	function onLoad(snds:Map<String, IWaudSound>) {
@@ -91,24 +96,32 @@ class AudioPlayer {
 		play.onclick = playSong;
 		next.onclick = nextSong;
 		previous.onclick = prevSong;
-		title.innerText = "Play Now";
+		load.innerText = "Ready to Play Now";
+
+		play.className = "button special icon small fa-play";
+		previous.className = "button special icon small fa-step-backward";
+		next.className = "button special icon small fa-step-forward";
+
+		load.className = "button small disabled";
 	}
 
-	function onProgress(val:Float) {
-		var per = Math.round(val);
-		title.innerText = per < 10 ? "Loading... 0" + Math.round(val) + "%" : "Loading... " + Math.round(val) + "%";
+	function onProgress(val:Float, loaded:Float) {
+		var per = Math.floor(val * 100);
+		load.innerText = per < 10 ? "Loading Sounds 0" + per + "%" : "Loading Sounds " + per + "%";
 	}
 
 	function playSong() {
 		if (!isPlaying) {
-			play.className = "fa-pause";
+			play.className = "button special icon small fa-pause";
+			play.innerHTML = "Pause";
 			var snd:IWaudSound = soundPack.get("sounds/" + songs[currentSong] + ".mp3");
 			snd.onEnd(autoPlayNextSong);
 			start(snd);
 			title.innerText = songs[currentSong].replace("-", " ");
 		}
 		else {
-			play.className = "fa-play";
+			play.className = "button special icon small fa-play";
+			play.innerHTML = "Play";
 			pause();
 		}
 	}
@@ -155,16 +168,13 @@ class AudioPlayer {
 	}
 
 	function draw(t:Float) {
-		if (Browser.window.innerWidth >= 1024) FFT_SIZE = 1024;
-		else if (Browser.window.innerWidth >= 512) FFT_SIZE = 512;
-
 		analyser.smoothingTimeConstant = SMOOTHING;
 		analyser.fftSize = FFT_SIZE;
 		analyser.getByteFrequencyData(freqs);
 		analyser.getByteTimeDomainData(times);
 
-		WIDTH = Browser.window.innerWidth;
-		HEIGHT = Browser.window.innerHeight;
+		WIDTH = canvas.width;
+		HEIGHT = canvas.height;
 		canvas.width = WIDTH;
 		canvas.height = HEIGHT;
 
@@ -174,8 +184,7 @@ class AudioPlayer {
 			var height = HEIGHT * percent;
 			var offset = HEIGHT - height - 1;
 			var barWidth = WIDTH / analyser.frequencyBinCount;
-			drawContext.fillStyle = "#35B398";
-			drawContext.clearRect(i * barWidth, offset, 1, 2);
+			drawContext.fillStyle = "#E70000";
 			drawContext.fillRect(i * barWidth, offset, 1, 2);
 		}
 
