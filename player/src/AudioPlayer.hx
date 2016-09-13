@@ -106,9 +106,9 @@ class AudioPlayer {
 	}
 
 	function onProgress(val:Float, loaded:Float) {
-		var per = Math.floor(val * 100) - (Std.random(4) + 1);
-		if (per < 0) per = 0;
-		load.innerText = per < 10 ? "Loading Sounds 0" + per + "%" : "Loading Sounds " + per + "%";
+		var per = Math.floor(val * 100);
+		if (per == 100) load.innerText = "please wait...";
+		else load.innerText = per < 10 ? "Loading Sounds 0" + per + "%" : "Loading Sounds " + per + "%";
 	}
 
 	function playSong() {

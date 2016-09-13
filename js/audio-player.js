@@ -126,9 +126,8 @@ AudioPlayer.prototype = {
 		this.load.className = "button small disabled";
 	}
 	,onProgress: function(val,loaded) {
-		var per = Math.floor(val * 100) - (Std.random(4) + 1);
-		if(per < 0) per = 0;
-		if(per < 10) this.load.innerText = "Loading Sounds 0" + per + "%"; else this.load.innerText = "Loading Sounds " + per + "%";
+		var per = Math.floor(val * 100);
+		if(per == 100) this.load.innerText = "please wait..."; else if(per < 10) this.load.innerText = "Loading Sounds 0" + per + "%"; else this.load.innerText = "Loading Sounds " + per + "%";
 	}
 	,playSong: function() {
 		if(!this.isPlaying) {
@@ -484,9 +483,6 @@ Std.parseInt = function(x) {
 	if(v == 0 && (HxOverrides.cca(x,1) == 120 || HxOverrides.cca(x,1) == 88)) v = parseInt(x);
 	if(isNaN(v)) return null;
 	return v;
-};
-Std.random = function(x) {
-	if(x <= 0) return 0; else return Math.floor(Math.random() * x);
 };
 var StringTools = function() { };
 StringTools.__name__ = true;
