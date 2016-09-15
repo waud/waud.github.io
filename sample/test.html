@@ -13,13 +13,18 @@
 
     Waud.init();
     Waud.enableTouchUnlock(touchUnlock);
-    new WaudBase64Pack("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245915/sounds.json", function (sounds) {});
+    var snds;
+    new WaudBase64Pack("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245915/sounds.json", function (sounds) {
+        snds = sounds;
+    });
 
     function touchUnlock() {
-        sounds.get('sounds/good.wav').play();
-        setTimeout(function () {
-            return sounds.get('sounds/wrong.wav').play();
-        }, 1400);
+        if (snds) {
+            snds.get('sounds/good.wav').play();
+            setTimeout(function () {
+                return snds.get('sounds/wrong.wav').play();
+            }, 1400);
+        }
     }
 </script>
 
