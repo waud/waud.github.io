@@ -14,10 +14,12 @@
     <link rel="stylesheet" href="lib/codemirror.css">
     <script src="mode/javascript/javascript.js"></script>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/waud.js/0.7.2/waud.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/waud.js/0.7.5/waud.min.js"></script>
 
     <script>
         window.onload = function() {
+            var run = document.getElementById("run");
+
             var editor = CodeMirror.fromTextArea(document.getElementById("codemirror"), {
                 mode: "javascript",
                 lineNumbers: true
@@ -32,8 +34,13 @@
                 console.log("change");
             });
 
+            run.onclick = function() {
+                Waud.destroy();
+                eval(editor.getValue());
+            };
+
             eval(code);
-        }
+        };
     </script>
 </head>
 <body>
@@ -44,7 +51,7 @@
     <div class="mui-divider"></div>
     <ul>
         <li>
-            <strong>Category 1</strong>
+            <strong>Basic </strong>
             <ul>
                 <li><a href="#">Item 1</a></li>
                 <li><a href="#">Item 2</a></li>
@@ -86,6 +93,7 @@
     <div class="mui-container-fluid mui--divider-top">
         <br>
         <textarea id="codemirror"></textarea>
+        <button class="mui-btn mui-btn--accent" id="run">RUN</button>
     </div>
 </div>
 <footer id="footer">
