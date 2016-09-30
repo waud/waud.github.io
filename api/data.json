@@ -607,10 +607,10 @@
         {
             "file": "src/Waud.hx",
             "line": 286,
-            "description": "Helper function to set plauback rate of all the sounds.",
+            "description": "Helper function to set playback rate of all the sounds.",
             "static": 1,
             "itemtype": "method",
-            "name": "mute",
+            "name": "playbackRate",
             "params": [
                 {
                     "name": "val",
@@ -1204,7 +1204,7 @@
             "line": 411,
             "description": "Function to set playback rate.",
             "itemtype": "method",
-            "name": "setTime",
+            "name": "playbackRate",
             "params": [
                 {
                     "name": "val",
