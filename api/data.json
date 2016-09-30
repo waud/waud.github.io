@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.7.6",
+        "version": "0.7.7",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -1224,7 +1224,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 440,
+            "line": 433,
             "description": "Function to set playback position in seconds.\n\n**Not supported for audio sprites yet.**",
             "itemtype": "method",
             "name": "setTime",
@@ -1242,7 +1242,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 455,
+            "line": 448,
             "description": "Function to get the current playback position in seconds.\n\n**Not supported for audio sprites yet.**",
             "itemtype": "method",
             "name": "getTime",
@@ -1253,7 +1253,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 469,
+            "line": 462,
             "description": "Function to add callback that triggers when the sound finishes playing.",
             "itemtype": "method",
             "name": "onEnd",
@@ -1275,7 +1275,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 490,
+            "line": 483,
             "description": "Function to add callback that triggers when the sound is loaded.",
             "itemtype": "method",
             "name": "onLoad",
@@ -1297,7 +1297,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 505,
+            "line": 498,
             "description": "Function to add callback that triggers when the sound fails to load or if it fails to decode when using web audio.",
             "itemtype": "method",
             "name": "onError",
@@ -1319,7 +1319,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 520,
+            "line": 513,
             "description": "Function to destroy sound.",
             "itemtype": "method",
             "name": "destroy",

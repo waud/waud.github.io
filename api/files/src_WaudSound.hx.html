@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.6
+            API Docs for v0.7.7
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -506,21 +506,14 @@ import haxe.Json;
 	*     snd.playbackRate(1.25);
 	*/
 	public function playbackRate(?val:Float, ?spriteName:String):Float {
-		if (rate != null) rate = val;
-		if (isSpriteSound) {
-			if (spriteName != null &amp;&amp; _spriteSounds[spriteName] != null) {
-				if (rate == null) return _spriteSounds[spriteName].rate;
-				else return _spriteSounds[spriteName].playbackRate(rate);
+		if (val != null) {
+			if (isSpriteSound) {
+				if (spriteName != null &amp;&amp; _spriteSounds[spriteName] != null) _spriteSounds[spriteName].playbackRate(val);
+				else for (snd in _spriteSounds) snd.playbackRate(val);
 			}
-			else {
-				if (rate == null) for (snd in _spriteSounds) return snd.rate;
-				else for (snd in _spriteSounds) snd.playbackRate(rate);
-				return rate;
-			}
-		}
-		else if (_snd != null) {
-			if (rate == null) return _snd.rate;
-			else return _snd.playbackRate(rate);
+			else if (_snd != null) _snd.playbackRate(val);
+
+			return rate = val;
 		}
 		return rate;
 	}
