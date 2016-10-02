@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.7
+            API Docs for v0.7.8
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -225,6 +225,30 @@ import js.Browser;
 			matched = [for (i in match) Std.parseInt(i)];
 		}
 		return matched;
+	}
+
+	/**
+	* Function to set default audio options.
+	*
+	* @static
+	* @method setDefaultOptions
+	* @return {WaudSoundOptions}
+	* @example
+	*     Waud.setDefaultOptions(options);
+	*/
+	public static function setDefaultOptions(options:WaudSoundOptions):WaudSoundOptions {
+		if (options == null) options = {};
+		options.autoplay = (options.autoplay != null) ? options.autoplay : Waud.defaults.autoplay;
+		options.autostop = (options.autostop != null) ? options.autostop : Waud.defaults.autostop;
+		options.webaudio = (options.webaudio != null) ? options.webaudio : Waud.defaults.webaudio;
+		options.preload = (options.preload != null) ? options.preload : Waud.defaults.preload;
+		options.loop = (options.loop != null) ? options.loop : Waud.defaults.loop;
+		options.onload = (options.onload != null) ? options.onload : Waud.defaults.onload;
+		options.onend = (options.onend != null) ? options.onend : Waud.defaults.onend;
+		options.onerror = (options.onerror != null) ? options.onerror : Waud.defaults.onerror;
+		if (options.volume == null || options.volume &lt; 0 || options.volume &gt; 1) options.volume = Waud.defaults.volume;
+		if (options.playbackRate == null || options.playbackRate &lt;= 0 || options.playbackRate &gt;= 4) options.playbackRate = Waud.defaults.playbackRate;
+		return options;
 	}
 }
     </pre>

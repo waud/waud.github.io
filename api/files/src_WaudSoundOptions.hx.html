@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.7.7
+            API Docs for v0.7.8
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -123,6 +123,14 @@ typedef WaudSoundOptions = {
 	* @default 1
 	*/
 	@:optional var volume:Float;
+
+	/**
+	* Playback rate between 0 and 4.
+	* @property playbackRate
+	* @type {Float}
+	* @default 1
+	*/
+	@:optional var playbackRate:Float;
 
 	/**
 	* Callback function when the sound is loaded with sound instance as parameter.
