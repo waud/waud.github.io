@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.7.9",
+        "version": "0.8.0",
         "url": "https://github.com/waud/waud"
     },
     "files": {
