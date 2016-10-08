@@ -48,10 +48,15 @@ AudioManager.prototype = {
 	,createAudioContext: function() {
 		if(this.audioContext == null) try {
 			if(Reflect.field(window,"AudioContext") != null) this.audioContext = new AudioContext(); else if(Reflect.field(window,"webkitAudioContext") != null) this.audioContext = new webkitAudioContext();
+			this.gainNode = this.createGain();
 		} catch( e ) {
+			if (e instanceof js__$Boot_HaxeError) e = e.val;
 			this.audioContext = null;
 		}
 		return this.audioContext;
+	}
+	,createGain: function() {
+		if(($_=this.audioContext,$bind($_,$_.createGain)) != null) return this.audioContext.createGain(); else return Reflect.callMethod(this.audioContext,Reflect.field(this.audioContext,"createGainNode"),[]);
 	}
 	,destroy: function() {
 		if(this.audioContext != null && (this.audioContext.close != null && this.audioContext.close != "")) this.audioContext.close();
@@ -120,6 +125,7 @@ AudioPlayer.prototype = {
 		this.startTime = 0;
 		this.startOffset = 0;
 		this.load.onclick = null;
+		this.load.innerText = "Loading Sounds 0%";
 	}
 	,updateProgress: function(snd) {
 		this.loadCount++;
@@ -231,17 +237,8 @@ var BaseSound = function(sndUrl,options) {
 	this._isPlaying = false;
 	this._muted = false;
 	this._duration = 0;
-	if(options == null) options = { };
-	if(options.autoplay != null) options.autoplay = options.autoplay; else options.autoplay = Waud.defaults.autoplay;
-	if(options.autostop != null) options.autostop = options.autostop; else options.autostop = Waud.defaults.autostop;
-	if(options.webaudio != null) options.webaudio = options.webaudio; else options.webaudio = Waud.defaults.webaudio;
-	if(options.preload != null) options.preload = options.preload; else options.preload = Waud.defaults.preload;
-	if(options.loop != null) options.loop = options.loop; else options.loop = Waud.defaults.loop;
-	if(options.volume != null && options.volume >= 0 && options.volume <= 1) options.volume = options.volume; else options.volume = Waud.defaults.volume;
-	if(options.onload != null) options.onload = options.onload; else options.onload = Waud.defaults.onload;
-	if(options.onend != null) options.onend = options.onend; else options.onend = Waud.defaults.onend;
-	if(options.onerror != null) options.onerror = options.onerror; else options.onerror = Waud.defaults.onerror;
-	this._options = options;
+	this._options = WaudUtils.setDefaultOptions(options);
+	this.rate = this._options.playbackRate;
 };
 BaseSound.prototype = {
 	isReady: function() {
@@ -258,6 +255,9 @@ EReg.prototype = {
 		this.r.m = this.r.exec(s);
 		this.r.s = s;
 		return this.r.m != null;
+	}
+	,matched: function(n) {
+		if(this.r.m != null && n >= 0 && n < this.r.m.length) return this.r.m[n]; else throw new js__$Boot_HaxeError("EReg::matched");
 	}
 };
 var HxOverrides = function() { };
@@ -284,8 +284,19 @@ Reflect.field = function(o,field) {
 	try {
 		return o[field];
 	} catch( e ) {
+		if (e instanceof js__$Boot_HaxeError) e = e.val;
 		return null;
 	}
+};
+Reflect.callMethod = function(o,func,args) {
+	return func.apply(o,args);
+};
+var Std = function() { };
+Std.parseInt = function(x) {
+	var v = parseInt(x,10);
+	if(v == 0 && (HxOverrides.cca(x,1) == 120 || HxOverrides.cca(x,1) == 88)) v = parseInt(x);
+	if(isNaN(v)) return null;
+	return v;
 };
 var StringTools = function() { };
 StringTools.replace = function(s,sub,by) {
@@ -341,6 +352,16 @@ Waud.mute = function(val) {
 			sound.mute(val);
 		}
 	}
+};
+Waud.playbackRate = function(val) {
+	if(val == null) return Waud._playbackRate; else if(Waud.sounds != null) {
+		var $it0 = Waud.sounds.iterator();
+		while( $it0.hasNext() ) {
+			var sound = $it0.next();
+			sound.playbackRate(val);
+		}
+	}
+	return Waud._playbackRate = val;
 };
 Waud.stop = function() {
 	if(Waud.sounds != null) {
@@ -415,6 +436,7 @@ Waud.destroy = function() {
 		Waud._focusManager.clearEvents();
 		Waud._focusManager.blur = null;
 		Waud._focusManager.focus = null;
+		Waud._focusManager = null;
 	}
 };
 var WaudFocusManager = $hx_exports.WaudFocusManager = function() {
@@ -487,6 +509,70 @@ WaudFocusManager.prototype = {
 		}
 	}
 };
+var WaudUtils = $hx_exports.WaudUtils = function() { };
+WaudUtils.isAndroid = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("Android","i").match(ua);
+};
+WaudUtils.isiOS = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("(iPad|iPhone|iPod)","i").match(ua);
+};
+WaudUtils.isWindowsPhone = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("(IEMobile|Windows Phone)","i").match(ua);
+};
+WaudUtils.isFirefox = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("Firefox","i").match(ua);
+};
+WaudUtils.isOpera = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("Opera","i").match(ua) || Reflect.field(window,"opera") != null;
+};
+WaudUtils.isChrome = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("Chrome","i").match(ua);
+};
+WaudUtils.isSafari = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("Safari","i").match(ua);
+};
+WaudUtils.isMobile = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	return new EReg("(iPad|iPhone|iPod|Android|webOS|BlackBerry|Windows Phone|IEMobile)","i").match(ua);
+};
+WaudUtils.getiOSVersion = function(ua) {
+	if(ua == null) ua = window.navigator.userAgent;
+	var v = new EReg("[0-9_]+?[0-9_]+?[0-9_]+","i");
+	var matched = [];
+	if(v.match(ua)) {
+		var match = v.matched(0).split("_");
+		var _g = [];
+		var _g1 = 0;
+		while(_g1 < match.length) {
+			var i = match[_g1];
+			++_g1;
+			_g.push(Std.parseInt(i));
+		}
+		matched = _g;
+	}
+	return matched;
+};
+WaudUtils.setDefaultOptions = function(options) {
+	if(options == null) options = { };
+	if(options.autoplay != null) options.autoplay = options.autoplay; else options.autoplay = Waud.defaults.autoplay;
+	if(options.autostop != null) options.autostop = options.autostop; else options.autostop = Waud.defaults.autostop;
+	if(options.webaudio != null) options.webaudio = options.webaudio; else options.webaudio = Waud.defaults.webaudio;
+	if(options.preload != null) options.preload = options.preload; else options.preload = Waud.defaults.preload;
+	if(options.loop != null) options.loop = options.loop; else options.loop = Waud.defaults.loop;
+	if(options.onload != null) options.onload = options.onload; else options.onload = Waud.defaults.onload;
+	if(options.onend != null) options.onend = options.onend; else options.onend = Waud.defaults.onend;
+	if(options.onerror != null) options.onerror = options.onerror; else options.onerror = Waud.defaults.onerror;
+	if(options.volume == null || options.volume < 0 || options.volume > 1) options.volume = Waud.defaults.volume;
+	if(options.playbackRate == null || options.playbackRate <= 0 || options.playbackRate >= 4) options.playbackRate = Waud.defaults.playbackRate;
+	return options;
+};
 var WebAudioAPISound = function(url,options,loaded,d) {
 	if(d == null) d = 0;
 	if(loaded == null) loaded = false;
@@ -554,9 +640,11 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 	,_makeSource: function(buffer) {
 		var bufferSource = this._manager.audioContext.createBufferSource();
 		bufferSource.buffer = buffer;
-		if(this._manager.audioContext.createGain != null) this._gainNode = this._manager.audioContext.createGain(); else this._gainNode = this._manager.audioContext.createGainNode();
+		this._gainNode = this._manager.createGain();
 		bufferSource.connect(this._gainNode);
+		bufferSource.playbackRate.value = this.rate;
 		this._gainNode.connect(this._manager.audioContext.destination);
+		this._manager.gainNode.connect(this._manager.audioContext.destination);
 		this._srcNodes.push(bufferSource);
 		this._gainNodes.push(this._gainNode);
 		if(this._muted) this._gainNode.gain.value = 0; else this._gainNode.gain.value = this._options.volume;
@@ -581,13 +669,12 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 			start = soundProps.start + this._pauseTime;
 			end = soundProps.duration;
 		}
-		var buffer = this._manager.bufferList.get(this.url);
+		var buffer;
+		if(this._manager.bufferList != null) buffer = this._manager.bufferList.get(this.url); else buffer = null;
 		if(buffer != null) {
 			this.source = this._makeSource(buffer);
-			if(start >= 0 && end > -1) {
-				if(Reflect.field(this.source,"start") != null) this.source.start(0,start,end); else this._snd.noteGrainOn(0,start,end);
-			} else {
-				if(Reflect.field(this.source,"start") != null) this.source.start(0,this._pauseTime,this.source.buffer.duration); else this._snd.noteGrainOn(0,this._pauseTime,this.source.buffer.duration);
+			if(start >= 0 && end > -1) this._start(0,start,end); else {
+				this._start(0,this._pauseTime,this.source.buffer.duration);
 				this.source.loop = this._options.loop;
 			}
 			this._playStartTime = this._manager.audioContext.currentTime;
@@ -602,6 +689,9 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 			};
 		}
 		return HxOverrides.indexOf(this._srcNodes,this.source,0);
+	}
+	,_start: function(when,offset,duration) {
+		if(Reflect.field(this.source,"start") != null) this.source.start(when,offset,duration); else if(Reflect.field(this.source,"noteGrainOn") != null) Reflect.callMethod(this.source,Reflect.field(this.source,"noteGrainOn"),[when,offset,duration]); else if(Reflect.field(this.source,"noteOn") != null) Reflect.callMethod(this.source,Reflect.field(this.source,"noteOn"),[when,offset,duration]);
 	}
 	,togglePlay: function(spriteName) {
 		if(this._isPlaying) this.pause(); else this.play();
@@ -642,6 +732,17 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 		this.destroy();
 		this._pauseTime += this._manager.audioContext.currentTime - this._playStartTime;
 	}
+	,playbackRate: function(val,spriteName) {
+		if(val == null) return this.rate;
+		var _g = 0;
+		var _g1 = this._srcNodes;
+		while(_g < _g1.length) {
+			var src = _g1[_g];
+			++_g;
+			src.playbackRate.value = val;
+		}
+		return this.rate = val;
+	}
 	,setTime: function(time) {
 		if(!this._isLoaded || time > this._duration) return;
 		if(this._isPlaying) {
@@ -672,10 +773,7 @@ WebAudioAPISound.prototype = $extend(BaseSound.prototype,{
 		while(_g < _g1.length) {
 			var src = _g1[_g];
 			++_g;
-			if(Reflect.field(src,"stop") != null) src.stop(0); else if(Reflect.field(src,"noteOff") != null) try {
-				this.src.noteOff(0);
-			} catch( e ) {
-			}
+			if(Reflect.field(src,"stop") != null) src.stop(0); else if(Reflect.field(src,"noteOff") != null) Reflect.callMethod(src,Reflect.field(src,"noteOff"),[0]);
 			src.disconnect();
 			src = null;
 		}
@@ -765,6 +863,15 @@ haxe_ds_StringMap.prototype = {
 		return new haxe_ds__$StringMap_StringMapIterator(this,this.arrayKeys());
 	}
 };
+var js__$Boot_HaxeError = function(val) {
+	Error.call(this);
+	this.val = val;
+	this.message = String(val);
+	if(Error.captureStackTrace) Error.captureStackTrace(this,js__$Boot_HaxeError);
+};
+js__$Boot_HaxeError.__super__ = Error;
+js__$Boot_HaxeError.prototype = $extend(Error.prototype,{
+});
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; }
 if(Array.prototype.indexOf) HxOverrides.indexOf = function(a,o,i) {
@@ -774,11 +881,12 @@ var __map_reserved = {}
 AudioManager.AUDIO_CONTEXT = "this.audioContext";
 Waud.PROBABLY = "probably";
 Waud.MAYBE = "maybe";
-Waud.version = "0.7.5";
+Waud.version = "0.8.0";
 Waud.useWebAudio = true;
-Waud.defaults = { autoplay : false, autostop : true, loop : false, preload : true, webaudio : true, volume : 1};
+Waud.defaults = { autoplay : false, autostop : true, loop : false, preload : true, webaudio : true, volume : 1, playbackRate : 1};
 Waud.preferredSampleRate = 44100;
 Waud.isMuted = false;
+Waud._playbackRate = 1;
 WaudFocusManager.FOCUS_STATE = "focus";
 WaudFocusManager.BLUR_STATE = "blur";
 WaudFocusManager.ON_FOCUS = "onfocus";

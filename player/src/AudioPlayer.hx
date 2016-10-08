@@ -95,6 +95,7 @@ class AudioPlayer {
 		startOffset = 0;
 
 		load.onclick = null;
+		load.innerText = "Loading Sounds 0%";
 	}
 
 	function updateProgress(snd:IWaudSound) {
