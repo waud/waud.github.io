@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.8.0
+            API Docs for v0.8.1
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,7 +86,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-import WaudUtils;
 import haxe.Json;
 import js.html.XMLHttpRequest;
 
@@ -130,7 +129,11 @@ import js.html.XMLHttpRequest;
 	* 			trace(&quot;error loading base64 json file&quot;);
 	* 		}
 	*/
-	public function new(url:String, ?onLoaded:Map&lt;String, IWaudSound&gt; -&gt; Void, ?onProgress:Float -&gt; Float -&gt; Void, ?onError:Void -&gt; Void, ?options:WaudSoundOptions = null) {
+	public function new(url:String,
+						?onLoaded:Map&lt;String, IWaudSound&gt; -&gt; Void,
+						?onProgress:Float -&gt; Float -&gt; Void,
+						?onError:Void -&gt; Void,
+						?options:WaudSoundOptions = null) {
 		if (Waud.audioManager == null) {
 			trace(&quot;initialise Waud using Waud.init() before loading sounds&quot;);
 			return;

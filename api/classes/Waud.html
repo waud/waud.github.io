@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.8.0
+            API Docs for v0.8.1
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -132,13 +132,18 @@
 
                                     <span class="flag static">static</span>
                             </li>
-                            <li class="index-item method private">
-                                <a href="#method_get_sampleRate">get_sampleRate</a>
+                            <li class="index-item method">
+                                <a href="#method_getFormatSupportString">getFormatSupportString</a>
 
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
-                                <a href="#method_getFormatSupportString">getFormatSupportString</a>
+                                <a href="#method_getSampleRate">getSampleRate</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
+                                <a href="#method_getVolume">getVolume</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -193,6 +198,11 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item method">
+                                <a href="#method_setVolume">setVolume</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item method">
                                 <a href="#method_stop">stop</a>
 
                                     <span class="flag static">static</span>
@@ -221,6 +231,11 @@
                             </li>
                             <li class="index-item property private">
                                 <a href="#property__playbackRate">_playbackRate</a>
+
+                                    <span class="flag static">static</span>
+                            </li>
+                            <li class="index-item property private">
+                                <a href="#property__volume">_volume</a>
 
                                     <span class="flag static">static</span>
                             </li>
@@ -265,11 +280,6 @@
                                     <span class="flag static">static</span>
                             </li>
                             <li class="index-item property">
-                                <a href="#property_sampleRate">sampleRate</a>
-
-                                    <span class="flag static">static</span>
-                            </li>
-                            <li class="index-item property">
                                 <a href="#property_sounds">sounds</a>
 
                                     <span class="flag static">static</span>
@@ -299,7 +309,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l231"><code>src&#x2F;Waud.hx:231</code></a>
+      <a href="../files/src_Waud.hx.html#l234"><code>src&#x2F;Waud.hx:234</code></a>
   </p>
 
 
@@ -346,7 +356,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l444"><code>src&#x2F;Waud.hx:444</code></a>
+      <a href="../files/src_Waud.hx.html#l469"><code>src&#x2F;Waud.hx:469</code></a>
   </p>
 
 
@@ -392,7 +402,7 @@
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l255"><code>src&#x2F;Waud.hx:255</code></a>
+      <a href="../files/src_Waud.hx.html#l250"><code>src&#x2F;Waud.hx:250</code></a>
   </p>
 
 
@@ -459,52 +469,13 @@
         </div>
 
 </div>
-<div id="method_get_sampleRate" class="method item private">
-  <h3 class="blue-method-name">get_sampleRate</h3>
-
-  <div class="meta method-meta">
-      <p>
-          Defined in
-      <a href="../files/src_Waud.hx.html#l433"><code>src&#x2F;Waud.hx:433</code></a>
-  </p>
-
-
-
-  </div>
-
-  <h3>Syntax</h3>
-  <div class="blue-method-syntax">
-  <h3 class="name"><code>get_sampleRate</code></h3>
-
-        <span class="paren">()</span>
-
-
-
-        <span class="flag private">private</span>
-
-
-        <span class="flag static">static</span>
-
-
-
-  </div>
-    <div class="description">
-      <h3>Summary</h3>
-        <p>Function to get current sample rate of audio context.</p>
-
-    </div>
-
-
-
-
-</div>
 <div id="method_getFormatSupportString" class="method item">
   <h3 class="blue-method-name">getFormatSupportString</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l328"><code>src&#x2F;Waud.hx:328</code></a>
+      <a href="../files/src_Waud.hx.html#l351"><code>src&#x2F;Waud.hx:351</code></a>
   </p>
 
 
@@ -560,13 +531,137 @@
         </div>
 
 </div>
+<div id="method_getSampleRate" class="method item">
+  <h3 class="blue-method-name">getSampleRate</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/src_Waud.hx.html#l456"><code>src&#x2F;Waud.hx:456</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getSampleRate</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Float</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Function to get current sample rate of audio context.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type">Float</span>:
+                <div class="blue-return-desc">
+                    <p>sample rate</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>Waud.getSampleRate();</code></pre>
+
+            </div>
+        </div>
+
+</div>
+<div id="method_getVolume" class="method item">
+  <h3 class="blue-method-name">getVolume</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/src_Waud.hx.html#l281"><code>src&#x2F;Waud.hx:281</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>getVolume</code></h3>
+
+        <span class="paren">()</span>
+
+        <span class="returns-inline">
+            <span class="type">Float</span>
+        </span>
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Function to get global volume.</p>
+
+    </div>
+
+
+        <div class="returns">
+            <h4>Returns:</h4>
+
+            <div class="returns-description">
+                <span class="type">Float</span>:
+                <div class="blue-return-desc">
+                    <p>between 0 and 1</p>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>Waud.getVolume();</code></pre>
+
+            </div>
+        </div>
+
+</div>
 <div id="method_init" class="method item">
   <h3 class="blue-method-name">init</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l204"><code>src&#x2F;Waud.hx:204</code></a>
+      <a href="../files/src_Waud.hx.html#l206"><code>src&#x2F;Waud.hx:206</code></a>
   </p>
 
 
@@ -637,7 +732,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l405"><code>src&#x2F;Waud.hx:405</code></a>
+      <a href="../files/src_Waud.hx.html#l428"><code>src&#x2F;Waud.hx:428</code></a>
   </p>
 
 
@@ -699,7 +794,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l419"><code>src&#x2F;Waud.hx:419</code></a>
+      <a href="../files/src_Waud.hx.html#l442"><code>src&#x2F;Waud.hx:442</code></a>
   </p>
 
 
@@ -761,7 +856,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l391"><code>src&#x2F;Waud.hx:391</code></a>
+      <a href="../files/src_Waud.hx.html#l414"><code>src&#x2F;Waud.hx:414</code></a>
   </p>
 
 
@@ -823,7 +918,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l363"><code>src&#x2F;Waud.hx:363</code></a>
+      <a href="../files/src_Waud.hx.html#l386"><code>src&#x2F;Waud.hx:386</code></a>
   </p>
 
 
@@ -885,7 +980,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l346"><code>src&#x2F;Waud.hx:346</code></a>
+      <a href="../files/src_Waud.hx.html#l369"><code>src&#x2F;Waud.hx:369</code></a>
   </p>
 
 
@@ -947,7 +1042,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l377"><code>src&#x2F;Waud.hx:377</code></a>
+      <a href="../files/src_Waud.hx.html#l400"><code>src&#x2F;Waud.hx:400</code></a>
   </p>
 
 
@@ -1009,7 +1104,7 @@ and also used for touch events to unlock audio on iOS devices.</p>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l271"><code>src&#x2F;Waud.hx:271</code></a>
+      <a href="../files/src_Waud.hx.html#l294"><code>src&#x2F;Waud.hx:294</code></a>
   </p>
 
 
@@ -1080,7 +1175,7 @@ Waud.mute(false);</code></pre>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l316"><code>src&#x2F;Waud.hx:316</code></a>
+      <a href="../files/src_Waud.hx.html#l339"><code>src&#x2F;Waud.hx:339</code></a>
   </p>
 
 
@@ -1126,7 +1221,7 @@ Waud.mute(false);</code></pre>
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l287"><code>src&#x2F;Waud.hx:287</code></a>
+      <a href="../files/src_Waud.hx.html#l310"><code>src&#x2F;Waud.hx:310</code></a>
   </p>
 
 
@@ -1206,13 +1301,84 @@ Waud.playbackRate(1.25);</code></pre>
         </div>
 
 </div>
+<div id="method_setVolume" class="method item">
+  <h3 class="blue-method-name">setVolume</h3>
+
+  <div class="meta method-meta">
+      <p>
+          Defined in
+      <a href="../files/src_Waud.hx.html#l266"><code>src&#x2F;Waud.hx:266</code></a>
+  </p>
+
+
+
+  </div>
+
+  <h3>Syntax</h3>
+  <div class="blue-method-syntax">
+  <h3 class="name"><code>setVolume</code></h3>
+
+        <div class="args">
+            <span class="paren">(</span><ul class="args-list inline commas">
+                <li class="arg">
+                        <code>val</code>
+                </li>
+            </ul><span class="paren">)</span>
+        </div>
+
+
+
+
+
+        <span class="flag static">static</span>
+
+
+
+  </div>
+    <div class="description">
+      <h3>Summary</h3>
+        <p>Function to set global volume.</p>
+
+    </div>
+
+        <div class="params">
+            <h4>Parameters:</h4>
+
+            <ul class="params-list">
+                <li class="param">
+                        <code class="param-name">val</code>
+                        <span class="type">Float</span>
+
+
+                    <div class="param-description">
+                        <ul>
+<li>Should be between 0 and 1.</li>
+</ul>
+
+                    </div>
+
+                </li>
+            </ul>
+        </div>
+
+
+        <div class="example">
+            <h4>Example:</h4>
+
+            <div class="example-content">
+<pre class="code prettyprint"><code>Waud.setVolume(0.5);</code></pre>
+
+            </div>
+        </div>
+
+</div>
 <div id="method_stop" class="method item">
   <h3 class="blue-method-name">stop</h3>
 
   <div class="meta method-meta">
       <p>
           Defined in
-      <a href="../files/src_Waud.hx.html#l304"><code>src&#x2F;Waud.hx:304</code></a>
+      <a href="../files/src_Waud.hx.html#l327"><code>src&#x2F;Waud.hx:327</code></a>
   </p>
 
 
@@ -1263,7 +1429,7 @@ Waud.playbackRate(1.25);</code></pre>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/src_Waud.hx.html#l172"><code>src&#x2F;Waud.hx:172</code></a>
+                          <a href="../files/src_Waud.hx.html#l163"><code>src&#x2F;Waud.hx:163</code></a>
                       </p>
                     
                     
@@ -1298,7 +1464,7 @@ Waud.playbackRate(1.25);</code></pre>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/src_Waud.hx.html#l162"><code>src&#x2F;Waud.hx:162</code></a>
+                          <a href="../files/src_Waud.hx.html#l153"><code>src&#x2F;Waud.hx:153</code></a>
                       </p>
                     
                     
@@ -1333,7 +1499,7 @@ Waud.playbackRate(1.25);</code></pre>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/src_Waud.hx.html#l193"><code>src&#x2F;Waud.hx:193</code></a>
+                          <a href="../files/src_Waud.hx.html#l184"><code>src&#x2F;Waud.hx:184</code></a>
                       </p>
                     
                     
@@ -1368,7 +1534,7 @@ Waud.playbackRate(1.25);</code></pre>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/src_Waud.hx.html#l183"><code>src&#x2F;Waud.hx:183</code></a>
+                          <a href="../files/src_Waud.hx.html#l174"><code>src&#x2F;Waud.hx:174</code></a>
                       </p>
                     
                     
@@ -1390,6 +1556,41 @@ Waud.playbackRate(1.25);</code></pre>
                         <div class="description">
                           <h3>Summary</h3>
                             <p>Global playback rate.</p>
+                    
+                        </div>
+                    
+                    
+                    
+                    
+                    </div>
+                    <div id="property__volume" class="property item private">
+                    
+                      <h3 class="blue-method-name">_volume</h3>
+                      <div class="meta method-meta">
+                          <p>
+                              Defined in
+                          <a href="../files/src_Waud.hx.html#l195"><code>src&#x2F;Waud.hx:195</code></a>
+                      </p>
+                    
+                    
+                      </div>
+                    
+                      <h3>Syntax</h3>
+                      <div class="blue-method-syntax">
+                        <h3 class="name"><code>_volume</code></h3>
+                        <span class="type">Float</span>
+                    
+                    
+                            <span class="flag private">private</span>
+                    
+                    
+                            <span class="flag static">static</span>
+                    
+                        </div>
+                    
+                        <div class="description">
+                          <h3>Summary</h3>
+                            <p>Current global volume.</p>
                     
                         </div>
                     
@@ -1514,7 +1715,7 @@ Waud.playbackRate(1.25);</code></pre>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/src_Waud.hx.html#l140"><code>src&#x2F;Waud.hx:140</code></a>
+                          <a href="../files/src_Waud.hx.html#l131"><code>src&#x2F;Waud.hx:131</code></a>
                       </p>
                     
                     
@@ -1590,7 +1791,7 @@ Waud.playbackRate(1.25);</code></pre>
                       <div class="meta method-meta">
                           <p>
                               Defined in
-                          <a href="../files/src_Waud.hx.html#l149"><code>src&#x2F;Waud.hx:149</code></a>
+                          <a href="../files/src_Waud.hx.html#l140"><code>src&#x2F;Waud.hx:140</code></a>
                       </p>
                     
                     
@@ -1711,40 +1912,6 @@ Waud.playbackRate(1.25);</code></pre>
                     
                           </div>
                         </div>
-                    
-                    </div>
-                    <div id="property_sampleRate" class="property item">
-                    
-                      <h3 class="blue-method-name">sampleRate</h3>
-                      <div class="meta method-meta">
-                          <p>
-                              Defined in
-                          <a href="../files/src_Waud.hx.html#l131"><code>src&#x2F;Waud.hx:131</code></a>
-                      </p>
-                    
-                    
-                      </div>
-                    
-                      <h3>Syntax</h3>
-                      <div class="blue-method-syntax">
-                        <h3 class="name"><code>sampleRate</code></h3>
-                        <span class="type">Float</span>
-                    
-                    
-                    
-                    
-                            <span class="flag static">static</span>
-                    
-                        </div>
-                    
-                        <div class="description">
-                          <h3>Summary</h3>
-                            <p>Audio Context sample rate.</p>
-                    
-                        </div>
-                    
-                    
-                    
                     
                     </div>
                     <div id="property_sounds" class="property item">

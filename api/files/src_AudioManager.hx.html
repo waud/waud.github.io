@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.8.0
+            API Docs for v0.8.1
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -86,6 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+import js.html.audio.GainNode;
 import js.html.AudioElement;
 import js.html.SourceElement;
 import js.html.audio.AudioBufferSourceNode;
@@ -111,6 +112,15 @@ class AudioManager {
 	* @type {AudioContext}
 	*/
 	public var audioContext(default, null):AudioContext;
+
+	/**
+	* Master Gain Node
+	*
+	* @property gainNode
+	* @protected
+	* @type {GainNode}
+	*/
+	public var masterGainNode(default, null):GainNode;
 
 	/**
 	* Audio buffer list.
@@ -214,12 +224,18 @@ class AudioManager {
 				else if (Reflect.field(Browser.window, &quot;webkitAudioContext&quot;) != null) {
 					audioContext = untyped __js__(&quot;new webkitAudioContext()&quot;);
 				}
+				masterGainNode = createGain();
 			}
 			catch (e:Dynamic) {
 				audioContext = null;
 			}
 		}
 		return audioContext;
+	}
+
+	public function createGain():GainNode {
+		if (audioContext.createGain != null) return audioContext.createGain();
+		else return Reflect.callMethod(audioContext, Reflect.field(audioContext, &quot;createGainNode&quot;), []);
 	}
 
 	/**

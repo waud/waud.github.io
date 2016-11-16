@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.8.0",
+        "version": "0.8.1",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -88,7 +88,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/AudioManager.hx",
-            "line": 48,
+            "line": 58,
             "description": "Audio Manager class instantiated in {{#crossLink \"Waud/init:method\"}}Waud.init{{/crossLink}} method.",
             "is_constructor": 1,
             "example": [
@@ -116,7 +116,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/WaudBase64Pack.hx",
-            "line": 20,
+            "line": 19,
             "description": "Class to load multiple base64 packed sounds from JSON.",
             "is_constructor": 1,
             "params": [
@@ -228,7 +228,7 @@
     "classitems": [
         {
             "file": "src/AudioManager.hx",
-            "line": 9,
+            "line": 10,
             "description": "Audio Types.",
             "itemtype": "property",
             "name": "types",
@@ -239,7 +239,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 18,
+            "line": 19,
             "description": "Audio Context instance.",
             "itemtype": "property",
             "name": "audioContext",
@@ -250,7 +250,18 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 27,
+            "line": 28,
+            "description": "Master Gain Node",
+            "itemtype": "property",
+            "name": "gainNode",
+            "access": "protected",
+            "tagname": "",
+            "type": "{GainNode}",
+            "class": "AudioManager"
+        },
+        {
+            "file": "src/AudioManager.hx",
+            "line": 37,
             "description": "Audio buffer list.",
             "itemtype": "property",
             "name": "bufferList",
@@ -261,7 +272,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 36,
+            "line": 46,
             "description": "Audio Context Class determined based on the browser type. Refer {{#crossLink \"AudioManager/checkWebAudioAPISupport:method\"}}{{/crossLink}} method.",
             "itemtype": "property",
             "name": "AudioContextClass",
@@ -273,7 +284,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 67,
+            "line": 77,
             "description": "Function to check web audio api support.\n\nUsed by {{#crossLink \"Waud/init:method\"}}Waud.init{{/crossLink}} method.",
             "itemtype": "method",
             "name": "checkWebAudioAPISupport",
@@ -281,7 +292,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 78,
+            "line": 88,
             "description": "Function to unlock audio on `touchend` event.\n\nUsed by {{#crossLink \"Waud/enableTouchUnlock:method\"}}Waud.enableTouchUnlock{{/crossLink}} method.",
             "itemtype": "method",
             "name": "unlockAudio",
@@ -289,7 +300,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 112,
+            "line": 122,
             "description": "Function to create audio context.\n\nUsed by {{#crossLink \"Waud/init:method\"}}Waud.init{{/crossLink}} method.",
             "itemtype": "method",
             "name": "createAudioContext",
@@ -300,7 +311,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 137,
+            "line": 153,
             "description": "Function to close audio context and reset all variables.\n\nUsed by {{#crossLink \"Waud/destroy:method\"}}Waud.destroy{{/crossLink}} method.",
             "itemtype": "method",
             "name": "destroy",
@@ -308,7 +319,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 153,
+            "line": 169,
             "description": "This function suspends the progression of time in the audio context, temporarily halting audio hardware access and reducing CPU/battery usage in the process.\nThis is useful if you want an application to power down the audio hardware when it will not be using an audio context for a while.",
             "itemtype": "method",
             "name": "suspendContext",
@@ -319,7 +330,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 167,
+            "line": 183,
             "description": "This function resumes the progression of time in an audio context that has previously been suspended.",
             "itemtype": "method",
             "name": "resumeContext",
@@ -454,16 +465,6 @@
         {
             "file": "src/Waud.hx",
             "line": 131,
-            "description": "Audio Context sample rate.",
-            "itemtype": "property",
-            "name": "sampleRate",
-            "static": 1,
-            "type": "{Float}",
-            "class": "Waud"
-        },
-        {
-            "file": "src/Waud.hx",
-            "line": 140,
             "description": "Document dom element used for appending sounds and touch events.",
             "itemtype": "property",
             "name": "dom",
@@ -473,7 +474,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 149,
+            "line": 140,
             "description": "State of audio, muted or not.",
             "itemtype": "property",
             "name": "isMuted",
@@ -488,7 +489,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 162,
+            "line": 153,
             "description": "Touch unlock callback reference.",
             "itemtype": "property",
             "name": "__touchUnlockCallback",
@@ -500,7 +501,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 172,
+            "line": 163,
             "description": "Audio element used to check audio support.",
             "itemtype": "property",
             "name": "__audioElement",
@@ -513,7 +514,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 183,
+            "line": 174,
             "description": "Global playback rate.",
             "itemtype": "property",
             "name": "_playbackRate",
@@ -525,7 +526,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 193,
+            "line": 184,
             "description": "Focus Manager reference used for `autoMute` functionality.",
             "itemtype": "property",
             "name": "_focusManager",
@@ -538,7 +539,20 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 204,
+            "line": 195,
+            "description": "Current global volume.",
+            "itemtype": "property",
+            "name": "_volume",
+            "static": 1,
+            "access": "private",
+            "tagname": "",
+            "type": "{Float}",
+            "readonly": "",
+            "class": "Waud"
+        },
+        {
+            "file": "src/Waud.hx",
+            "line": 206,
             "description": "To initialise the library, make sure you call this first.\n\nYou can also pass an optional parent DOM element to it where all the HTML5 sounds will be appended\nand also used for touch events to unlock audio on iOS devices.",
             "static": 1,
             "itemtype": "method",
@@ -559,7 +573,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 231,
+            "line": 234,
             "description": "Helper function to automatically mute audio when the browser window is not in focus.\n\nWill un-mute when the window gains focus.",
             "static": 1,
             "itemtype": "method",
@@ -571,7 +585,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 255,
+            "line": 250,
             "description": "Helper function to unlock audio on iOS devices.\n\nYou can pass an optional callback which will be triggered after unlocking audio.",
             "static": 1,
             "itemtype": "method",
@@ -591,7 +605,42 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 271,
+            "line": 266,
+            "description": "Function to set global volume.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "setVolume",
+            "params": [
+                {
+                    "name": "val",
+                    "description": "- Should be between 0 and 1.",
+                    "type": "Float"
+                }
+            ],
+            "example": [
+                "\n    Waud.setVolume(0.5);"
+            ],
+            "class": "Waud"
+        },
+        {
+            "file": "src/Waud.hx",
+            "line": 281,
+            "description": "Function to get global volume.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "getVolume",
+            "return": {
+                "description": "between 0 and 1",
+                "type": "Float"
+            },
+            "example": [
+                "\n    Waud.getVolume();"
+            ],
+            "class": "Waud"
+        },
+        {
+            "file": "src/Waud.hx",
+            "line": 294,
             "description": "Helper function to mute all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -612,7 +661,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 287,
+            "line": 310,
             "description": "Helper function to set playback rate of all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -636,7 +685,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 304,
+            "line": 327,
             "description": "Helper function to stop all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -648,7 +697,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 316,
+            "line": 339,
             "description": "Helper function to pause all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -660,7 +709,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 328,
+            "line": 351,
             "description": "Returns a string with all the format support information.",
             "static": 1,
             "itemtype": "method",
@@ -676,7 +725,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 346,
+            "line": 369,
             "description": "Function to check whether audio is supported or not.",
             "static": 1,
             "itemtype": "method",
@@ -692,7 +741,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 363,
+            "line": 386,
             "description": "Function to check `ogg` format support.",
             "static": 1,
             "itemtype": "method",
@@ -708,7 +757,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 377,
+            "line": 400,
             "description": "Function to check `wav` format support.",
             "static": 1,
             "itemtype": "method",
@@ -724,7 +773,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 391,
+            "line": 414,
             "description": "Function to check `mp3` format support.",
             "static": 1,
             "itemtype": "method",
@@ -740,7 +789,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 405,
+            "line": 428,
             "description": "Function to check `aac` format support.",
             "static": 1,
             "itemtype": "method",
@@ -756,7 +805,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 419,
+            "line": 442,
             "description": "Function to check `m4a` format support.",
             "static": 1,
             "itemtype": "method",
@@ -772,18 +821,23 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 433,
+            "line": 456,
             "description": "Function to get current sample rate of audio context.",
-            "access": "private",
-            "tagname": "",
             "static": 1,
             "itemtype": "method",
-            "name": "get_sampleRate",
+            "name": "getSampleRate",
+            "return": {
+                "description": "sample rate",
+                "type": "Float"
+            },
+            "example": [
+                "\n    Waud.getSampleRate();"
+            ],
             "class": "Waud"
         },
         {
             "file": "src/Waud.hx",
-            "line": 444,
+            "line": 469,
             "description": "Function to destroy audio context.",
             "static": 1,
             "itemtype": "method",
@@ -795,7 +849,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 65,
+            "line": 68,
             "description": "Function to load Base64 JSON.",
             "access": "private",
             "tagname": "",
@@ -812,7 +866,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 104,
+            "line": 107,
             "description": "Function to create base64 sound.",
             "access": "private",
             "tagname": "",
