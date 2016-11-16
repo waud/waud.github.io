@@ -86,6 +86,7 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
+import js.Browser;
 import js.html.audio.AudioBuffer;
 import js.html.XMLHttpRequestResponseType;
 import js.html.XMLHttpRequest;
@@ -269,13 +270,16 @@ import haxe.Json;
 	*     snd.setVolume(0.5);
 	*/
 	public function setVolume(val:Float, ?spriteName:String) {
-		if (isSpriteSound) {
-			if (spriteName != null &amp;&amp; _spriteSounds[spriteName] != null) _spriteSounds[spriteName].setVolume(val);
-			return;
-		}
+		if (Std.is(val, Int) || Std.is(val, Float)) {
+			if (isSpriteSound) {
+				if (spriteName != null &amp;&amp; _spriteSounds[spriteName] != null) _spriteSounds[spriteName].setVolume(val);
+				return;
+			}
 
-		if (_snd == null) return;
-		_snd.setVolume(val);
+			if (_snd == null) return;
+			_snd.setVolume(val);
+		}
+		else Browser.console.warn(&quot;Volume should be a number between 0 and 1. Received: &quot; + val);
 	}
 
 	/**
