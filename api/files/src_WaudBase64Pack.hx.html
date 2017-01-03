@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.8.1
+            API Docs for v0.9.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -99,10 +99,12 @@ import js.html.XMLHttpRequest;
 	var _options:WaudSoundOptions;
 	var _onLoaded:Map&lt;String, IWaudSound&gt; -&gt; Void;
 	var _onError:Void -&gt; Void;
-	var _onProgress:Float -&gt; Float -&gt; Void;
+	var _onProgress:Float -&gt; Void;
 	var _soundCount:Int;
 	var _loadCount:Int;
 	var _totalSize:Float;
+	var _soundsToLoad:Map&lt;String, String&gt;;
+	var _soundIds:Array&lt;String&gt;;
 
 	/**
 	* Class to load multiple base64 packed sounds from JSON.
@@ -131,7 +133,7 @@ import js.html.XMLHttpRequest;
 	*/
 	public function new(url:String,
 						?onLoaded:Map&lt;String, IWaudSound&gt; -&gt; Void,
-						?onProgress:Float -&gt; Float -&gt; Void,
+						?onProgress:Float -&gt; Void,
 						?onError:Void -&gt; Void,
 						?options:WaudSoundOptions = null) {
 		if (Waud.audioManager == null) {
@@ -165,28 +167,24 @@ import js.html.XMLHttpRequest;
 		var xobj = new XMLHttpRequest();
 		xobj.open(&quot;GET&quot;, base64Url, true);
 
-		if (_onProgress != null) {
-			xobj.onprogress = function(e:Dynamic) {
-				var meta = m.match(xobj.responseText);
-				if (meta &amp;&amp; _totalSize == 0) {
-					var metaInfo = Json.parse(&quot;{&quot; + m.matched(0) + &quot;}&quot;);
-					_totalSize = metaInfo.meta[1];
-				}
-				progress = e.lengthComputable ? e.loaded / e.total : e.loaded / _totalSize;
-				if (progress &gt; 1) progress = 1;
-				_onProgress(progress, e.loaded);
-			};
-		}
-
 		xobj.onreadystatechange = function() {
 			if (xobj.readyState == 4 &amp;&amp; xobj.status == 200) {
 				var res = Json.parse(xobj.responseText);
+				_soundsToLoad = new Map();
+				_soundIds = [];
 				for (n in Reflect.fields(res)) {
 					if (n == &quot;meta&quot;) continue;
-					_soundCount++;
-					if (Std.is(res, Array)) _createSound(Reflect.field(res, n).name, &quot;data:&quot; + Reflect.field(res, n).mime + &quot;;base64,&quot; + Reflect.field(res, n).data);
-					else _createSound(n, Reflect.field(res, n));
+					if (Std.is(res, Array)) {
+						_soundIds.push(Reflect.field(res, n).name);
+						_soundsToLoad.set(Reflect.field(res, n).name, &quot;data:&quot; + Reflect.field(res, n).mime + &quot;;base64,&quot; + Reflect.field(res, n).data);
+					}
+					else {
+						_soundIds.push(n);
+						_soundsToLoad.set(n, Reflect.field(res, n));
+					}
 				}
+				_soundCount = _soundIds.length;
+				_createSound(_soundIds.shift());
 			}
 		};
 		xobj.send(null);
@@ -198,10 +196,9 @@ import js.html.XMLHttpRequest;
 	* @private
 	* @method _createSound
 	* @param {String} id - sound id.
-	* @param {String} dataURI - sound data uri.
 	*/
-	function _createSound(id:String, dataURI:String) {
-		var snd = new WaudSound(dataURI, {
+	function _createSound(id:String) {
+		var snd = new WaudSound(_soundsToLoad.get(id), {
 			onload:function(s:IWaudSound) {
 				_sounds.set(id, s);
 				Waud.sounds.set(id, s);
@@ -226,14 +223,13 @@ import js.html.XMLHttpRequest;
 
 	function _checkProgress():Bool {
 		_loadCount++;
+		if (_onProgress != null) _onProgress(_loadCount / _soundCount);
 		if (_loadCount == _soundCount) {
+			_soundsToLoad = null;
 			if (_onLoaded != null) _onLoaded(_sounds);
-			if (progress == 0 &amp;&amp; _onProgress != null) {
-				progress = 1;
-				_onProgress(progress, _totalSize);
-			}
 			return true;
 		}
+		else _createSound(_soundIds.shift());
 		return false;
 	}
 }
