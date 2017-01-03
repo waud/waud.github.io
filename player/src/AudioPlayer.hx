@@ -47,7 +47,6 @@ class AudioPlayer {
 		"Windswept"
 	];
 	var currentSong:Int;
-	var loadCount:Int;
 
 	public function new() {
 		currentSong = 0;
@@ -73,12 +72,7 @@ class AudioPlayer {
 	}
 
 	function loadSounds() {
-		loadCount = 0;
-		soundPack = new Map();
-		for (snd in songs) {
-			var path = "sounds/" + snd + ".mp3";
-			soundPack[path] = new WebAudioAPISound("player/" + path, { onload: updateProgress });
-		}
+		var sounds = new WaudBase64Pack("player/sounds/sounds.json", onLoad, onProgress);
 
 		drawContext = canvas.getContext2d();
 		audioContext = Waud.audioContext;
@@ -98,13 +92,8 @@ class AudioPlayer {
 		load.innerText = "Loading Sounds 0%";
 	}
 
-	function updateProgress(snd:IWaudSound) {
-		loadCount++;
-		load.innerText = "Loading Sounds " + ((loadCount / songs.length) * 100) + "%";
-		if (loadCount == songs.length) onLoad();
-	}
-
-	function onLoad() {
+	function onLoad(snds:Map<String, IWaudSound>) {
+		soundPack = snds;
 		play.onclick = playSong;
 		next.onclick = nextSong;
 		previous.onclick = prevSong;
@@ -115,6 +104,12 @@ class AudioPlayer {
 		next.className = "button special icon small fa-step-forward";
 
 		load.className = "button small disabled";
+	}
+
+	function onProgress(val:Float) {
+		var per = Math.floor(val * 100);
+		if (per == 100) load.innerText = "please wait...";
+		else load.innerText = per < 10 ? "Loading Sounds 0" + per + "%" : "Loading Sounds " + per + "%";
 	}
 
 	function playSong() {
