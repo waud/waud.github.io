@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.0",
+        "version": "0.9.1",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -116,7 +116,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/WaudBase64Pack.hx",
-            "line": 21,
+            "line": 22,
             "description": "Class to load multiple base64 packed sounds from JSON.",
             "is_constructor": 1,
             "params": [
@@ -146,7 +146,19 @@
                 {
                     "name": "onError",
                     "description": "- on error callback.",
-                    "type": "Void> -> Void",
+                    "type": "Void -> Void",
+                    "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "- Sound options.",
+                    "type": "WaudSoundOptions",
+                    "optional": true
+                },
+                {
+                    "name": "sequentialLoad",
+                    "description": "- To create and decode sounds sequentially instead of concurrently.",
+                    "type": "Bool",
                     "optional": true
                 }
             ],
@@ -849,7 +861,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 70,
+            "line": 75,
             "description": "Function to load Base64 JSON.",
             "access": "private",
             "tagname": "",
@@ -866,7 +878,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 105,
+            "line": 114,
             "description": "Function to create base64 sound.",
             "access": "private",
             "tagname": "",

@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.0
+            API Docs for v0.9.1
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -105,6 +105,7 @@ import js.html.XMLHttpRequest;
 	var _totalSize:Float;
 	var _soundsToLoad:Map&lt;String, String&gt;;
 	var _soundIds:Array&lt;String&gt;;
+	var _sequentialLoad:Bool;
 
 	/**
 	* Class to load multiple base64 packed sounds from JSON.
@@ -115,7 +116,9 @@ import js.html.XMLHttpRequest;
 	* @param {WaudSoundOptions} [options] - Sound options.
 	* @param {IWaudSound&gt; -&gt; Void} [onLoaded] - on load callback.
 	* @param {Float -&gt; Void} [onProgress] - on progress callback.
-	* @param {Void&gt; -&gt; Void} [onError] - on error callback.
+	* @param {Void -&gt; Void} [onError] - on error callback.
+	* @param {WaudSoundOptions} [options] - Sound options.
+	* @param {Bool} [sequentialLoad] - To create and decode sounds sequentially instead of concurrently.
 	* @example
 	* 		var base64pack = new WaudBase64Pack(&quot;assets/sounds.json&quot;, _onLoad, _onProgress, _onError);
 	*
@@ -135,12 +138,14 @@ import js.html.XMLHttpRequest;
 						?onLoaded:Map&lt;String, IWaudSound&gt; -&gt; Void,
 						?onProgress:Float -&gt; Void,
 						?onError:Void -&gt; Void,
-						?options:WaudSoundOptions = null) {
+						?options:WaudSoundOptions = null,
+						?sequentialLoad:Bool = false) {
 		if (Waud.audioManager == null) {
 			trace(&quot;initialise Waud using Waud.init() before loading sounds&quot;);
 			return;
 		}
 
+		_sequentialLoad = sequentialLoad;
 		if (url.indexOf(&quot;.json&quot;) &gt; 0) {
 			progress = 0;
 			_options = WaudUtils.setDefaultOptions(options);
@@ -184,7 +189,11 @@ import js.html.XMLHttpRequest;
 					}
 				}
 				_soundCount = _soundIds.length;
-				_createSound(_soundIds.shift());
+
+				if (!_sequentialLoad) {
+					while (_soundIds.length &gt; 0) _createSound(_soundIds.shift());
+				}
+				else _createSound(_soundIds.shift());
 			}
 		};
 		xobj.send(null);
@@ -229,7 +238,7 @@ import js.html.XMLHttpRequest;
 			if (_onLoaded != null) _onLoaded(_sounds);
 			return true;
 		}
-		else _createSound(_soundIds.shift());
+		else if (_sequentialLoad) _createSound(_soundIds.shift());
 		return false;
 	}
 }
