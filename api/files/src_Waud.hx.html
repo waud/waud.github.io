@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.1
+            API Docs for v0.9.2
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -108,7 +108,7 @@ import js.Browser;
 	* @static
 	* @type {String}
 	*/
-	public static var version:String = &quot;0.9.1&quot;;
+	public static var version:String = &quot;0.9.2&quot;;
 
 	/**
 	* Tells whether to use web audio api or not.
@@ -316,7 +316,30 @@ import js.Browser;
 
 			sounds = new Map();
 			_volume = 1;
+
+			_sayHello();
 		}
+	}
+
+	static inline function _sayHello() {
+		if(Browser.navigator.userAgent.toLowerCase().indexOf(&quot;chrome&quot;) &gt; 1) {
+			var e = [
+				&quot;\n %c %c %c WAUD%c.%cJS%c v&quot; + version + &quot; %c  %c http://www.waudjs.com %c %c %c 📢 \n\n&quot;,
+				&quot;background: #32BEA6; padding:5px 0;&quot;,
+				&quot;background: #32BEA6; padding:5px 0;&quot;,
+				&quot;color: #E70000; background: #29162B; padding:5px 0;&quot;,
+				&quot;color: #F3B607; background: #29162B; padding:5px 0;&quot;,
+				&quot;color: #32BEA6; background: #29162B; padding:5px 0;&quot;,
+				&quot;color: #999999; background: #29162B; padding:5px 0;&quot;,
+				&quot;background: #32BEA6; padding:5px 0;&quot;,
+				&quot;background: #B8FCEF; padding:5px 0;&quot;,
+				&quot;background: #32BEA6; padding:5px 0;&quot;,
+				&quot;color: #E70000; background: #32BEA6; padding:5px 0;&quot;,
+				&quot;color: #FF2424; background: #FFFFFF; padding:5px 0;&quot;
+			];
+			untyped __js__(&quot;window.console.log&quot;).apply(Browser.window.console, e);
+		}
+		else Browser.window.console.log(&quot;WAUD.JS v&quot; + version + &quot; - http://www.waudjs.com&quot;);
 	}
 
 	/**
