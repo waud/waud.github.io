@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.3
+            API Docs for v0.9.4
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -180,6 +180,7 @@ import js.html.XMLHttpRequest;
 					_totalSize = metaInfo.meta[1];
 				}
 				progress = e.lengthComputable ? e.loaded / e.total : e.loaded / _totalSize;
+				if (progress &gt; 1) progress = 1;
 				_onProgress((80 / 100) * progress);
 			};
 		}
