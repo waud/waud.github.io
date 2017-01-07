@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.2",
+        "version": "0.9.3",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -878,7 +878,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 114,
+            "line": 126,
             "description": "Function to create base64 sound.",
             "access": "private",
             "tagname": "",
