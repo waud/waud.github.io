@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.5
+            API Docs for v0.9.6
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -108,7 +108,7 @@ import js.Browser;
 	* @static
 	* @type {String}
 	*/
-	public static var version:String = &quot;0.9.5&quot;;
+	public static var version:String = &quot;0.9.6&quot;;
 
 	/**
 	* Tells whether to use web audio api or not.
@@ -322,9 +322,10 @@ import js.Browser;
 	}
 
 	static inline function _sayHello() {
-		if(Browser.navigator.userAgent.toLowerCase().indexOf(&quot;chrome&quot;) &gt; 1) {
+		var support = isWebAudioSupported ? &quot;Web Audio&quot; : &quot;HTML5 Audio&quot;;
+		if (Browser.navigator.userAgent.toLowerCase().indexOf(&quot;chrome&quot;) &gt; 1) {
 			var e = [
-				&quot;\n %c %c %c WAUD%c.%cJS%c v&quot; + version + &quot; %c  %c http://www.waudjs.com %c %c %c 📢 \n\n&quot;,
+				&quot;\n %c %c %c WAUD%c.%cJS%c v&quot; + version + &quot; - &quot; + support + &quot; %c  %c http://www.waudjs.com %c %c %c 📢 \n\n&quot;,
 				&quot;background: #32BEA6; padding:5px 0;&quot;,
 				&quot;background: #32BEA6; padding:5px 0;&quot;,
 				&quot;color: #E70000; background: #29162B; padding:5px 0;&quot;,
@@ -339,7 +340,7 @@ import js.Browser;
 			];
 			untyped __js__(&quot;window.console.log&quot;).apply(Browser.window.console, e);
 		}
-		else Browser.window.console.log(&quot;WAUD.JS v&quot; + version + &quot; - http://www.waudjs.com&quot;);
+		else Browser.window.console.log(&quot;WAUD.JS v&quot; + version + &quot; - &quot; + support + &quot; - http://www.waudjs.com&quot;);
 	}
 
 	/**

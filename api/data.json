@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.5",
+        "version": "0.9.6",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -116,7 +116,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/WaudBase64Pack.hx",
-            "line": 22,
+            "line": 24,
             "description": "Class to load multiple base64 packed sounds from JSON.",
             "is_constructor": 1,
             "params": [
@@ -585,7 +585,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 257,
+            "line": 258,
             "description": "Helper function to automatically mute audio when the browser window is not in focus.\n\nWill un-mute when the window gains focus.",
             "static": 1,
             "itemtype": "method",
@@ -597,7 +597,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 273,
+            "line": 274,
             "description": "Helper function to unlock audio on iOS devices.\n\nYou can pass an optional callback which will be triggered after unlocking audio.",
             "static": 1,
             "itemtype": "method",
@@ -617,7 +617,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 289,
+            "line": 290,
             "description": "Function to set global volume.",
             "static": 1,
             "itemtype": "method",
@@ -636,7 +636,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 306,
+            "line": 307,
             "description": "Function to get global volume.",
             "static": 1,
             "itemtype": "method",
@@ -652,7 +652,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 319,
+            "line": 320,
             "description": "Helper function to mute all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -673,7 +673,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 335,
+            "line": 336,
             "description": "Helper function to set playback rate of all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -697,7 +697,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 352,
+            "line": 353,
             "description": "Helper function to stop all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -709,7 +709,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 364,
+            "line": 365,
             "description": "Helper function to pause all the sounds.",
             "static": 1,
             "itemtype": "method",
@@ -721,7 +721,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 376,
+            "line": 377,
             "description": "Returns a string with all the format support information.",
             "static": 1,
             "itemtype": "method",
@@ -737,7 +737,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 394,
+            "line": 395,
             "description": "Function to check whether audio is supported or not.",
             "static": 1,
             "itemtype": "method",
@@ -753,7 +753,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 411,
+            "line": 412,
             "description": "Function to check `ogg` format support.",
             "static": 1,
             "itemtype": "method",
@@ -769,7 +769,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 425,
+            "line": 426,
             "description": "Function to check `wav` format support.",
             "static": 1,
             "itemtype": "method",
@@ -785,7 +785,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 439,
+            "line": 440,
             "description": "Function to check `mp3` format support.",
             "static": 1,
             "itemtype": "method",
@@ -801,7 +801,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 453,
+            "line": 454,
             "description": "Function to check `aac` format support.",
             "static": 1,
             "itemtype": "method",
@@ -817,7 +817,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 467,
+            "line": 468,
             "description": "Function to check `m4a` format support.",
             "static": 1,
             "itemtype": "method",
@@ -833,7 +833,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 481,
+            "line": 482,
             "description": "Function to get current sample rate of audio context.",
             "static": 1,
             "itemtype": "method",
@@ -849,7 +849,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 494,
+            "line": 495,
             "description": "Function to destroy audio context.",
             "static": 1,
             "itemtype": "method",
@@ -861,7 +861,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 75,
+            "line": 77,
             "description": "Function to load Base64 JSON.",
             "access": "private",
             "tagname": "",
@@ -878,7 +878,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 127,
+            "line": 129,
             "description": "Function to create base64 sound.",
             "access": "private",
             "tagname": "",
