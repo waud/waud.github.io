@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.6",
+        "version": "0.9.7",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -1184,10 +1184,18 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 318,
+            "line": 317,
             "description": "Function to automatically pause or play the sound.",
             "itemtype": "method",
             "name": "togglePlay",
+            "params": [
+                {
+                    "name": "spriteName",
+                    "description": "- Sprite name to toggle play.",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
             "example": [
                 "\n    snd.togglePlay();"
             ],
@@ -1199,6 +1207,14 @@
             "description": "Function to check if the sound is playing or not.",
             "itemtype": "method",
             "name": "isPlaying",
+            "params": [
+                {
+                    "name": "spriteName",
+                    "description": "- Sprite name",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
             "return": {
                 "description": "true or false",
                 "type": "Bool"
@@ -1210,7 +1226,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 353,
+            "line": 354,
             "description": "Function to loop or unloop sound.",
             "itemtype": "method",
             "name": "loop",
@@ -1228,7 +1244,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 366,
+            "line": 367,
             "description": "Function to automatically stop the sound if it's already playing or play the sound in a different channel.\n\nBy default, sound will automatically stop if play is called on the sound that is already playing.",
             "itemtype": "method",
             "name": "autoStop",
@@ -1246,10 +1262,18 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 381,
+            "line": 382,
             "description": "Function to stop sound.",
             "itemtype": "method",
             "name": "stop",
+            "params": [
+                {
+                    "name": "spriteName",
+                    "description": "- Sprite name",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
             "example": [
                 "\n    snd.stop();"
             ],
@@ -1257,10 +1281,18 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 398,
+            "line": 400,
             "description": "Function to pause sound.",
             "itemtype": "method",
             "name": "pause",
+            "params": [
+                {
+                    "name": "spriteName",
+                    "description": "- Sprite name to pause.",
+                    "type": "String",
+                    "optional": true
+                }
+            ],
             "example": [
                 "\n    snd.pause();"
             ],
@@ -1268,7 +1300,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 415,
+            "line": 418,
             "description": "Function to set playback rate.",
             "itemtype": "method",
             "name": "playbackRate",
@@ -1291,7 +1323,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 437,
+            "line": 440,
             "description": "Function to set playback position in seconds.\n\n**Not supported for audio sprites yet.**",
             "itemtype": "method",
             "name": "setTime",
@@ -1309,7 +1341,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 452,
+            "line": 455,
             "description": "Function to get the current playback position in seconds.\n\n**Not supported for audio sprites yet.**",
             "itemtype": "method",
             "name": "getTime",
@@ -1320,7 +1352,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 466,
+            "line": 469,
             "description": "Function to add callback that triggers when the sound finishes playing.",
             "itemtype": "method",
             "name": "onEnd",
@@ -1342,7 +1374,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 487,
+            "line": 490,
             "description": "Function to add callback that triggers when the sound is loaded.",
             "itemtype": "method",
             "name": "onLoad",
@@ -1364,7 +1396,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 502,
+            "line": 505,
             "description": "Function to add callback that triggers when the sound fails to load or if it fails to decode when using web audio.",
             "itemtype": "method",
             "name": "onError",
@@ -1386,7 +1418,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 517,
+            "line": 520,
             "description": "Function to destroy sound.",
             "itemtype": "method",
             "name": "destroy",
