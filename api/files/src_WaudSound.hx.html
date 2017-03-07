@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.7
+            API Docs for v0.9.8
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -233,6 +233,22 @@ import haxe.Json;
 		}
 		else if (Waud.isHTML5AudioSupported) {
 			if (_spriteData != null &amp;&amp; _spriteData.sprite != null) {
+				var loadCount = 0;
+				var onLoad = (_options != null &amp;&amp; _options.onload != null) ? _options.onload : null;
+
+				var onLoadSpriteSound = function(snd:IWaudSound) {
+					loadCount++;
+					if (loadCount == _spriteData.sprite.length &amp;&amp; onLoad != null) onLoad(snd);
+				};
+
+				var onErrorSpriteSound = function(snd:IWaudSound) {
+					loadCount++;
+					if (loadCount == _spriteData.sprite.length &amp;&amp; onLoad != null) onLoad(snd);
+				};
+
+				if (_options == null) _options = {};
+				_options.onload = onLoadSpriteSound;
+				_options.onerror = onErrorSpriteSound;
 				for (snd in _spriteData.sprite) {
 					var sound = new HTML5Sound(url, _options);
 					sound.isSpriteSound = true;

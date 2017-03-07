@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.7
+            API Docs for v0.9.8
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -222,7 +222,7 @@ import js.html.XMLHttpRequest;
 	* @param {String} id - sound id.
 	*/
 	function _createSound(id:String) {
-		var snd = new WaudSound(_soundsToLoad.get(id), {
+		new WaudSound(_soundsToLoad.get(id), {
 			onload:function(s:IWaudSound) {
 				_sounds.set(id, s);
 				Waud.sounds.set(id, s);
