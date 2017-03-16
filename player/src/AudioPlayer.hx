@@ -59,9 +59,9 @@ class AudioPlayer {
 		next = cast Browser.document.getElementById("next");
 		canvas = cast Browser.document.getElementById("visualisation");
 
-		canvas.width = (Browser.window.innerWidth <= 320) ? Browser.window.innerWidth - 60 : 320;
+		canvas.width = (Browser.window.innerWidth <= 320) ? Std.int(Browser.window.innerWidth - 60) : 320;
 
-		title.innerText = "";
+		title.innerText = "NO AUDIO";
 		if (!Waud.isWebAudioSupported) {
 			load.innerText = "No Web Audio";
 			load.className = "button small disabled";

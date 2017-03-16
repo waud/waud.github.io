@@ -189,7 +189,7 @@
                 <li><a id="next" class="button disabled special icon small fa-step-forward">Next</a></li>
             </ul>
 
-            <h1 id="title">&nbsp;</h1>
+            <h1 id="title">NO AUDIO</h1>
             <canvas id="visualisation" style="border:1px solid #E70000;position: relative"></canvas>
 
             <p id="info">Sounds from <a href="orangefreesounds.com" target="_blank">orangefreesounds.com</a></p>
@@ -310,6 +310,13 @@
     window.onload = init;
 
     function init() {
+        var canvas = document.getElementById("visualisation");
+        var ctx = canvas.getContext("2d");
+        ctx.font = "15px Raleway";
+        ctx.fillStyle = "#E70000";
+        ctx.textAlign = "center";
+        ctx.fillText("AUDIO VISUALISER", canvas.width / 2, canvas.height / 2);
+
         setNPMBadges();
     }
 
