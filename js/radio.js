@@ -131,161 +131,6 @@ AudioManager.prototype = {
 	}
 	,__class__: AudioManager
 };
-var AudioPlayer = function() {
-	this.songs = ["80s-Music","Incidental","Nature-Ambient","Windswept"];
-	this.FFT_SIZE = 256;
-	this.SMOOTHING = 0.8;
-	this.currentSong = 0;
-	Waud.init();
-	this.load = window.document.getElementById("load");
-	this.title = window.document.getElementById("title");
-	this.play = window.document.getElementById("play");
-	this.previous = window.document.getElementById("previous");
-	this.next = window.document.getElementById("next");
-	this.canvas = window.document.getElementById("visualisation");
-	this.canvas.width = window.innerWidth <= 320 ? window.innerWidth - 60 | 0 : 320;
-	this.title.innerText = "NO AUDIO";
-	if(!Waud.isWebAudioSupported) {
-		this.load.innerText = "No Web Audio";
-		this.load.className = "button small disabled";
-		return;
-	}
-	this.load.onclick = $bind(this,this.loadSounds);
-};
-AudioPlayer.__name__ = true;
-AudioPlayer.main = function() {
-	new AudioPlayer();
-};
-AudioPlayer.prototype = {
-	loadSounds: function() {
-		var sounds = new WaudBase64Pack("player/sounds/sounds.json",$bind(this,this.onLoad),$bind(this,this.onProgress));
-		this.drawContext = this.canvas.getContext("2d",null);
-		this.audioContext = Waud.audioContext;
-		this.analyser = this.audioContext.createAnalyser();
-		this.analyser.connect(this.audioContext.destination);
-		this.analyser.minDecibels = -140;
-		this.analyser.maxDecibels = 0;
-		this.freqs = new Uint8Array(this.analyser.frequencyBinCount);
-		this.times = new Uint8Array(this.analyser.frequencyBinCount);
-		this.isPlaying = false;
-		this.startTime = 0;
-		this.startOffset = 0;
-		this.load.onclick = null;
-		this.load.innerText = "Loading Sounds 0%";
-	}
-	,onLoad: function(snds) {
-		this.soundPack = snds;
-		this.play.onclick = $bind(this,this.playSong);
-		this.next.onclick = $bind(this,this.nextSong);
-		this.previous.onclick = $bind(this,this.prevSong);
-		this.load.innerText = "Ready to Play Now";
-		this.play.className = "button special icon small fa-play";
-		this.previous.className = "button special icon small fa-step-backward";
-		this.next.className = "button special icon small fa-step-forward";
-		this.load.className = "button small disabled";
-	}
-	,onProgress: function(val) {
-		var per = Math.floor(val * 100);
-		if(per == 100) {
-			this.load.innerText = "please wait...";
-		} else {
-			this.load.innerText = per < 10 ? "Loading Sounds 0" + per + "%" : "Loading Sounds " + per + "%";
-		}
-	}
-	,playSong: function() {
-		if(!this.isPlaying) {
-			this.play.className = "button special icon small fa-pause";
-			this.play.innerHTML = "Pause";
-			var key = "sounds/" + this.songs[this.currentSong] + ".mp3";
-			var _this = this.soundPack;
-			var snd = __map_reserved[key] != null ? _this.getReserved(key) : _this.h[key];
-			snd.onEnd($bind(this,this.autoPlayNextSong));
-			this.start(snd);
-			this.title.innerText = StringTools.replace(this.songs[this.currentSong],"-"," ");
-		} else {
-			this.play.className = "button special icon small fa-play";
-			this.play.innerHTML = "Play";
-			this.pause();
-		}
-	}
-	,autoPlayNextSong: function(snd) {
-		this.nextSong();
-	}
-	,nextSong: function() {
-		this.currentSong++;
-		if(this.currentSong >= this.songs.length) {
-			this.currentSong = 0;
-		}
-		this.stop();
-		this.playSong();
-	}
-	,prevSong: function() {
-		this.currentSong--;
-		if(this.currentSong < 0) {
-			this.currentSong = this.songs.length - 1;
-		}
-		this.stop();
-		this.playSong();
-	}
-	,start: function(s) {
-		this.snd = s;
-		this.startTime = this.audioContext.currentTime;
-		this.snd.play();
-		this.snd.source.connect(this.analyser);
-		window.requestAnimationFrame($bind(this,this.draw));
-		this.isPlaying = true;
-		this.canvas.style.visibility = "visible";
-	}
-	,pause: function() {
-		this.snd.pause();
-		this.startOffset += this.snd.getTime() - this.startTime;
-		this.isPlaying = false;
-	}
-	,stop: function() {
-		this.snd.stop();
-		this.startOffset += this.snd.getTime() - this.startTime;
-		this.isPlaying = false;
-		this.canvas.style.visibility = "hidden";
-	}
-	,draw: function(t) {
-		if(window.innerWidth <= 320) {
-			this.FFT_SIZE = 128;
-		} else if(window.innerWidth <= 960) {
-			this.FFT_SIZE = 256;
-		} else {
-			this.FFT_SIZE = 512;
-		}
-		this.analyser.smoothingTimeConstant = this.SMOOTHING;
-		this.analyser.fftSize = this.FFT_SIZE;
-		this.analyser.getByteFrequencyData(this.freqs);
-		this.analyser.getByteTimeDomainData(this.times);
-		this.WIDTH = this.canvas.width;
-		this.HEIGHT = this.canvas.height;
-		this.canvas.width = this.WIDTH;
-		this.canvas.height = this.HEIGHT;
-		var _g1 = 0;
-		var _g = this.analyser.frequencyBinCount;
-		while(_g1 < _g) {
-			var i = _g1++;
-			var value = this.times[i];
-			var percent = value / 256;
-			var height = this.HEIGHT * percent;
-			var offset = this.HEIGHT - height - 1;
-			var barWidth = this.WIDTH / this.analyser.frequencyBinCount;
-			this.drawContext.fillStyle = "#E70000";
-			this.drawContext.fillRect(i * barWidth,offset,1,2);
-		}
-		if(this.isPlaying) {
-			window.requestAnimationFrame($bind(this,this.draw));
-		}
-	}
-	,getFrequencyValue: function(freq) {
-		var nyquist = this.audioContext.sampleRate / 2;
-		var index = Math.round(freq / nyquist * this.freqs.length);
-		return this.freqs[index];
-	}
-	,__class__: AudioPlayer
-};
 var BaseSound = function(sndUrl,options) {
 	this._b64 = new EReg("(^data:audio).*(;base64,)","i");
 	if(sndUrl == null || sndUrl == "") {
@@ -582,6 +427,81 @@ HxOverrides.cca = function(s,index) {
 	return x;
 };
 Math.__name__ = true;
+var Radio = function() {
+	var _gthis = this;
+	this.currentSong = 0;
+	Waud.init();
+	this.title = window.document.getElementById("title");
+	this.playing = window.document.getElementById("playing");
+	this.radiox = window.document.getElementById("radiox");
+	this.capital = window.document.getElementById("capital");
+	this.heart = window.document.getElementById("heart");
+	this.lbc = window.document.getElementById("lbc");
+	this.smooth = window.document.getElementById("smooth");
+	this.radiox.onclick = function() {
+		_gthis.playRadio("radiox");
+	};
+	this.capital.onclick = function() {
+		_gthis.playRadio("capital");
+	};
+	this.heart.onclick = function() {
+		_gthis.playRadio("heart");
+	};
+	this.lbc.onclick = function() {
+		_gthis.playRadio("lbc");
+	};
+	this.smooth.onclick = function() {
+		_gthis.playRadio("smooth");
+	};
+	this.title.innerText = "WAUD RADIO";
+	this.audioContext = Waud.audioContext;
+	this.stations = new haxe_ds_StringMap();
+	var _this = this.stations;
+	if(__map_reserved["radiox"] != null) {
+		_this.setReserved("radiox","http://ice-sov.musicradio.com/RadioXUKMP3");
+	} else {
+		_this.h["radiox"] = "http://ice-sov.musicradio.com/RadioXUKMP3";
+	}
+	var _this1 = this.stations;
+	if(__map_reserved["capital"] != null) {
+		_this1.setReserved("capital","http://ice-sov.musicradio.com/CapitalUK");
+	} else {
+		_this1.h["capital"] = "http://ice-sov.musicradio.com/CapitalUK";
+	}
+	var _this2 = this.stations;
+	if(__map_reserved["heart"] != null) {
+		_this2.setReserved("heart","http://ice-sov.musicradio.com/HeartUKMP3");
+	} else {
+		_this2.h["heart"] = "http://ice-sov.musicradio.com/HeartUKMP3";
+	}
+	var _this3 = this.stations;
+	if(__map_reserved["lbc"] != null) {
+		_this3.setReserved("lbc","http://ice-sov.musicradio.com/LBCUKMP3");
+	} else {
+		_this3.h["lbc"] = "http://ice-sov.musicradio.com/LBCUKMP3";
+	}
+	var _this4 = this.stations;
+	if(__map_reserved["smooth"] != null) {
+		_this4.setReserved("smooth","http://ice-sov.musicradio.com/SmoothUKMP3");
+	} else {
+		_this4.h["smooth"] = "http://ice-sov.musicradio.com/SmoothUKMP3";
+	}
+};
+Radio.__name__ = true;
+Radio.main = function() {
+	new Radio();
+};
+Radio.prototype = {
+	playRadio: function(station) {
+		if(this.snd != null) {
+			this.snd.destroy();
+		}
+		var _this = this.stations;
+		this.snd = new WaudSound(__map_reserved[station] != null ? _this.getReserved(station) : _this.h[station],{ autoplay : true, webaudio : false});
+		this.playing.innerText = "PLAYING: " + station;
+	}
+	,__class__: Radio
+};
 var Reflect = function() { };
 Reflect.__name__ = true;
 Reflect.field = function(o,field) {
@@ -590,18 +510,6 @@ Reflect.field = function(o,field) {
 	} catch( e ) {
 		return null;
 	}
-};
-Reflect.fields = function(o) {
-	var a = [];
-	if(o != null) {
-		var hasOwnProperty = Object.prototype.hasOwnProperty;
-		for( var f in o ) {
-		if(f != "__id__" && f != "hx__closures__" && hasOwnProperty.call(o,f)) {
-			a.push(f);
-		}
-		}
-	}
-	return a;
 };
 var Std = function() { };
 Std.__name__ = true;
@@ -617,11 +525,6 @@ Std.parseInt = function(x) {
 		return null;
 	}
 	return v;
-};
-var StringTools = function() { };
-StringTools.__name__ = true;
-StringTools.replace = function(s,sub,by) {
-	return s.split(sub).join(by);
 };
 var Waud = $hx_exports["Waud"] = function() { };
 Waud.__name__ = true;
@@ -846,152 +749,6 @@ Waud.destroy = function() {
 		Waud._focusManager.focus = null;
 		Waud._focusManager = null;
 	}
-};
-var WaudBase64Pack = $hx_exports["WaudBase64Pack"] = function(url,onLoaded,onProgress,onError,options,sequentialLoad) {
-	if(sequentialLoad == null) {
-		sequentialLoad = false;
-	}
-	if(Waud.audioManager == null) {
-		console.log("initialise Waud using Waud.init() before loading sounds");
-		return;
-	}
-	this._sequentialLoad = sequentialLoad;
-	if(url.indexOf(".json") > 0) {
-		this.progress = 0;
-		this._options = WaudUtils.setDefaultOptions(options);
-		this._totalSize = 0;
-		this._soundCount = 0;
-		this._loadCount = 0;
-		this._onLoaded = onLoaded;
-		this._onProgress = onProgress;
-		this._onError = onError;
-		this._sounds = new haxe_ds_StringMap();
-		this._loadBase64Json(url);
-	}
-};
-WaudBase64Pack.__name__ = true;
-WaudBase64Pack.prototype = {
-	_loadBase64Json: function(base64Url) {
-		var _gthis = this;
-		var m = new EReg("\"meta\":.[0-9]*,[0-9]*.","i");
-		var xobj = new XMLHttpRequest();
-		xobj.open("GET",base64Url,true);
-		if(this._onProgress != null) {
-			xobj.onprogress = function(e) {
-				var meta = m.match(xobj.responseText);
-				if(meta && _gthis._totalSize == 0) {
-					var metaInfo = JSON.parse("{" + m.matched(0) + "}");
-					_gthis._totalSize = metaInfo.meta[1];
-				}
-				_gthis.progress = e.lengthComputable ? e.loaded / e.total : e.loaded / _gthis._totalSize;
-				if(_gthis.progress > 1) {
-					_gthis.progress = 1;
-				}
-				_gthis._onProgress(0.8 * _gthis.progress);
-			};
-		}
-		xobj.onreadystatechange = function() {
-			if(xobj.readyState == 4 && xobj.status == 200) {
-				var res = JSON.parse(xobj.responseText);
-				_gthis._soundsToLoad = new haxe_ds_StringMap();
-				_gthis._soundIds = [];
-				var _g = 0;
-				var _g1 = Reflect.fields(res);
-				while(_g < _g1.length) {
-					var n = _g1[_g];
-					++_g;
-					if(n == "meta") {
-						continue;
-					}
-					if((res instanceof Array) && res.__enum__ == null) {
-						_gthis._soundIds.push(Reflect.field(res,n).name);
-						var this1 = _gthis._soundsToLoad;
-						var key = Reflect.field(res,n).name;
-						var value = "data:" + Std.string(Reflect.field(res,n).mime) + ";base64," + Std.string(Reflect.field(res,n).data);
-						var _this = this1;
-						if(__map_reserved[key] != null) {
-							_this.setReserved(key,value);
-						} else {
-							_this.h[key] = value;
-						}
-					} else {
-						_gthis._soundIds.push(n);
-						var this2 = _gthis._soundsToLoad;
-						var value1 = Reflect.field(res,n);
-						var _this1 = this2;
-						if(__map_reserved[n] != null) {
-							_this1.setReserved(n,value1);
-						} else {
-							_this1.h[n] = value1;
-						}
-					}
-				}
-				_gthis._soundCount = _gthis._soundIds.length;
-				if(!_gthis._sequentialLoad) {
-					while(_gthis._soundIds.length > 0) {
-						var tmp = _gthis._soundIds.shift();
-						_gthis._createSound(tmp);
-					}
-				} else {
-					var tmp1 = _gthis._soundIds.shift();
-					_gthis._createSound(tmp1);
-				}
-			}
-		};
-		xobj.send(null);
-	}
-	,_createSound: function(id) {
-		var _gthis = this;
-		var _this = this._soundsToLoad;
-		new WaudSound(__map_reserved[id] != null ? _this.getReserved(id) : _this.h[id],{ onload : function(s) {
-			var _this1 = _gthis._sounds;
-			if(__map_reserved[id] != null) {
-				_this1.setReserved(id,s);
-			} else {
-				_this1.h[id] = s;
-			}
-			var _this2 = Waud.sounds;
-			if(__map_reserved[id] != null) {
-				_this2.setReserved(id,s);
-			} else {
-				_this2.h[id] = s;
-			}
-			if(_gthis._options.onload != null) {
-				_gthis._options.onload(s);
-			}
-			_gthis._checkProgress();
-		}, onerror : function(s1) {
-			var _this3 = _gthis._sounds;
-			if(__map_reserved[id] != null) {
-				_this3.setReserved(id,null);
-			} else {
-				_this3.h[id] = null;
-			}
-			if(_gthis._options.onerror != null) {
-				_gthis._options.onerror(s1);
-			}
-			if(_gthis._checkProgress() && _gthis._onError != null) {
-				_gthis._onError();
-			}
-		}, autoplay : this._options.autoplay, autostop : this._options.autostop, loop : this._options.loop, onend : this._options.onend, playbackRate : this._options.playbackRate, preload : this._options.preload, volume : this._options.volume, webaudio : this._options.webaudio});
-	}
-	,_checkProgress: function() {
-		this._loadCount++;
-		if(this._onProgress != null) {
-			this._onProgress(0.8 + 0.199999999999999956 * (this._loadCount / this._soundCount));
-		}
-		if(this._loadCount == this._soundCount) {
-			this._soundsToLoad = null;
-			if(this._onLoaded != null) {
-				this._onLoaded(this._sounds);
-			}
-			return true;
-		} else if(this._sequentialLoad) {
-			this._createSound(this._soundIds.shift());
-		}
-		return false;
-	}
-	,__class__: WaudBase64Pack
 };
 var WaudFocusManager = $hx_exports["WaudFocusManager"] = function() {
 	var _gthis = this;
@@ -2415,7 +2172,6 @@ Waud.defaults = { autoplay : false, autostop : true, loop : false, preload : tru
 Waud.preferredSampleRate = 44100;
 Waud.isMuted = false;
 Waud._playbackRate = 1;
-WaudBase64Pack.JSON_PER = 0.8;
 WaudFocusManager.FOCUS_STATE = "focus";
 WaudFocusManager.BLUR_STATE = "blur";
 WaudFocusManager.ON_FOCUS = "onfocus";
@@ -2426,5 +2182,5 @@ WaudFocusManager.WINDOW = "window";
 WaudFocusManager.DOCUMENT = "document";
 js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
-AudioPlayer.main();
+Radio.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);
