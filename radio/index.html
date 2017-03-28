@@ -17,51 +17,46 @@
         </style>
 	</head>
 	<body class="is-loading">
-
 		<!-- Wrapper -->
-			<div id="wrapper">
+        <div id="wrapper">
+            <!-- Main -->
+            <section id="main">
+                <header>
+                    <h1 id="title">WAUD RADIO</h1>
+                    <span class="avatar">
+                        <img src="images/256.png" width="122" height="122" alt="Waud" />
+                    </span>
+                    <h2 id="playing">CLICK ON A STATION BELOW</h2>
+                </header>
 
-				<!-- Main -->
-					<section id="main">
-						<header>
-                            <h1 id="title">WAUD RADIO</h1>
-							<span class="avatar"><img src="images/256.png" width="122" height="122" alt="Waud" /></span>
+                <footer>
+                    <img id="radiox" src="images/radiox.png" align="Radio X" />
+                    <img id="capital" src="images/capital.png" alt="Capital" />&nbsp;&nbsp;
+                    <img id="heart" src="images/heart.png" alt="Heart" />&nbsp;&nbsp;
+                    <img id="smooth" src="images/smooth.png" alt="Smooth" />&nbsp;&nbsp;
+                    <img id="lbc" src="images/lbc.png" alt="LBC" /> <br/>
 
-                            <h2 id="playing">CLICK ON A STATION BELOW</h2>
-						</header>
+                    <p id="info">Stations from <a href="http://media-ice.musicradio.com/" target="_blank">Global Radio Streaming</a></p>
+                </footer>
+            </section>
 
-						<footer>
-                            <img id="radiox" src="images/radiox.png" align="Radio X" />
-                            <img id="capital" src="images/capital.png" alt="Capital" />&nbsp;&nbsp;
-                            <img id="heart" src="images/heart.png" alt="Heart" />&nbsp;&nbsp;
-                            <img id="smooth" src="images/smooth.png" alt="Smooth" />&nbsp;&nbsp;
-                            <img id="lbc" src="images/lbc.png" alt="LBC" /> <br/>
+            <!-- Footer -->
+            <footer id="footer">
+                <ul class="copyright">
+                    <li>&copy; Adi Reddy Mora</li>
+                    <li><a href="https://github.com/waud/waud" class="icon alt fa-github"> Github</a></li>
+                    <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
+                </ul>
+            </footer>
+        </div>
 
-                            <p id="info">Stations from <a href="http://media-ice.musicradio.com/" target="_blank">Global Radio Streaming</a></p>
-						</footer>
-					</section>
-
-				<!-- Footer -->
-					<footer id="footer">
-						<ul class="copyright">
-							<li>&copy; Adi Reddy Mora</li>
-                            <li><a href="https://github.com/waud/waud" class="icon alt fa-github"> Github</a></li>
-                            <li>Design: <a href="http://html5up.net" target="_blank">HTML5 UP</a></li>
-						</ul>
-					</footer>
-
-			</div>
-
-		<!-- Scripts -->
-			<!--[if lte IE 8]><script src="assets/js/respond.min.js"></script><![endif]-->
-			<script>
-				if ('addEventListener' in window) {
-					window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
-					document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
-				}
-			</script>
-
+        <!--[if lte IE 8]><script src="assets/js/respond.min.js"></script><![endif]-->
+        <script>
+            if ('addEventListener' in window) {
+                window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
+                document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+            }
+        </script>
         <script src="../js/radio.js"></script>
-
 	</body>
 </html>
