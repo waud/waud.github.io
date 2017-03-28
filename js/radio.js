@@ -484,6 +484,37 @@ var Radio = function() {
 	} else {
 		_this4.h["smooth"] = "http://ice-sov.musicradio.com/SmoothUKMP3";
 	}
+	this.labels = new haxe_ds_StringMap();
+	var _this5 = this.labels;
+	if(__map_reserved["radiox"] != null) {
+		_this5.setReserved("radiox","Radio X UK");
+	} else {
+		_this5.h["radiox"] = "Radio X UK";
+	}
+	var _this6 = this.labels;
+	if(__map_reserved["capital"] != null) {
+		_this6.setReserved("capital","Capital UK");
+	} else {
+		_this6.h["capital"] = "Capital UK";
+	}
+	var _this7 = this.labels;
+	if(__map_reserved["heart"] != null) {
+		_this7.setReserved("heart","Heart UK");
+	} else {
+		_this7.h["heart"] = "Heart UK";
+	}
+	var _this8 = this.labels;
+	if(__map_reserved["lbc"] != null) {
+		_this8.setReserved("lbc","LBC UK");
+	} else {
+		_this8.h["lbc"] = "LBC UK";
+	}
+	var _this9 = this.labels;
+	if(__map_reserved["smooth"] != null) {
+		_this9.setReserved("smooth","Smooth UK");
+	} else {
+		_this9.h["smooth"] = "Smooth UK";
+	}
 };
 Radio.__name__ = true;
 Radio.main = function() {
@@ -496,7 +527,9 @@ Radio.prototype = {
 		}
 		var _this = this.stations;
 		this.snd = new WaudSound(__map_reserved[station] != null ? _this.getReserved(station) : _this.h[station],{ autoplay : true, webaudio : false});
-		this.playing.innerText = "PLAYING: " + station;
+		var _this1 = this.labels;
+		var tmp = __map_reserved[station] != null ? _this1.getReserved(station) : _this1.h[station];
+		this.playing.innerText = tmp;
 	}
 	,__class__: Radio
 };

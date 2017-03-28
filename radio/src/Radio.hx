@@ -9,6 +9,7 @@ class Radio {
 	var snd:IWaudSound;
 
 	var stations:Map<String, String>;
+	var labels:Map<String, String>;
 
 	var title:Element;
 	var playing:Element;
@@ -44,12 +45,20 @@ class Radio {
 		stations.set("heart", "http://ice-sov.musicradio.com/HeartUKMP3");
 		stations.set("lbc", "http://ice-sov.musicradio.com/LBCUKMP3");
 		stations.set("smooth", "http://ice-sov.musicradio.com/SmoothUKMP3");
+
+		labels = new Map();
+		labels.set("radiox", "Radio X UK");
+		labels.set("capital", "Capital UK");
+		labels.set("heart", "Heart UK");
+		labels.set("lbc", "LBC UK");
+		labels.set("smooth", "Smooth UK");
+
 	}
 
 	function playRadio(station:String) {
 		if (snd != null) snd.destroy();
 		snd = new WaudSound(stations.get(station), { autoplay:true, webaudio:false });
-		playing.innerText = "PLAYING: " + station;
+		playing.innerText = labels.get(station);
 	}
 
 	static function main() {
