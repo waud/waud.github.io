@@ -429,7 +429,6 @@ HxOverrides.cca = function(s,index) {
 Math.__name__ = true;
 var Radio = function() {
 	var _gthis = this;
-	this.currentSong = 0;
 	Waud.init();
 	this.title = window.document.getElementById("title");
 	this.playing = window.document.getElementById("playing");
@@ -454,7 +453,6 @@ var Radio = function() {
 		_gthis.playRadio("smooth");
 	};
 	this.title.innerText = "WAUD RADIO";
-	this.audioContext = Waud.audioContext;
 	this.stations = new haxe_ds_StringMap();
 	var _this = this.stations;
 	if(__map_reserved["radiox"] != null) {
