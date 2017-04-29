@@ -778,7 +778,6 @@ var Main = function() {
 	this._ua = new PIXI.Text(window.navigator.userAgent,{ font : "12px Tahoma", fill : "#FFFFFF"});
 	this.stage.addChild(this._ua);
 	Waud.init();
-	Waud.autoMute();
 	Waud.enableTouchUnlock($bind(this,this.touchUnlock));
 	Waud.defaults.onload = $bind(this,this._onLoad);
 	this._bgSnd = new WaudSound("assets/loop.mp3",{ loop : true, autoplay : false, volume : 1, onload : $bind(this,this._playBgSound)});
