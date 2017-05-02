@@ -427,100 +427,100 @@ HxOverrides.cca = function(s,index) {
 	return x;
 };
 Math.__name__ = true;
-var Radio = function() {
+var RadioTelugu = function() {
 	var _gthis = this;
 	Waud.init();
 	this.title = window.document.getElementById("title");
 	this.playing = window.document.getElementById("playing");
-	this.radiox = window.document.getElementById("radiox");
-	this.capital = window.document.getElementById("capital");
-	this.heart = window.document.getElementById("radio9");
-	this.lbc = window.document.getElementById("radiogeetam");
-	this.smooth = window.document.getElementById("andhramirchi");
-	this.radiox.onclick = function() {
-		_gthis.playRadio("radiox");
+	this.adhurs = window.document.getElementById("adhurs");
+	this.radiodumdum = window.document.getElementById("radiodumdum");
+	this.radio9 = window.document.getElementById("radio9");
+	this.radiogeetam = window.document.getElementById("radiogeetam");
+	this.nuke = window.document.getElementById("nuke");
+	this.adhurs.onclick = function() {
+		_gthis.playRadio("adhurs");
 	};
-	this.capital.onclick = function() {
-		_gthis.playRadio("capital");
+	this.radiodumdum.onclick = function() {
+		_gthis.playRadio("radiodumdum");
 	};
-	this.heart.onclick = function() {
+	this.radio9.onclick = function() {
 		_gthis.playRadio("radio9");
 	};
-	this.lbc.onclick = function() {
+	this.radiogeetam.onclick = function() {
 		_gthis.playRadio("radiogeetam");
 	};
-	this.smooth.onclick = function() {
-		_gthis.playRadio("andhramirchi");
+	this.nuke.onclick = function() {
+		_gthis.playRadio("nuke");
 	};
-	this.title.innerText = "WAUD RADIO";
+	this.title.innerText = "WAUD RADIO TELUGU";
 	this.stations = new haxe_ds_StringMap();
 	var _this = this.stations;
-	if(__map_reserved["radiox"] != null) {
-		_this.setReserved("radiox","http://ice-sov.musicradio.com/RadioXUKMP3");
+	if(__map_reserved["adhurs"] != null) {
+		_this.setReserved("adhurs","http://stream.radiojar.com/265xy1sdxwwtv");
 	} else {
-		_this.h["radiox"] = "http://ice-sov.musicradio.com/RadioXUKMP3";
+		_this.h["adhurs"] = "http://stream.radiojar.com/265xy1sdxwwtv";
 	}
 	var _this1 = this.stations;
-	if(__map_reserved["capital"] != null) {
-		_this1.setReserved("capital","http://ice-sov.musicradio.com/CapitalUK");
+	if(__map_reserved["radiodumdum"] != null) {
+		_this1.setReserved("radiodumdum","http://hyd.radiodumdum.com:8000/stream");
 	} else {
-		_this1.h["capital"] = "http://ice-sov.musicradio.com/CapitalUK";
+		_this1.h["radiodumdum"] = "http://hyd.radiodumdum.com:8000/stream";
 	}
 	var _this2 = this.stations;
 	if(__map_reserved["radio9"] != null) {
-		_this2.setReserved("radio9","http://ice-sov.musicradio.com/HeartUKMP3");
+		_this2.setReserved("radio9","http://174.37.252.208:8530/;stream.mp3");
 	} else {
-		_this2.h["radio9"] = "http://ice-sov.musicradio.com/HeartUKMP3";
+		_this2.h["radio9"] = "http://174.37.252.208:8530/;stream.mp3";
 	}
 	var _this3 = this.stations;
 	if(__map_reserved["radiogeetam"] != null) {
-		_this3.setReserved("radiogeetam","http://ice-sov.musicradio.com/LBCUKMP3");
+		_this3.setReserved("radiogeetam","http://149.56.175.167:5700/stream");
 	} else {
-		_this3.h["radiogeetam"] = "http://ice-sov.musicradio.com/LBCUKMP3";
+		_this3.h["radiogeetam"] = "http://149.56.175.167:5700/stream";
 	}
 	var _this4 = this.stations;
-	if(__map_reserved["andhramirchi"] != null) {
-		_this4.setReserved("andhramirchi","http://ice-sov.musicradio.com/SmoothUKMP3");
+	if(__map_reserved["nuke"] != null) {
+		_this4.setReserved("nuke","http://live.nukeradio.com:8000/Stream3");
 	} else {
-		_this4.h["andhramirchi"] = "http://ice-sov.musicradio.com/SmoothUKMP3";
+		_this4.h["nuke"] = "http://live.nukeradio.com:8000/Stream3";
 	}
 	this.labels = new haxe_ds_StringMap();
 	var _this5 = this.labels;
-	if(__map_reserved["radiox"] != null) {
-		_this5.setReserved("radiox","Radio X UK");
+	if(__map_reserved["adhurs"] != null) {
+		_this5.setReserved("adhurs","Radio Adhurs");
 	} else {
-		_this5.h["radiox"] = "Radio X UK";
+		_this5.h["adhurs"] = "Radio Adhurs";
 	}
 	var _this6 = this.labels;
-	if(__map_reserved["capital"] != null) {
-		_this6.setReserved("capital","Capital UK");
+	if(__map_reserved["radiodumdum"] != null) {
+		_this6.setReserved("radiodumdum","Radio Dum Dum");
 	} else {
-		_this6.h["capital"] = "Capital UK";
+		_this6.h["radiodumdum"] = "Radio Dum Dum";
 	}
 	var _this7 = this.labels;
 	if(__map_reserved["radio9"] != null) {
-		_this7.setReserved("radio9","Heart UK");
+		_this7.setReserved("radio9","Radio 9");
 	} else {
-		_this7.h["radio9"] = "Heart UK";
+		_this7.h["radio9"] = "Radio 9";
 	}
 	var _this8 = this.labels;
 	if(__map_reserved["radiogeetam"] != null) {
-		_this8.setReserved("radiogeetam","LBC UK");
+		_this8.setReserved("radiogeetam","Radio Geetam");
 	} else {
-		_this8.h["radiogeetam"] = "LBC UK";
+		_this8.h["radiogeetam"] = "Radio Geetam";
 	}
 	var _this9 = this.labels;
-	if(__map_reserved["andhramirchi"] != null) {
-		_this9.setReserved("andhramirchi","Smooth UK");
+	if(__map_reserved["nuke"] != null) {
+		_this9.setReserved("nuke","Nuke Radio");
 	} else {
-		_this9.h["andhramirchi"] = "Smooth UK";
+		_this9.h["nuke"] = "Nuke Radio";
 	}
 };
-Radio.__name__ = true;
-Radio.main = function() {
-	new Radio();
+RadioTelugu.__name__ = true;
+RadioTelugu.main = function() {
+	new RadioTelugu();
 };
-Radio.prototype = {
+RadioTelugu.prototype = {
 	playRadio: function(station) {
 		if(this.snd != null) {
 			this.snd.destroy();
@@ -531,7 +531,7 @@ Radio.prototype = {
 		var tmp = __map_reserved[station] != null ? _this1.getReserved(station) : _this1.h[station];
 		this.playing.innerText = tmp;
 	}
-	,__class__: Radio
+	,__class__: RadioTelugu
 };
 var Reflect = function() { };
 Reflect.__name__ = true;
@@ -2213,5 +2213,5 @@ WaudFocusManager.WINDOW = "window";
 WaudFocusManager.DOCUMENT = "document";
 js_Boot.__toStr = ({ }).toString;
 js_html_compat_Uint8Array.BYTES_PER_ELEMENT = 1;
-Radio.main();
+RadioTelugu.main();
 })(typeof exports != "undefined" ? exports : typeof window != "undefined" ? window : typeof self != "undefined" ? self : this, typeof window != "undefined" ? window : typeof global != "undefined" ? global : typeof self != "undefined" ? self : this);

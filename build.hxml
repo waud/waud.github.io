@@ -19,3 +19,10 @@ Visualizer
 -lib random
 -main Radio
 -js js/radio.js
+
+--next
+-cp ../waud/src
+-cp radio/src
+-lib random
+-main RadioTelugu
+-js js/radiotelugu.js
