@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.9
+            API Docs for v0.9.12
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -187,28 +187,40 @@ import js.html.XMLHttpRequest;
 			};
 		}
 
-		xobj.onreadystatechange = function() {
-			if (xobj.readyState == 4 &amp;&amp; xobj.status == 200) {
-				var res = Json.parse(xobj.responseText);
-				_soundsToLoad = new Map();
-				_soundIds = [];
-				for (n in Reflect.fields(res)) {
-					if (n == &quot;meta&quot;) continue;
-					if (Std.is(res, Array)) {
-						_soundIds.push(Reflect.field(res, n).name);
-						_soundsToLoad.set(Reflect.field(res, n).name, &quot;data:&quot; + Reflect.field(res, n).mime + &quot;;base64,&quot; + Reflect.field(res, n).data);
-					}
-					else {
-						_soundIds.push(n);
-						_soundsToLoad.set(n, Reflect.field(res, n));
-					}
-				}
-				_soundCount = _soundIds.length;
+		if (_onError != null) {
+			xobj.onerror = function(e:Dynamic) {
+				_onError();
+			};
+		}
 
-				if (!_sequentialLoad) {
-					while (_soundIds.length &gt; 0) _createSound(_soundIds.shift());
+		xobj.onreadystatechange = function() {
+			if (xobj.readyState == 4) {
+				switch (xobj.status) {
+					case 200:
+						var res = Json.parse(xobj.responseText);
+						_soundsToLoad = new Map();
+						_soundIds = [];
+						for (n in Reflect.fields(res)) {
+							if (n == &quot;meta&quot;) continue;
+							if (Std.is(res, Array)) {
+								_soundIds.push(Reflect.field(res, n).name);
+								_soundsToLoad.set(Reflect.field(res, n).name, &quot;data:&quot; + Reflect.field(res, n).mime + &quot;;base64,&quot; + Reflect.field(res, n).data);
+							}
+							else {
+								_soundIds.push(n);
+								_soundsToLoad.set(n, Reflect.field(res, n));
+							}
+						}
+						_soundCount = _soundIds.length;
+
+						if (!_sequentialLoad) {
+							while (_soundIds.length &gt; 0) _createSound(_soundIds.shift());
+						}
+						else _createSound(_soundIds.shift());
+
+					case 404:
+						_onError();
 				}
-				else _createSound(_soundIds.shift());
 			}
 		};
 		xobj.send(null);

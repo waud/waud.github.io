@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.9",
+        "version": "0.9.12",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -722,6 +722,37 @@
         {
             "file": "src/Waud.hx",
             "line": 377,
+            "description": "Helper function to play sounds sequentially. This function assumes sounds are already initialised and loaded.",
+            "static": 1,
+            "itemtype": "method",
+            "name": "playSequence",
+            "params": [
+                {
+                    "name": "snds",
+                    "description": "- Array of sounds to play sequentially",
+                    "type": "Array<String>"
+                },
+                {
+                    "name": "onComplete",
+                    "description": "- Optional callback that triggers after playing all sounds in the sequence.",
+                    "type": "Function",
+                    "optional": true
+                },
+                {
+                    "name": "onSoundComplete",
+                    "description": "- Optional callback that triggers after playing each sounds in the sequence.",
+                    "type": "Function",
+                    "optional": true
+                }
+            ],
+            "example": [
+                "\n    Waud.playSequence([\"snd1\", \"snd2\", \"snd3\"]);\n    Waud.playSequence([\"snd1\", \"snd2\", \"snd3\"], onComplete);\n    Waud.playSequence([\"snd1\", \"snd2\", \"snd3\"], onComplete, onSoundComplete);"
+            ],
+            "class": "Waud"
+        },
+        {
+            "file": "src/Waud.hx",
+            "line": 417,
             "description": "Returns a string with all the format support information.",
             "static": 1,
             "itemtype": "method",
@@ -737,7 +768,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 395,
+            "line": 435,
             "description": "Function to check whether audio is supported or not.",
             "static": 1,
             "itemtype": "method",
@@ -753,7 +784,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 412,
+            "line": 452,
             "description": "Function to check `ogg` format support.",
             "static": 1,
             "itemtype": "method",
@@ -769,7 +800,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 426,
+            "line": 466,
             "description": "Function to check `wav` format support.",
             "static": 1,
             "itemtype": "method",
@@ -785,7 +816,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 440,
+            "line": 480,
             "description": "Function to check `mp3` format support.",
             "static": 1,
             "itemtype": "method",
@@ -801,7 +832,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 454,
+            "line": 494,
             "description": "Function to check `aac` format support.",
             "static": 1,
             "itemtype": "method",
@@ -817,7 +848,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 468,
+            "line": 508,
             "description": "Function to check `m4a` format support.",
             "static": 1,
             "itemtype": "method",
@@ -833,7 +864,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 482,
+            "line": 522,
             "description": "Function to get current sample rate of audio context.",
             "static": 1,
             "itemtype": "method",
@@ -849,7 +880,7 @@
         },
         {
             "file": "src/Waud.hx",
-            "line": 495,
+            "line": 535,
             "description": "Function to destroy audio context.",
             "static": 1,
             "itemtype": "method",
@@ -878,7 +909,7 @@
         },
         {
             "file": "src/WaudBase64Pack.hx",
-            "line": 129,
+            "line": 141,
             "description": "Function to create base64 sound.",
             "access": "private",
             "tagname": "",

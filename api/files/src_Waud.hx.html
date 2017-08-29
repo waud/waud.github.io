@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.9
+            API Docs for v0.9.12
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -108,7 +108,7 @@ import js.Browser;
 	* @static
 	* @type {String}
 	*/
-	public static var version:String = &quot;0.9.9&quot;;
+	public static var version:String = &quot;0.9.12&quot;;
 
 	/**
 	* Tells whether to use web audio api or not.
@@ -460,6 +460,46 @@ import js.Browser;
 	*/
 	public static function pause() {
 		if (sounds != null) for (sound in sounds) sound.pause();
+	}
+
+	/**
+	* Helper function to play sounds sequentially. This function assumes sounds are already initialised and loaded.
+	*
+	* @static
+	* @method playSequence
+	* @param {Array&lt;String&gt;} snds - Array of sounds to play sequentially
+	* @param {Function} [onComplete] - Optional callback that triggers after playing all sounds in the sequence.
+	* @param {Function} [onSoundComplete] - Optional callback that triggers after playing each sounds in the sequence.
+	* @example
+	*     Waud.playSequence([&quot;snd1&quot;, &quot;snd2&quot;, &quot;snd3&quot;]);
+	*     Waud.playSequence([&quot;snd1&quot;, &quot;snd2&quot;, &quot;snd3&quot;], onComplete);
+	*     Waud.playSequence([&quot;snd1&quot;, &quot;snd2&quot;, &quot;snd3&quot;], onComplete, onSoundComplete);
+	*/
+	public static function playSequence(snds:Array&lt;String&gt;, ?onComplete:Void -&gt; Void, ?onSoundComplete:String -&gt; Void) {
+		if (snds == null || snds.length == 0) return;
+		for (snd in snds) {
+			if (sounds.get(snd) == null) {
+				trace(&quot;Unable to find \&quot;&quot; + snd + &quot;\&quot; to play sequence&quot;);
+				return;
+			}
+		}
+
+		var playSound:Void -&gt; Void;
+		playSound = function() {
+			if (snds.length &gt; 0) {
+				var sndStr = snds.shift();
+				var sndToPlay:IWaudSound = sounds.get(sndStr);
+				sndToPlay.play();
+				sndToPlay.onEnd(function(snd:IWaudSound) {
+					if (onSoundComplete != null) onSoundComplete(sndStr);
+					playSound();
+				});
+			}
+			else {
+				if (onComplete != null) onComplete();
+			}
+		}
+		playSound();
 	}
 
 	/**
