@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.12
+            API Docs for v0.9.13
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -108,7 +108,7 @@ import js.Browser;
 	* @static
 	* @type {String}
 	*/
-	public static var version:String = &quot;0.9.12&quot;;
+	public static var version:String = &quot;0.9.13&quot;;
 
 	/**
 	* Tells whether to use web audio api or not.
@@ -484,7 +484,7 @@ import js.Browser;
 			}
 		}
 
-		var playSound:Void -&gt; Void;
+		var playSound:Void -&gt; Void = null;
 		playSound = function() {
 			if (snds.length &gt; 0) {
 				var sndStr = snds.shift();
