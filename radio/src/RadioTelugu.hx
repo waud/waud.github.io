@@ -15,10 +15,10 @@ class RadioTelugu {
 	var playing:Element;
 
 	var adhurs:ImageElement;
-	var radiodumdum:ImageElement;
+	var spicefm:ImageElement;
 	var radio9:ImageElement;
 	var radiogeetam:ImageElement;
-	var nuke:ImageElement;
+	var mastitime:ImageElement;
 
 	public function new() {
 		Waud.init();
@@ -26,32 +26,32 @@ class RadioTelugu {
 		title = cast Browser.document.getElementById("title");
 		playing = cast Browser.document.getElementById("playing");
 		adhurs = cast Browser.document.getElementById("adhurs");
-		radiodumdum = cast Browser.document.getElementById("radiodumdum");
+		spicefm = cast Browser.document.getElementById("spicefm");
 		radio9 = cast Browser.document.getElementById("radio9");
 		radiogeetam = cast Browser.document.getElementById("radiogeetam");
-		nuke = cast Browser.document.getElementById("nuke");
+		mastitime = cast Browser.document.getElementById("mastitime");
 
 		adhurs.onclick = function() playRadio("adhurs");
-		radiodumdum.onclick = function() playRadio("radiodumdum");
+		spicefm.onclick = function() playRadio("spicefm");
 		radio9.onclick = function() playRadio("radio9");
 		radiogeetam.onclick = function() playRadio("radiogeetam");
-		nuke.onclick = function() playRadio("nuke");
+		mastitime.onclick = function() playRadio("mastitime");
 
 		title.innerText = "WAUD RADIO TELUGU";
 
 		stations = new Map();
 		stations.set("adhurs", "http://stream.radiojar.com/265xy1sdxwwtv");
-		stations.set("radiodumdum", "http://hyd.radiodumdum.com:8000/stream");
+		stations.set("spicefm", "http://fmout.spicefm.in:8000/spice_b");
 		stations.set("radio9", "http://174.37.252.208:8530/;stream.mp3");
 		stations.set("radiogeetam", "http://149.56.175.167:5700/stream");
-		stations.set("nuke", "http://live.nukeradio.com:8000/Stream3");
+		stations.set("mastitime", "http://ice41.securenetsystems.net/DPMASTI?type=.mp3");
 
 		labels = new Map();
 		labels.set("adhurs", "Radio Adhurs");
-		labels.set("radiodumdum", "Radio Dum Dum");
+		labels.set("spicefm", "Spice FM");
 		labels.set("radio9", "Radio 9");
 		labels.set("radiogeetam", "Radio Geetam");
-		labels.set("nuke", "Nuke Radio");
+		labels.set("mastitime", "Masti Time");
 
 	}
 
