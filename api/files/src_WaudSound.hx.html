@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.15
+            API Docs for v0.9.16
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -383,9 +383,13 @@ import haxe.Json;
 	*/
 	public function isReady():Bool {
 		if (isSpriteSound) {
-			for (snd in _spriteSounds) return snd.isReady();
+			if (_spriteData == null) return false;
+			for (snd in _spriteSounds) {
+				if (!snd.isReady()) return false;
+			}
+			return true;
 		}
-		return _snd.isReady();
+		return _snd != null &amp;&amp; _snd.isReady();
 	}
 
 	/**

@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.15",
+        "version": "0.9.16",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -1198,7 +1198,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 303,
+            "line": 307,
             "description": "Function to play the sound with optional sprite name when using audio sprite.",
             "itemtype": "method",
             "name": "play",
@@ -1221,7 +1221,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 333,
+            "line": 337,
             "description": "Function to automatically pause or play the sound.",
             "itemtype": "method",
             "name": "togglePlay",
@@ -1240,7 +1240,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 351,
+            "line": 355,
             "description": "Function to check if the sound is playing or not.",
             "itemtype": "method",
             "name": "isPlaying",
@@ -1263,7 +1263,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 370,
+            "line": 374,
             "description": "Function to loop or unloop sound.",
             "itemtype": "method",
             "name": "loop",
@@ -1281,7 +1281,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 383,
+            "line": 387,
             "description": "Function to automatically stop the sound if it's already playing or play the sound in a different channel.\n\nBy default, sound will automatically stop if play is called on the sound that is already playing.",
             "itemtype": "method",
             "name": "autoStop",
@@ -1299,7 +1299,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 398,
+            "line": 402,
             "description": "Function to stop sound.",
             "itemtype": "method",
             "name": "stop",
@@ -1318,7 +1318,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 416,
+            "line": 420,
             "description": "Function to pause sound.",
             "itemtype": "method",
             "name": "pause",
@@ -1337,7 +1337,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 434,
+            "line": 438,
             "description": "Function to set playback rate.",
             "itemtype": "method",
             "name": "playbackRate",
@@ -1360,7 +1360,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 456,
+            "line": 460,
             "description": "Function to set playback position in seconds.\n\n**Not supported for audio sprites yet.**",
             "itemtype": "method",
             "name": "setTime",
@@ -1378,7 +1378,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 471,
+            "line": 475,
             "description": "Function to get the current playback position in seconds.\n\n**Not supported for audio sprites yet.**",
             "itemtype": "method",
             "name": "getTime",
@@ -1389,7 +1389,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 485,
+            "line": 489,
             "description": "Function to add callback that triggers when the sound finishes playing.",
             "itemtype": "method",
             "name": "onEnd",
@@ -1411,7 +1411,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 506,
+            "line": 510,
             "description": "Function to add callback that triggers when the sound is loaded.",
             "itemtype": "method",
             "name": "onLoad",
@@ -1433,7 +1433,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 521,
+            "line": 525,
             "description": "Function to add callback that triggers when the sound fails to load or if it fails to decode when using web audio.",
             "itemtype": "method",
             "name": "onError",
@@ -1455,7 +1455,7 @@
         },
         {
             "file": "src/WaudSound.hx",
-            "line": 536,
+            "line": 540,
             "description": "Function to destroy sound.",
             "itemtype": "method",
             "name": "destroy",
