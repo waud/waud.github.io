@@ -312,7 +312,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 122,
+            "line": 124,
             "description": "Function to create audio context.\n\nUsed by {{#crossLink \"Waud/init:method\"}}Waud.init{{/crossLink}} method.",
             "itemtype": "method",
             "name": "createAudioContext",
@@ -323,7 +323,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 153,
+            "line": 155,
             "description": "Function to close audio context and reset all variables.\n\nUsed by {{#crossLink \"Waud/destroy:method\"}}Waud.destroy{{/crossLink}} method.",
             "itemtype": "method",
             "name": "destroy",
@@ -331,7 +331,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 169,
+            "line": 171,
             "description": "This function suspends the progression of time in the audio context, temporarily halting audio hardware access and reducing CPU/battery usage in the process.\nThis is useful if you want an application to power down the audio hardware when it will not be using an audio context for a while.",
             "itemtype": "method",
             "name": "suspendContext",
@@ -342,7 +342,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 183,
+            "line": 185,
             "description": "This function resumes the progression of time in an audio context that has previously been suspended.",
             "itemtype": "method",
             "name": "resumeContext",
