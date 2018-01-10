@@ -41,7 +41,6 @@ AudioManager.prototype = {
 			if(Waud.__touchUnlockCallback != null) Waud.__touchUnlockCallback();
 			Waud.dom.ontouchend = null;
 		}
-		console.log("STATE: " + Std.string(this.audioContext.state));
 		if(this.audioContext.state == "suspended") this.audioContext.resume();
 	}
 	,_unlockCallback: function() {

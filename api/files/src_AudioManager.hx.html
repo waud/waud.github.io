@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v0.9.16
+            API Docs for v1.0.0
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -200,7 +200,6 @@ class AudioManager {
 			audio.play();
 			_unlockCallback();
 		}
-		trace(&quot;STATE: &quot; + audioContext.state);
 		if (audioContext.state == &quot;suspended&quot;) audioContext.resume();
 	}
 

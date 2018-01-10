@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "0.9.16",
+        "version": "1.0.0",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -312,7 +312,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 124,
+            "line": 123,
             "description": "Function to create audio context.\n\nUsed by {{#crossLink \"Waud/init:method\"}}Waud.init{{/crossLink}} method.",
             "itemtype": "method",
             "name": "createAudioContext",
@@ -323,7 +323,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 155,
+            "line": 154,
             "description": "Function to close audio context and reset all variables.\n\nUsed by {{#crossLink \"Waud/destroy:method\"}}Waud.destroy{{/crossLink}} method.",
             "itemtype": "method",
             "name": "destroy",
@@ -331,7 +331,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 171,
+            "line": 170,
             "description": "This function suspends the progression of time in the audio context, temporarily halting audio hardware access and reducing CPU/battery usage in the process.\nThis is useful if you want an application to power down the audio hardware when it will not be using an audio context for a while.",
             "itemtype": "method",
             "name": "suspendContext",
@@ -342,7 +342,7 @@
         },
         {
             "file": "src/AudioManager.hx",
-            "line": 185,
+            "line": 184,
             "description": "This function resumes the progression of time in an audio context that has previously been suspended.",
             "itemtype": "method",
             "name": "resumeContext",

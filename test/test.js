@@ -46,7 +46,6 @@ AudioManager.prototype = {
 			if(Waud.__touchUnlockCallback != null) Waud.__touchUnlockCallback();
 			Waud.dom.ontouchend = null;
 		}
-		haxe_Log.trace("STATE: " + Std.string(this.audioContext.state),{ fileName : "AudioManager.hx", lineNumber : 115, className : "AudioManager", methodName : "unlockAudio"});
 		if(this.audioContext.state == "suspended") this.audioContext.resume();
 	}
 	,_unlockCallback: function() {
