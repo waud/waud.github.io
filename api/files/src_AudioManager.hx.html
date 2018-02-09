@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v1.0.1
+            API Docs for v1.0.2
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -190,7 +190,7 @@ class AudioManager {
 			else untyped __js__(&quot;src&quot;).noteOn(0);
 			if (src.onended != null) src.onended = _unlockCallback;
 			else haxe.Timer.delay(_unlockCallback, 1);
-			if (audioContext.state == &quot;suspended&quot;) audioContext.resume();
+			resumeContext();
 		}
 		else {
 			var audio:AudioElement = Browser.document.createAudioElement();
@@ -264,8 +264,8 @@ class AudioManager {
 	*     Waud.audioManager.suspendContext();
 	*/
 	public function suspendContext() {
-		if (audioContext != null) {
-			if (untyped __js__(AUDIO_CONTEXT).suspend != null) untyped __js__(AUDIO_CONTEXT).suspend();
+		if (audioContext != null &amp;&amp; audioContext.state != null &amp;&amp; audioContext.suspend != null) {
+			audioContext.suspend();
 		}
 	}
 
@@ -277,8 +277,8 @@ class AudioManager {
 	*     Waud.audioManager.resumeContext();
 	*/
 	public function resumeContext() {
-		if (audioContext != null) {
-			if (untyped __js__(AUDIO_CONTEXT).resume != null) untyped __js__(AUDIO_CONTEXT).resume();
+		if (audioContext != null &amp;&amp; audioContext.state != null &amp;&amp; audioContext.resume != null) {
+			audioContext.resume();
 		}
 	}
 }
