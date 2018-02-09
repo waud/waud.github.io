@@ -18,7 +18,7 @@
             <a href="https://github.com/adireddy/waud" target="_blank"><img src="http://waud.github.io/images/logo/logo-small.png" alt="waud.js"></a>
         </div>
         <div class="yui3-u-1-4 version project-version">
-            API Docs for v1.0.2
+            API Docs for v1.0.3
         </div>
     </div>
     <div id="bd" class="yui3-g">
@@ -122,6 +122,7 @@ import js.Browser;
 	var _hidden:String;
 	var _visibilityChange:String;
 	var _currentState:String;
+	var _dom:Dynamic;
 
 	/**
 	* Cross-browser utility class used to mute/unmute audio on focus on/off events. Used when **Waud.autoMute()** is called.
@@ -135,48 +136,51 @@ import js.Browser;
 	* 		fm.focus = onFocus;
 	* 		fm.blur = onBlur;
 	*/
-	public function new() {
+	public function new(?dom:Dynamic) {
 		_hidden = &quot;&quot;;
 		_visibilityChange = &quot;&quot;;
 		_currentState = &quot;&quot;;
 
-		if (Reflect.field(Browser.document, &quot;hidden&quot;) != null) {
+		if (dom == null) dom = Browser.document;
+		_dom = dom;
+
+		if (_dom.hidden != null) {
 			_hidden = &quot;hidden&quot;;
 			_visibilityChange = &quot;visibilitychange&quot;;
 		}
-		else if (Reflect.field(Browser.document, &quot;mozHidden&quot;) != null) {
+		else if (_dom.mozHidden != null) {
 			_hidden = &quot;mozHidden&quot;;
 			_visibilityChange = &quot;mozvisibilitychange&quot;;
 		}
-		else if (Reflect.field(Browser.document, &quot;msHidden&quot;) != null) {
+		else if (_dom.msHidden != null) {
 			_hidden = &quot;msHidden&quot;;
 			_visibilityChange = &quot;msvisibilitychange&quot;;
 		}
-		else if (Reflect.field(Browser.document, &quot;webkitHidden&quot;) != null) {
+		else if (_dom.webkitHidden != null) {
 			_hidden = &quot;webkitHidden&quot;;
 			_visibilityChange = &quot;webkitvisibilitychange&quot;;
 		}
 
-		if (Reflect.field(Browser.window, &quot;addEventListener&quot;) != null) {
-			untyped __js__(WINDOW).addEventListener(FOCUS_STATE, _focus);
-			untyped __js__(WINDOW).addEventListener(BLUR_STATE, _blur);
-			untyped __js__(WINDOW).addEventListener(PAGE_SHOW, _focus);
-			untyped __js__(WINDOW).addEventListener(PAGE_HIDE, _blur);
-			untyped __js__(DOCUMENT).addEventListener(_visibilityChange, _handleVisibilityChange);
+		if (_dom.addEventListener != null) {
+			_dom.addEventListener(FOCUS_STATE, _focus);
+			_dom.addEventListener(BLUR_STATE, _blur);
+			_dom.addEventListener(PAGE_SHOW, _focus);
+			_dom.addEventListener(PAGE_HIDE, _blur);
+			_dom.addEventListener(_visibilityChange, _handleVisibilityChange);
 		}
-		else if (Reflect.field(Browser.window, &quot;attachEvent&quot;) != null) {
-			untyped __js__(WINDOW).attachEvent(ON_FOCUS, _focus);
-			untyped __js__(WINDOW).attachEvent(ON_BLUR, _blur);
-			untyped __js__(WINDOW).attachEvent(PAGE_SHOW, _focus);
-			untyped __js__(WINDOW).attachEvent(PAGE_HIDE, _blur);
-			untyped __js__(DOCUMENT).attachEvent(_visibilityChange, _handleVisibilityChange);
+		else if (_dom.attachEvent != null) {
+			_dom.attachEvent(ON_FOCUS, _focus);
+			_dom.attachEvent(ON_BLUR, _blur);
+			_dom.attachEvent(PAGE_SHOW, _focus);
+			_dom.attachEvent(PAGE_HIDE, _blur);
+			_dom.attachEvent(_visibilityChange, _handleVisibilityChange);
 		}
 		else {
-			Browser.window.onload = function () {
-				Browser.window.onfocus = _focus;
-				Browser.window.onblur = _blur;
-				Browser.window.onpageshow = _focus;
-				Browser.window.onpagehide = _blur;
+			_dom.onload = function () {
+				_dom.onfocus = _focus;
+				_dom.onblur = _blur;
+				_dom.onpageshow = _focus;
+				_dom.onpagehide = _blur;
 			};
 		}
 	}
@@ -188,7 +192,7 @@ import js.Browser;
 	* @method _handleVisibilityChange
 	*/
 	function _handleVisibilityChange() {
-		if (Reflect.field(Browser.document, _hidden) != null &amp;&amp; Reflect.field(Browser.document, _hidden) &amp;&amp; blur != null) blur();
+		if (Reflect.field(_dom, _hidden) != null &amp;&amp; Reflect.field(_dom, _hidden) &amp;&amp; blur != null) blur();
 		else if (focus != null) focus();
 	}
 
@@ -222,25 +226,25 @@ import js.Browser;
 	*     fm.clearEvents();
 	*/
 	public function clearEvents() {
-		if (Reflect.field(Browser.window, &quot;removeEventListener&quot;) != null) {
-			untyped __js__(WINDOW).removeEventListener(FOCUS_STATE, _focus);
-			untyped __js__(WINDOW).removeEventListener(BLUR_STATE, _blur);
-			untyped __js__(WINDOW).removeEventListener(PAGE_SHOW, _focus);
-			untyped __js__(WINDOW).removeEventListener(PAGE_HIDE, _blur);
-			untyped __js__(WINDOW).removeEventListener(_visibilityChange, _handleVisibilityChange);
+		if (_dom.removeEventListener != null) {
+			_dom.removeEventListener(FOCUS_STATE, _focus);
+			_dom.removeEventListener(BLUR_STATE, _blur);
+			_dom.removeEventListener(PAGE_SHOW, _focus);
+			_dom.removeEventListener(PAGE_HIDE, _blur);
+			_dom.removeEventListener(_visibilityChange, _handleVisibilityChange);
 		}
-		else if (Reflect.field(Browser.window, &quot;removeEvent&quot;) != null) {
-			untyped __js__(WINDOW).removeEvent(ON_FOCUS, _focus);
-			untyped __js__(WINDOW).removeEvent(ON_BLUR, _blur);
-			untyped __js__(WINDOW).removeEvent(PAGE_SHOW, _focus);
-			untyped __js__(WINDOW).removeEvent(PAGE_HIDE, _blur);
-			untyped __js__(WINDOW).removeEvent(_visibilityChange, _handleVisibilityChange);
+		else if (_dom.removeEvent != null) {
+			_dom.removeEvent(ON_FOCUS, _focus);
+			_dom.removeEvent(ON_BLUR, _blur);
+			_dom.removeEvent(PAGE_SHOW, _focus);
+			_dom.removeEvent(PAGE_HIDE, _blur);
+			_dom.removeEvent(_visibilityChange, _handleVisibilityChange);
 		}
 		else {
-			Browser.window.onfocus = null;
-			Browser.window.onblur = null;
-			Browser.window.onpageshow = null;
-			Browser.window.onpagehide = null;
+			_dom.onfocus = null;
+			_dom.onblur = null;
+			_dom.onpageshow = null;
+			_dom.onpagehide = null;
 		}
 	}
 }

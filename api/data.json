@@ -2,7 +2,7 @@
     "project": {
         "name": "waud.js",
         "description": "Web Audio Library",
-        "version": "1.0.2",
+        "version": "1.0.3",
         "url": "https://github.com/waud/waud"
     },
     "files": {
@@ -175,7 +175,7 @@
             "plugin_for": [],
             "extension_for": [],
             "file": "src/WaudFocusManager.hx",
-            "line": 38,
+            "line": 39,
             "description": "Cross-browser utility class used to mute/unmute audio on focus on/off events. Used when **Waud.autoMute()** is called.\n\nThis can also be used as a standalone utility class to handle focus on/off events.",
             "is_constructor": 1,
             "example": [
@@ -956,7 +956,7 @@
         },
         {
             "file": "src/WaudFocusManager.hx",
-            "line": 96,
+            "line": 100,
             "description": "Function to handle visibility change event.",
             "access": "private",
             "tagname": "",
@@ -966,7 +966,7 @@
         },
         {
             "file": "src/WaudFocusManager.hx",
-            "line": 107,
+            "line": 111,
             "description": "Function to trigger focus callback.",
             "access": "private",
             "tagname": "",
@@ -976,7 +976,7 @@
         },
         {
             "file": "src/WaudFocusManager.hx",
-            "line": 118,
+            "line": 122,
             "description": "Function to trigger blur callback.",
             "access": "private",
             "tagname": "",
@@ -986,7 +986,7 @@
         },
         {
             "file": "src/WaudFocusManager.hx",
-            "line": 129,
+            "line": 133,
             "description": "Function to clear focus manager events.",
             "itemtype": "method",
             "name": "clearEvents",
